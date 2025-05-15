@@ -1,0 +1,14 @@
+06.05.2025
+
+Exercitiu propus
+Crearea unui miniproiect in php care respecta functionalitatile unui mvc simplu.
+Vom crea o baza de date cu un tabel care care contine cateva produse (fructe).
+In browser se va afisa sub forma de lista toate produsele din baza de date.
+
+
+
+In folderul public se pune fisierul index.php
+
+15 mai de la ora 16-18
+22 mai de la ora 18
+27 mai de la ora 18
