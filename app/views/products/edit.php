@@ -1,3 +1,7 @@
+<?php
+$title = 'Editează produs';
+ob_start();
+?>
 
 <h1>Editează produs</h1>
 
@@ -13,3 +17,7 @@
 
     <button type="submit">Actualizează</button>
 </form>
+
+<?php
+$content = ob_get_clean();
+require_once APP_ROOT . '/app/views/layout.php';

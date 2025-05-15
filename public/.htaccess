@@ -1,8 +1,9 @@
+# filepath: c:\xampp\htdocs\mvc_tutorial2\public\.htaccess
 RewriteEngine On
 
-# Dacă fișierul/folderul NU există
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Permite accesul la fișiere statice
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
 
 # Redirecționează spre index.php
 RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
