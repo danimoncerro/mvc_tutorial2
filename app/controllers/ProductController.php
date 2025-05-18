@@ -15,6 +15,9 @@ class ProductController
 
     public function create()
     {
+        require_once APP_ROOT . '/app/models/Category.php';
+        $categoryModel = new Category();
+        $categories = $categoryModel->all();
         require_once APP_ROOT . '/app/views/products/create.php';
     }
 
@@ -25,12 +28,15 @@ class ProductController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? '';
             $price = $_POST['price'] ?? '';
+            $category_id = $_POST['category_id'] ?? '';
+
     
             if ($name && $price) {
                 $productModel = new Product(); // creezi instanță corectă
                 $productModel->create([        // apel corect pentru metodă non-statică
                     'name' => $name,
-                    'price' => $price
+                    'price' => $price,
+                    'category_id' => $category_id
                 ]);
     
                 header("Location: " . BASE_URL . "products");
@@ -68,12 +74,14 @@ class ProductController
             $id = $_POST['id'] ?? null;
             $name = $_POST['name'] ?? '';
             $price = $_POST['price'] ?? '';
+            $category_id = $_POST['category_id'] ?? '';
 
             if ($id && $name && $price) {
                 $productModel = new Product();
                 $productModel->update($id, [
                     'name' => $name,
-                    'price' => $price
+                    'price' => $price,
+                    'category_id' => $category_id
                 ]);
 
                 header("Location: " . BASE_URL . "products");

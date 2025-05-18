@@ -19,7 +19,10 @@ class Product
 
     public function all()
     {
-        $stmt = $this->db->query("SELECT * FROM products");
+        $sql = "SELECT products.*, categories.name AS category_name
+            FROM products
+            LEFT JOIN categories ON products.category_id = categories.id";
+        $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

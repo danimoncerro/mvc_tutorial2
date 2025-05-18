@@ -12,3 +12,16 @@ In folderul public se pune fisierul index.php
 15 mai de la ora 16-18
 22 mai de la ora 18
 27 mai de la ora 18
+
+
+
+
+datele sensibile sau cand avem multe date se trimit prin POST obligatoriu.
+
+Tema
+
+implementare Categories, Orders.
+Finalizare CRUD for users
+Add bootstrap classes for all the pages.
+
+conectare tabela de produse cu Categories

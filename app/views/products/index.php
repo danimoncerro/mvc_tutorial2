@@ -8,9 +8,10 @@ ob_start();
     <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Actions</th>
+            <th>Nume</th>
+            <th>Preț</th>
+            <th>Categorie</th>
+            <th>Acțiuni</th>
         </tr>
     </thead>
     <tbody>
@@ -20,9 +21,10 @@ ob_start();
             $deleteUrl = BASE_URL . "products/delete?id=" . $product['id'];
         ?>
         <tr>
-            <td><?= $product['id'] ?></td>
-            <td><?= $product['name'] ?></td>
-            <td><?= $product['price'] ?></td>
+            <td><?= htmlspecialchars($product['id']) ?></td>
+            <td><?= htmlspecialchars($product['name']) ?></td>
+            <td><?= htmlspecialchars($product['price']) ?></td>
+            <td><?= htmlspecialchars($product['category_name'] ?? 'Fără categorie') ?></td>
             <td>
                 <a href='<?=$editUrl ?>'>✏️ Editează</a> 
                 <form action='<?=$deleteUrl ?>' method='POST' class='d-inline m-0 p-0'>
