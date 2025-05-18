@@ -18,6 +18,12 @@ $router->post('users/store', 'UserController@store');
 $router->get('users/edit', 'UserController@edit');
 $router->post('users/update', 'UserController@update'); 
 $router->post('users/delete', 'UserController@delete');
+$router->get('categories', 'CategoryController@index');
+$router->get('categories/create', 'CategoryController@create');
+$router->post('categories/store', 'CategoryController@store');
+$router->get('categories/edit', 'CategoryController@edit');
+$router->post('categories/update', 'CategoryController@update'); 
+$router->post('categories/delete', 'CategoryController@delete');
 
 
 

@@ -31,7 +31,7 @@ class ProductController
             $category_id = $_POST['category_id'] ?? '';
 
     
-            if ($name && $price) {
+            if ($name && $price && $category_id) {
                 $productModel = new Product(); // creezi instanță corectă
                 $productModel->create([        // apel corect pentru metodă non-statică
                     'name' => $name,
@@ -42,7 +42,7 @@ class ProductController
                 header("Location: " . BASE_URL . "products");
                 exit;
             } else {
-                echo "❌ Nume sau preț lipsă.";
+                echo "❌ Num, preț sau categorie lipsă.";
             }
         } else {
             echo "❌ Metodă incorectă de accesare.";
@@ -56,14 +56,13 @@ class ProductController
             return;
         }
 
+        require_once APP_ROOT . '/app/models/Category.php';
         $id = $_GET['id'];
         $productModel = new Product();
         $product = $productModel->find($id);
 
-        if (!$product) {
-            echo "❌ Produsul nu a fost găsit.";
-            return;
-        }
+        $categoryModel = new Category();
+        $categories = $categoryModel->all();
 
         require_once APP_ROOT . '/app/views/products/edit.php';
     }
@@ -76,7 +75,7 @@ class ProductController
             $price = $_POST['price'] ?? '';
             $category_id = $_POST['category_id'] ?? '';
 
-            if ($id && $name && $price) {
+            if ($id && $name && $price && $category_id) {
                 $productModel = new Product();
                 $productModel->update($id, [
                     'name' => $name,

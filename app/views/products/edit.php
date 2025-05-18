@@ -1,6 +1,7 @@
 <?php
 $title = 'Editează produs';
 ob_start();
+$categories = $categoryModel->all();
 ?>
 
 <h1 class="mb-4">Editează produs</h1>
@@ -13,6 +14,17 @@ ob_start();
     <div class="mb-3">
         <label for="price" class="form-label">Preț:</label>
         <input type="number" id="price" name="price" class="form-control" value="<?= htmlspecialchars($product['price']) ?>" required min="0" step="0.01" autocomplete="off">
+    </div>
+    <div class="mb-3">
+        <label for="category_id" class="form-label">Categorie:</label>
+        <select id="category_id" name="category_id" class="form-select" required>
+            <option value="" disabled>Alege categoria</option>
+            <?php foreach ($categories as $cat): ?>
+                <option value="<?= $cat['id'] ?>" <?= $cat['id'] == $product['category_id'] ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($cat['name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
     </div>
     <button type="submit" class="btn btn-primary">Actualizează</button>
 </form>

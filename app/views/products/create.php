@@ -3,7 +3,7 @@
 $title = 'Adaugă produs';
 ob_start();
 //$categoryModel = new Category();
-$categories = $categoryModel->all();
+
 ?>
 
 <h1 class="mb-4">Adaugă un produs nou</h1>
@@ -17,7 +17,10 @@ $categories = $categoryModel->all();
         <input type="number" id="price" name="price" class="form-control" value="" required min="0" step="0.01" autocomplete="off">
     </div>
     <div class="mb-3">
-        <label for="category_id" class="form-label">Categorie:</label>
+        <label for="category_id" class="form-label d-flex justify-content-between align-items-center">
+            <span>Categorie:</span>
+            <a href="<?= BASE_URL ?>categories" class="btn btn-sm btn-success ms-2">Adaugă o categorie nouă</a>
+        </label>
         <select id="category_id" name="category_id" class="form-select" required>
             <option value="" selected disabled>Alege categoria</option>
             <?php foreach ($categories as $cat): ?>
