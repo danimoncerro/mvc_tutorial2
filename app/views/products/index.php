@@ -28,7 +28,7 @@ ob_start();
             <td>
                 <a href='<?=$editUrl ?>'>✏️ Editează</a> 
                 <form action='<?=$deleteUrl ?>' method='POST' class='d-inline m-0 p-0'>
-                <button type='submit' onclick='return confirm(\"Ești sigur că vrei să ștergi acest produs?\");'>🗑️ Șterge</button>
+                    <button type="submit" onclick="return confirm('Ești sigur că vrei să ștergi aceast produs?');">🗑️ Șterge</button>
                 </form>
             </td>
         </tr>
