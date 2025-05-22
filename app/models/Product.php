@@ -62,6 +62,59 @@ class Product
         $stmt->execute(['id' => $id]);
     }
 
+    public function getPaginated($limit, $offset)
+    {
+        $sql = "SELECT products.*, categories.name AS category_name
+                FROM products
+                LEFT JOIN categories ON products.category_id = categories.id
+                LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countAll()
+    {
+        $stmt = $this->db->query("SELECT COUNT(*) FROM products");
+        return $stmt->fetchColumn();
+    }
+
+    
+    public function getPaginatedFiltered($limit, $offset, $category_id = null)
+    {
+        $sql = "SELECT products.*, categories.name AS category_name
+                FROM products
+                LEFT JOIN categories ON products.category_id = categories.id";
+        if ($category_id) {
+            $sql .= " WHERE products.category_id = :category_id";
+        }
+        $sql .= " LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($sql);
+        if ($category_id) {
+            $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        }
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countFiltered($category_id = null)
+    {
+        $sql = "SELECT COUNT(*) FROM products";
+        if ($category_id) {
+            $sql .= " WHERE category_id = :category_id";
+        }
+        $stmt = $this->db->prepare($sql);
+        if ($category_id) {
+            $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
     
 
 

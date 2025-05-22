@@ -13,12 +13,25 @@ class ProductController
             exit;
         }
     }
-    
+
     public function index()
     {
 
+        $perPage = 3;
+        $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+        $offset = ($page - 1) * $perPage;
+
+        $category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : null;
+
+        require_once APP_ROOT . '/app/models/Category.php';
+        $categoryModel = new Category();
+        $categories = $categoryModel->all();
+
         $productModel = new Product();
-        $products = $productModel->all();
+        $products = $productModel->getPaginatedFiltered($perPage, $offset, $category_id);
+        $totalProducts = $productModel->countFiltered($category_id);
+        $totalPages = ceil($totalProducts / $perPage);
+
         require_once APP_ROOT . '/app/views/products/index.php';
     
     }

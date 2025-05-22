@@ -25,3 +25,10 @@ Finalizare CRUD for users
 Add bootstrap classes for all the pages.
 
 conectare tabela de produse cu Categories
+
+
+22.05.2025
+
+Proucts table
+- paginare;
+- cautare dupa nume, dupa titlu, dupa pret (minim - maxim), sortare dupa pret crescator sau descrescator.
