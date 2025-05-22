@@ -30,6 +30,9 @@ $router->post('orders/store', 'OrderController@store');
 $router->get('orders/edit', 'OrderController@edit');
 $router->post('orders/update', 'OrderController@update'); 
 $router->post('orders/delete', 'OrderController@delete');
+$router->get('auth/login', 'AuthController@login');
+$router->post('auth/authenticate', 'AuthController@authenticate');
+$router->get('auth/logout', 'AuthController@logout');
 
 
 

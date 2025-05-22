@@ -4,6 +4,15 @@ require_once APP_ROOT . '/app/models/User.php';
 
 class UserController
 {
+    public function __construct()
+    {
+        // Verifică dacă utilizatorul este autentificat
+        if (!isset($_SESSION['user'])) {
+            header("Location: " . BASE_URL . "auth/login");
+            exit;
+        }
+    }
+
     public function index()
     {
         $userModel = new User();
@@ -24,7 +33,8 @@ class UserController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
+            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+           // $password = $_POST['password'] ?? '';
             $role = $_POST['role'] ?? '';
 
     

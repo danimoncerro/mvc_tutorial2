@@ -45,7 +45,7 @@ class User
         }
         if (isset($data['password'])) {
             $fields[] = "password = :password";
-            $params[':password'] = $data['password'];
+            $params[':password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         }
         if (isset($data['role'])) {
             $fields[] = "role = :role";
@@ -70,6 +70,13 @@ class User
     {
         $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");
         $stmt->execute(['id' => $id]);
+    }
+
+    public function findByEmail($email)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt->execute([':email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     

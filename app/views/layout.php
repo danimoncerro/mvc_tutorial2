@@ -9,8 +9,16 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="<?= BASE_URL ?>">Home</a>
-        <a class="nav-link" href="<?= BASE_URL ?>products">Products</a> 
-        <a class="nav-link ms-3" href="<?= BASE_URL ?>users">Users</a>
+        <?php if (isset($_SESSION['user'])): ?>
+            <a class="nav-link" href="<?= BASE_URL ?>products">Products</a> 
+            <a class="nav-link ms-3" href="<?= BASE_URL ?>users">Users</a>
+            <?= htmlspecialchars($_SESSION['user']['email']) ?> 
+            <a href="<?= BASE_URL ?>auth/logout" class="btn btn-danger btn-sm">Logout</a>
+        <?php else: ?>
+            <a href="<?= BASE_URL ?>auth/login" class="btn btn-primary btn-sm">Login</a>
+        <?php endif; ?>
+        
+
     </nav>
     <div class="container mt-4">
         <?= $content ?>
