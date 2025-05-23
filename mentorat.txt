@@ -32,3 +32,7 @@ conectare tabela de produse cu Categories
 Proucts table
 - paginare;
 - cautare dupa nume, dupa titlu, dupa pret (minim - maxim), sortare dupa pret crescator sau descrescator.
+
+tema - filtrare si paginare pentru toate tabelele.
+ 
+ sortare dupa pret (crescator sau descrescator) intr-un dropdown
