@@ -16,19 +16,28 @@ class ProductController
 
     public function index()
     {
-        $perPage = 3;
+        $perPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 3;
         $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
         $offset = ($page - 1) * $perPage;
 
         $search = $_GET['search'] ?? '';
         $category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : null;
 
+        $sort = $_GET['sort'] ?? 'id';
+        $order = $_GET['order'] ?? 'asc';
+
+        $allowedSort = ['id', 'name', 'price', 'category_name'];
+        $allowedOrder = ['asc', 'desc'];
+
+        if (!in_array($sort, $allowedSort)) $sort = 'id';
+        if (!in_array($order, $allowedOrder)) $order = 'asc';
+
         require_once APP_ROOT . '/app/models/Category.php';
         $categoryModel = new Category();
         $categories = $categoryModel->all();
 
         $productModel = new Product();
-        $products = $productModel->getPaginatedFilteredSearched($perPage, $offset, $category_id, $search);
+        $products = $productModel->getPaginatedFilteredSearchedSorted($perPage, $offset, $category_id, $search, $sort, $order);
         $totalProducts = $productModel->countFilteredSearched($category_id, $search);
         $totalPages = ceil($totalProducts / $perPage);
 

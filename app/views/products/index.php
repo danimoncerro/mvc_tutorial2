@@ -19,6 +19,28 @@ ob_start();
                 <?php endforeach; ?>
             </select>
         </div>
+        <div class="col-auto">
+            <select name="sort" class="form-select" onchange="this.form.submit()">
+                <option value="name" <?= (isset($_GET['sort']) && $_GET['sort'] == 'name') ? 'selected' : '' ?>>Sortează după nume</option>
+                <option value="price" <?= (isset($_GET['sort']) && $_GET['sort'] == 'price') ? 'selected' : '' ?>>Sortează după preț</option>
+                <option value="category_name" <?= (isset($_GET['sort']) && $_GET['sort'] == 'category_name') ? 'selected' : '' ?>>Sortează după categorie</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <select name="order" class="form-select" onchange="this.form.submit()">
+                <option value="asc" <?= (isset($_GET['order']) && $_GET['order'] == 'asc') ? 'selected' : '' ?>>Crescător</option>
+                <option value="desc" <?= (isset($_GET['order']) && $_GET['order'] == 'desc') ? 'selected' : '' ?>>Descrescător</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <select name="per_page" class="form-select" onchange="this.form.submit()">
+                <?php foreach ([3, 5, 10, 20] as $opt): ?>
+                    <option value="<?= $opt ?>" <?= (isset($_GET['per_page']) && $_GET['per_page'] == $opt) ? 'selected' : '' ?>>
+                        <?= $opt ?> / pagină
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
     </div>
 </form>
 <form method="GET" class="mb-3 d-flex align-items-center">
@@ -57,20 +79,21 @@ ob_start();
     </tbody>
 </table>
 
+
 <nav>
     <ul class="pagination">
         <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-            <a class="page-link" href="<?= BASE_URL ?>products?page=<?= max(1, $page - 1) ?>" aria-label="Previous">
+            <a class="page-link" href="<?= BASE_URL ?>products?page=<?= max(1, $page - 1) ?>&per_page=<?= $perPage ?>" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
             <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                <a class="page-link" href="<?= BASE_URL ?>products?page=<?= $i ?>"><?= $i ?></a>
+                <a class="page-link" href="<?= BASE_URL ?>products?page=<?= $i ?>&per_page=<?= $perPage ?>"><?= $i ?></a>
             </li>
         <?php endfor; ?>
         <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-            <a class="page-link" href="<?= BASE_URL ?>products?page=<?= min($totalPages, $page + 1) ?>" aria-label="Next">
+            <a class="page-link" href="<?= BASE_URL ?>products?page=<?= min($totalPages, $page + 1) ?>&per_page=<?= $perPage ?>" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>

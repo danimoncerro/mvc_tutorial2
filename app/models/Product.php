@@ -1,5 +1,3 @@
-
-
 <?php
 
 //require_once '../../config/database.php'; // dacă nu ai autoload
@@ -177,9 +175,46 @@ class Product
         return $stmt->fetchColumn();
     }
 
-    
+    public function getPaginatedFilteredSearchedSorted($limit, $offset, $category_id = null, $search = '', $sort = 'id', $order = 'asc')
+    {
+        $allowedSort = ['id', 'name', 'price', 'category_name'];
+        $allowedOrder = ['asc', 'desc'];
+        if (!in_array($sort, $allowedSort)) $sort = 'id';
+        if (!in_array($order, $allowedOrder)) $order = 'asc';
 
+        $sortColumn = $sort === 'category_name' ? 'categories.name' : 'products.' . $sort;
 
+        $sql = "SELECT products.*, categories.name AS category_name
+                FROM products
+                LEFT JOIN categories ON products.category_id = categories.id
+                WHERE 1";
+        $params = [];
+
+        if ($category_id) {
+            $sql .= " AND products.category_id = :category_id";
+            $params[':category_id'] = $category_id;
+        }
+        if ($search) {
+            $sql .= " AND products.name LIKE :search";
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        $sql .= " ORDER BY $sortColumn $order LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($sql);
+
+        foreach ($params as $key => $value) {
+            if ($key === ':category_id') {
+                $stmt->bindValue($key, $value, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($key, $value, PDO::PARAM_STR);
+            }
+        }
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 
