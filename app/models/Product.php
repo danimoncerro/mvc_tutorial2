@@ -115,6 +115,68 @@ class Product
         return $stmt->fetchColumn();
     }
 
+    public function getPaginatedFilteredSearched($limit, $offset, $category_id = null, $search = '')
+    {
+        $sql = "SELECT products.*, categories.name AS category_name
+                FROM products
+                LEFT JOIN categories ON products.category_id = categories.id
+                WHERE 1";
+        $params = [];
+
+        if ($category_id) {
+            $sql .= " AND products.category_id = :category_id";
+            $params[':category_id'] = $category_id;
+        }
+        if ($search) {
+            $sql .= " AND products.name LIKE :search";
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        $sql .= " LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($sql);
+
+        foreach ($params as $key => $value) {
+            if ($key === ':category_id') {
+                $stmt->bindValue($key, $value, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($key, $value, PDO::PARAM_STR);
+            }
+        }
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countFilteredSearched($category_id = null, $search = '')
+    {
+        $sql = "SELECT COUNT(*) FROM products WHERE 1";
+        $params = [];
+
+        if ($category_id) {
+            $sql .= " AND category_id = :category_id";
+            $params[':category_id'] = $category_id;
+        }
+        if ($search) {
+            $sql .= " AND name LIKE :search";
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        $stmt = $this->db->prepare($sql);
+
+        foreach ($params as $key => $value) {
+            if ($key === ':category_id') {
+                $stmt->bindValue($key, $value, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($key, $value, PDO::PARAM_STR);
+            }
+        }
+
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
     
 
 

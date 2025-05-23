@@ -21,6 +21,10 @@ ob_start();
         </div>
     </div>
 </form>
+<form method="GET" class="mb-3 d-flex align-items-center">
+    <input type="text" name="search" class="form-control me-2" placeholder="Caută produs..." value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+    <button type="submit" class="btn btn-outline-primary">Caută</button>
+</form>
 <table class="table">
     <thead>
         <tr>
