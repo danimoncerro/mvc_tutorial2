@@ -147,35 +147,8 @@ class Product
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function countFilteredSearched($category_id = null, $search = '')
-    {
-        $sql = "SELECT COUNT(*) FROM products WHERE 1";
-        $params = [];
 
-        if ($category_id) {
-            $sql .= " AND category_id = :category_id";
-            $params[':category_id'] = $category_id;
-        }
-        if ($search) {
-            $sql .= " AND name LIKE :search";
-            $params[':search'] = '%' . $search . '%';
-        }
-
-        $stmt = $this->db->prepare($sql);
-
-        foreach ($params as $key => $value) {
-            if ($key === ':category_id') {
-                $stmt->bindValue($key, $value, PDO::PARAM_INT);
-            } else {
-                $stmt->bindValue($key, $value, PDO::PARAM_STR);
-            }
-        }
-
-        $stmt->execute();
-        return $stmt->fetchColumn();
-    }
-
-    public function getPaginatedFilteredSearchedSorted($limit, $offset, $category_id = null, $search = '', $sort = 'id', $order = 'asc')
+    public function getPaginatedFilteredSearchedSorted($limit, $offset, $category_id = null, $search = '', $sort = 'id', $order = 'asc', $min_price = null, $max_price = null)
     {
         $allowedSort = ['id', 'name', 'price', 'category_name'];
         $allowedOrder = ['asc', 'desc'];
@@ -198,6 +171,14 @@ class Product
             $sql .= " AND products.name LIKE :search";
             $params[':search'] = '%' . $search . '%';
         }
+        if ($min_price !== null) {
+            $sql .= " AND products.price >= :min_price";
+            $params[':min_price'] = $min_price;
+        }
+        if ($max_price !== null) {
+            $sql .= " AND products.price <= :max_price";
+            $params[':max_price'] = $max_price;
+        }
 
         $sql .= " ORDER BY $sortColumn $order LIMIT :limit OFFSET :offset";
         $stmt = $this->db->prepare($sql);
@@ -205,6 +186,8 @@ class Product
         foreach ($params as $key => $value) {
             if ($key === ':category_id') {
                 $stmt->bindValue($key, $value, PDO::PARAM_INT);
+            } elseif ($key === ':min_price' || $key === ':max_price') {
+                $stmt->bindValue($key, $value, PDO::PARAM_STR);
             } else {
                 $stmt->bindValue($key, $value, PDO::PARAM_STR);
             }
@@ -214,6 +197,44 @@ class Product
 
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countFilteredSearched($category_id = null, $search = '', $min_price = null, $max_price = null)
+    {
+        $sql = "SELECT COUNT(*) FROM products WHERE 1";
+        $params = [];
+
+        if ($category_id) {
+            $sql .= " AND category_id = :category_id";
+            $params[':category_id'] = $category_id;
+        }
+        if ($search) {
+            $sql .= " AND name LIKE :search";
+            $params[':search'] = '%' . $search . '%';
+        }
+        if ($min_price !== null) {
+            $sql .= " AND price >= :min_price";
+            $params[':min_price'] = $min_price;
+        }
+        if ($max_price !== null) {
+            $sql .= " AND price <= :max_price";
+            $params[':max_price'] = $max_price;
+        }
+
+        $stmt = $this->db->prepare($sql);
+
+        foreach ($params as $key => $value) {
+            if ($key === ':category_id') {
+                $stmt->bindValue($key, $value, PDO::PARAM_INT);
+            } elseif ($key === ':min_price' || $key === ':max_price') {
+                $stmt->bindValue($key, $value, PDO::PARAM_STR);
+            } else {
+                $stmt->bindValue($key, $value, PDO::PARAM_STR);
+            }
+        }
+
+        $stmt->execute();
+        return $stmt->fetchColumn();
     }
 }
 

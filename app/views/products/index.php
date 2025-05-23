@@ -7,7 +7,7 @@ ob_start();
 <form method="GET" class="mb-3">
     <div class="row g-2 align-items-center">
         <div class="col-auto">
-            <label for="category_id" class="col-form-label">Filtrează după categorie:</label>
+            <label for="category_id" class="col-form-label">Filtre:</label>
         </div>
         <div class="col-auto">
             <select name="category_id" id="category_id" class="form-select" onchange="this.form.submit()">
@@ -40,6 +40,17 @@ ob_start();
                     </option>
                 <?php endforeach; ?>
             </select>
+        </div>
+        <div class="col-auto">
+            <input type="number" name="min_price" class="form-control" placeholder="Preț minim"
+                   value="<?= htmlspecialchars($_GET['min_price'] ?? '') ?>" min="0" step="0.01">
+        </div>
+        <div class="col-auto">
+            <input type="number" name="max_price" class="form-control" placeholder="Preț maxim"
+                   value="<?= htmlspecialchars($_GET['max_price'] ?? '') ?>" min="0" step="0.01">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-primary">Filtrează</button>
         </div>
     </div>
 </form>

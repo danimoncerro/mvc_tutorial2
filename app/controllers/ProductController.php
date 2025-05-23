@@ -32,13 +32,20 @@ class ProductController
         if (!in_array($sort, $allowedSort)) $sort = 'id';
         if (!in_array($order, $allowedOrder)) $order = 'asc';
 
+        $min_price = isset($_GET['min_price']) && $_GET['min_price'] !== '' ? (float)$_GET['min_price'] : null;
+        $max_price = isset($_GET['max_price']) && $_GET['max_price'] !== '' ? (float)$_GET['max_price'] : null;
+
         require_once APP_ROOT . '/app/models/Category.php';
         $categoryModel = new Category();
         $categories = $categoryModel->all();
 
         $productModel = new Product();
-        $products = $productModel->getPaginatedFilteredSearchedSorted($perPage, $offset, $category_id, $search, $sort, $order);
-        $totalProducts = $productModel->countFilteredSearched($category_id, $search);
+        $products = $productModel->getPaginatedFilteredSearchedSorted(
+            $perPage, $offset, $category_id, $search, $sort, $order, $min_price, $max_price
+        );
+        $totalProducts = $productModel->countFilteredSearched(
+            $category_id, $search, $min_price, $max_price
+        );
         $totalPages = ceil($totalProducts / $perPage);
 
         require_once APP_ROOT . '/app/views/products/index.php';
