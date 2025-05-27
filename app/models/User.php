@@ -1,5 +1,3 @@
-
-
 <?php
 
 //require_once '../../config/database.php'; // dacă nu ai autoload
@@ -79,9 +77,21 @@ class User
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    
+    public function getPaginated($limit, $offset)
+    {
+        $sql = "SELECT * FROM users LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-
+    public function countAll()
+    {
+        $stmt = $this->db->query("SELECT COUNT(*) FROM users");
+        return $stmt->fetchColumn();
+    }
 }
 
 

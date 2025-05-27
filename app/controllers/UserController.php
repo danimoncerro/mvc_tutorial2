@@ -15,10 +15,16 @@ class UserController
 
     public function index()
     {
+        $perPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 3;
+        $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+        $offset = ($page - 1) * $perPage;
+
         $userModel = new User();
-        $users = $userModel->all();
+        $users = $userModel->getPaginated($perPage, $offset);
+        $totalUsers = $userModel->countAll();
+        $totalPages = ceil($totalUsers / $perPage);
+
         require_once APP_ROOT . '/app/views/users/index.php';
-    
     }
 
 

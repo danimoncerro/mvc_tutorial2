@@ -33,6 +33,25 @@ ob_start();
         <?php endforeach; ?>
     </tbody>
 </table>
+<nav>
+    <ul class="pagination">
+        <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+            <a class="page-link" href="<?= BASE_URL ?>users?page=<?= max(1, $page - 1) ?>&per_page=<?= $perPage ?>" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                <a class="page-link" href="<?= BASE_URL ?>users?page=<?= $i ?>&per_page=<?= $perPage ?>"><?= $i ?></a>
+            </li>
+        <?php endfor; ?>
+        <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+            <a class="page-link" href="<?= BASE_URL ?>users?page=<?= min($totalPages, $page + 1) ?>&per_page=<?= $perPage ?>" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
 <?php
 $content = ob_get_clean();
 require_once APP_ROOT . '/app/views/layout.php';
