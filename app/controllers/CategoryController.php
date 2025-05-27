@@ -15,16 +15,13 @@ class CategoryController
     }
     public function index()
     {
-        $perPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 5;
-        $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+        $perPage = $_GET['per_page'] ?? 5;
+        $page = $_GET['page'] ?? 1;
         $offset = ($page - 1) * $perPage;
 
         $sort = $_GET['sort'] ?? 'id';
         $order = $_GET['order'] ?? 'asc';
-        $allowedSort = ['id', 'name'];
-        $allowedOrder = ['asc', 'desc'];
-        if (!in_array($sort, $allowedSort)) $sort = 'id';
-        if (!in_array($order, $allowedOrder)) $order = 'asc';
+       
 
         $categoryModel = new Category();
         $totalCategories = $categoryModel->countAll();

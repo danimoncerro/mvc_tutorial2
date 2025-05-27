@@ -61,18 +61,14 @@ class Category
 
     public function countAll()
     {
-        $stmt = $this->db->query("SELECT COUNT(*) FROM categories");
+        $stmt = $this->db->query("SELECT COUNT(1) FROM categories");
         return $stmt->fetchColumn();
     }
 
     public function getAllSortedPaginated($sort = 'id', $order = 'asc', $limit = 5, $offset = 0)
     {
-        $allowedSort = ['id', 'name'];
-        $allowedOrder = ['asc', 'desc'];
-        if (!in_array($sort, $allowedSort)) $sort = 'id';
-        if (!in_array($order, $allowedOrder)) $order = 'asc';
-
-        $sql = "SELECT * FROM categories ORDER BY $sort $order LIMIT :limit OFFSET :offset";
+       
+        $sql = "SELECT * FROM categories ORDER BY $sort $order LIMIT :offset, :limit ";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
