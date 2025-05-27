@@ -131,18 +131,13 @@ class User
 
     public function getPaginatedFilteredSorted($limit, $offset, $role = '', $sort = 'id', $order = 'asc')
     {
-        $allowedSort = ['id', 'email', 'role'];
-        $allowedOrder = ['asc', 'desc'];
-        if (!in_array($sort, $allowedSort)) $sort = 'id';
-        if (!in_array($order, $allowedOrder)) $order = 'asc';
-
         $sql = "SELECT * FROM users";
         $params = [];
         if ($role) {
             $sql .= " WHERE role = :role";
             $params[':role'] = $role;
         }
-        $sql .= " ORDER BY $sort $order LIMIT :limit OFFSET :offset";
+        $sql .= " ORDER BY $sort $order LIMIT :offset, :limit";
         $stmt = $this->db->prepare($sql);
         if ($role) {
             $stmt->bindValue(':role', $role, PDO::PARAM_STR);

@@ -36,3 +36,7 @@ Proucts table
 tema - filtrare si paginare pentru toate tabelele.
  
  sortare dupa pret (crescator sau descrescator) intr-un dropdown
+
+ SELECT role, count(1) as nr FROM users group by role;
+
+ 
