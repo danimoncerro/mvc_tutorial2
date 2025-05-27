@@ -4,12 +4,49 @@ ob_start();
 ?>
 <h1>Users</h1>
 <a href='<?= BASE_URL ?>users/create' class='btn btn-primary'>Adaugă user</a>
+<form method="GET" class="mb-3">
+    <div class="row g-2 align-items-center">
+        <div class="col-auto d-flex align-items-center">
+            <label for="role" class="me-2 mb-0">Filtrează după rol:</label>
+            <select name="role" id="role" class="form-select w-auto" onchange="this.form.submit()">
+                <option value="">Toate rolurile</option>
+                <?php foreach ($roles as $roleOption): ?>
+                    <option value="<?= htmlspecialchars($roleOption) ?>" <?= (isset($_GET['role']) && $_GET['role'] == $roleOption) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($roleOption) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="col-auto d-flex align-items-center">
+            <label for="per_page" class="me-2 mb-0">Useri pe pagină:</label>
+            <select name="per_page" id="per_page" class="form-select w-auto" onchange="this.form.submit()">
+                <?php foreach ([3, 5, 10, 20] as $opt): ?>
+                    <option value="<?= $opt ?>" <?= (isset($_GET['per_page']) && $_GET['per_page'] == $opt) || (!isset($_GET['per_page']) && $perPage == $opt) ? 'selected' : '' ?>>
+                        <?= $opt ?> / pagină
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Email</th>
-            <th>Role</th>
+            <th>
+                <a href="<?= BASE_URL ?>users?sort=id&order=<?= ($sort === 'id' && $order === 'asc') ? 'desc' : 'asc' ?>&role=<?= urlencode($_GET['role'] ?? '') ?>">
+                    ID <?= $sort === 'id' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
+                </a>
+            </th>
+            <th>
+                <a href="<?= BASE_URL ?>users?sort=email&order=<?= ($sort === 'email' && $order === 'asc') ? 'desc' : 'asc' ?>&role=<?= urlencode($_GET['role'] ?? '') ?>">
+                    Email <?= $sort === 'email' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
+                </a>
+            </th>
+            <th>
+                <a href="<?= BASE_URL ?>users?sort=role&order=<?= ($sort === 'role' && $order === 'asc') ? 'desc' : 'asc' ?>&role=<?= urlencode($_GET['role'] ?? '') ?>">
+                    Role <?= $sort === 'role' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
+                </a>
+            </th>
             <th>Actions</th>
         </tr>
     </thead>

@@ -92,6 +92,66 @@ class User
         $stmt = $this->db->query("SELECT COUNT(*) FROM users");
         return $stmt->fetchColumn();
     }
+
+    public function getPaginatedFiltered($limit, $offset, $role = '')
+    {
+        $sql = "SELECT * FROM users";
+        $params = [];
+        if ($role) {
+            $sql .= " WHERE role = :role";
+            $params[':role'] = $role;
+        }
+        $sql .= " LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($sql);
+        if ($role) {
+            $stmt->bindValue(':role', $role, PDO::PARAM_STR);
+        }
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countFiltered($role = '')
+    {
+        if ($role) {
+            $stmt = $this->db->prepare("SELECT COUNT(*) FROM users WHERE role = :role");
+            $stmt->execute([':role' => $role]);
+        } else {
+            $stmt = $this->db->query("SELECT COUNT(*) FROM users");
+        }
+        return $stmt->fetchColumn();
+    }
+
+    public function getAllRoles()
+    {
+        $stmt = $this->db->query("SELECT DISTINCT role FROM users");
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function getPaginatedFilteredSorted($limit, $offset, $role = '', $sort = 'id', $order = 'asc')
+    {
+        $allowedSort = ['id', 'email', 'role'];
+        $allowedOrder = ['asc', 'desc'];
+        if (!in_array($sort, $allowedSort)) $sort = 'id';
+        if (!in_array($order, $allowedOrder)) $order = 'asc';
+
+        $sql = "SELECT * FROM users";
+        $params = [];
+        if ($role) {
+            $sql .= " WHERE role = :role";
+            $params[':role'] = $role;
+        }
+        $sql .= " ORDER BY $sort $order LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($sql);
+        if ($role) {
+            $stmt->bindValue(':role', $role, PDO::PARAM_STR);
+        }
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 

@@ -50,7 +50,8 @@ ob_start();
                    value="<?= htmlspecialchars($_GET['max_price'] ?? '') ?>" min="0" step="0.01">
         </div>
         <div class="col-auto">
-            <button type="submit" class="btn btn-outline-primary">Filtrează</button>
+            <button type="submit" class="btn btn-outline-primary me-2">Filtrează</button>
+            <a href="<?= BASE_URL ?>products" class="btn btn-secondary">Resetează filtre</a>
         </div>
     </div>
 </form>

@@ -15,13 +15,25 @@ class UserController
 
     public function index()
     {
-        $perPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 3;
+        $perPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 5;
         $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
         $offset = ($page - 1) * $perPage;
 
+        $role = $_GET['role'] ?? '';
+
+        $sort = $_GET['sort'] ?? 'id';
+        $order = $_GET['order'] ?? 'asc';
+
+        $allowedSort = ['id', 'email', 'role'];
+        $allowedOrder = ['asc', 'desc'];
+
+        if (!in_array($sort, $allowedSort)) $sort = 'id';
+        if (!in_array($order, $allowedOrder)) $order = 'asc';
+
         $userModel = new User();
-        $users = $userModel->getPaginated($perPage, $offset);
-        $totalUsers = $userModel->countAll();
+        $roles = $userModel->getAllRoles();
+        $users = $userModel->getPaginatedFilteredSorted($perPage, $offset, $role, $sort, $order);
+        $totalUsers = $userModel->countFiltered($role);
         $totalPages = ceil($totalUsers / $perPage);
 
         require_once APP_ROOT . '/app/views/users/index.php';
