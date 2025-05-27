@@ -150,10 +150,6 @@ class Product
 
     public function getPaginatedFilteredSearchedSorted($limit, $offset, $category_id = null, $search = '', $sort = 'id', $order = 'asc', $min_price = null, $max_price = null)
     {
-        $allowedSort = ['id', 'name', 'price', 'category_name'];
-        $allowedOrder = ['asc', 'desc'];
-        if (!in_array($sort, $allowedSort)) $sort = 'id';
-        if (!in_array($order, $allowedOrder)) $order = 'asc';
 
         $sortColumn = $sort === 'category_name' ? 'categories.name' : 'products.' . $sort;
 

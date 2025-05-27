@@ -39,4 +39,9 @@ tema - filtrare si paginare pentru toate tabelele.
 
  SELECT role, count(1) as nr FROM users group by role;
 
- 
+ tema:
+ verificare sa nu dispara filtrarea 5 sau 3 pe paginare
+ verifica sa nu se piarda variabilele cand faci sortari sau filtrari
+ sa legam filtrarea cu cautarea
+
+

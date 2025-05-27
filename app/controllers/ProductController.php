@@ -1,6 +1,7 @@
 <?php
 
 require_once APP_ROOT . '/app/models/Product.php';
+require_once APP_ROOT . '/app/models/Category.php';
 
 class ProductController
 {
@@ -35,7 +36,7 @@ class ProductController
         $min_price = isset($_GET['min_price']) && $_GET['min_price'] !== '' ? (float)$_GET['min_price'] : null;
         $max_price = isset($_GET['max_price']) && $_GET['max_price'] !== '' ? (float)$_GET['max_price'] : null;
 
-        require_once APP_ROOT . '/app/models/Category.php';
+
         $categoryModel = new Category();
         $categories = $categoryModel->all();
 
@@ -54,7 +55,6 @@ class ProductController
 
     public function create()
     {
-        require_once APP_ROOT . '/app/models/Category.php';
         $categoryModel = new Category();
         $categories = $categoryModel->all();
         require_once APP_ROOT . '/app/views/products/create.php';
@@ -95,7 +95,7 @@ class ProductController
             return;
         }
 
-        require_once APP_ROOT . '/app/models/Category.php';
+
         $id = $_GET['id'];
         $productModel = new Product();
         $product = $productModel->find($id);
