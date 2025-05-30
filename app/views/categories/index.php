@@ -24,12 +24,12 @@ $order = $_GET['order'] ?? 'asc';
     <thead>
         <tr>
             <th>
-                <a href="<?= BASE_URL ?>categories?sort=id&order=<?= ($sort === 'id' && $order === 'asc') ? 'desc' : 'asc' ?>">
+                <a href="<?= BASE_URL ?>categories?sort=id&order=<?= ($sort === 'id' && $order === 'asc') ? 'desc' : 'asc' ?>&per_page=<?= $perPage ?>">
                     ID <?= $sort === 'id' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
                 </a>
             </th>
             <th>
-                <a href="<?= BASE_URL ?>categories?sort=name&order=<?= ($sort === 'name' && $order === 'asc') ? 'desc' : 'asc' ?>">
+                <a href="<?= BASE_URL ?>categories?sort=name&order=<?= ($sort === 'name' && $order === 'asc') ? 'desc' : 'asc' ?>&per_page=<?= $perPage ?>">
                     Nume <?= $sort === 'name' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
                 </a>
             </th>
