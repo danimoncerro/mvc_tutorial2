@@ -44,4 +44,8 @@ tema - filtrare si paginare pentru toate tabelele.
  verifica sa nu se piarda variabilele cand faci sortari sau filtrari
  sa legam filtrarea cu cautarea
 
+Pentru data viitoare:
+1. sa incercam punerea proiectului pe Docker
+2. sa adaugam js 
+3. vue js
 

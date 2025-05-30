@@ -33,17 +33,17 @@ ob_start();
     <thead>
         <tr>
             <th>
-                <a href="<?= BASE_URL ?>users?sort=id&order=<?= ($sort === 'id' && $order === 'asc') ? 'desc' : 'asc' ?>&role=<?= urlencode($_GET['role'] ?? '') ?>">
+                <a href="<?= BASE_URL ?>users?sort=id&order=<?= ($sort === 'id' && $order === 'asc') ? 'desc' : 'asc' ?>&role=<?= urlencode($_GET['role'] ?? '') ?>&per_page=<?= $perPage ?>">
                     ID <?= $sort === 'id' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
                 </a>
             </th>
             <th>
-                <a href="<?= BASE_URL ?>users?sort=email&order=<?= ($sort === 'email' && $order === 'asc') ? 'desc' : 'asc' ?>&role=<?= urlencode($_GET['role'] ?? '') ?>">
+                <a href="<?= BASE_URL ?>users?sort=email&order=<?= ($sort === 'email' && $order === 'asc') ? 'desc' : 'asc' ?>&role=<?= urlencode($_GET['role'] ?? '') ?>&per_page=<?= $perPage ?>">
                     Email <?= $sort === 'email' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
                 </a>
             </th>
             <th>
-                <a href="<?= BASE_URL ?>users?sort=role&order=<?= ($sort === 'role' && $order === 'asc') ? 'desc' : 'asc' ?>&role=<?= urlencode($_GET['role'] ?? '') ?>">
+                <a href="<?= BASE_URL ?>users?sort=role&order=<?= ($sort === 'role' && $order === 'asc') ? 'desc' : 'asc' ?>&role=<?= urlencode($_GET['role'] ?? '') ?>&per_page=<?= $perPage ?>">
                     Role <?= $sort === 'role' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
                 </a>
             </th>
