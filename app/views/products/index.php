@@ -10,7 +10,7 @@ ob_start();
             <label for="category_id" class="col-form-label">Filtre:</label>
         </div>
         <div class="col-auto">
-            <select name="category_id" id="category_id" class="form-select" onchange="this.form.submit()">
+            <select name="category_id" class="form-select" onchange="this.form.submit()">
                 <option value="">Toate categoriile</option>
                 <?php foreach ($categories as $cat): ?>
                     <option value="<?= $cat['id'] ?>" <?= (isset($_GET['category_id']) && $_GET['category_id'] == $cat['id']) ? 'selected' : '' ?>>
@@ -18,6 +18,14 @@ ob_start();
                     </option>
                 <?php endforeach; ?>
             </select>
+        </div>
+        <div class="col-auto">
+            <input type="number" name="min_price" class="form-control" placeholder="Preț minim"
+                   value="<?= htmlspecialchars($_GET['min_price'] ?? '') ?>" min="0" step="0.01">
+        </div>
+        <div class="col-auto">
+            <input type="number" name="max_price" class="form-control" placeholder="Preț maxim"
+                   value="<?= htmlspecialchars($_GET['max_price'] ?? '') ?>" min="0" step="0.01">
         </div>
         <div class="col-auto">
             <select name="sort" class="form-select" onchange="this.form.submit()">
@@ -42,29 +50,38 @@ ob_start();
             </select>
         </div>
         <div class="col-auto">
-            <input type="number" name="min_price" class="form-control" placeholder="Preț minim"
-                   value="<?= htmlspecialchars($_GET['min_price'] ?? '') ?>" min="0" step="0.01">
+            <input type="text" name="search" class="form-control" placeholder="Caută produs..." value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
         </div>
         <div class="col-auto">
-            <input type="number" name="max_price" class="form-control" placeholder="Preț maxim"
-                   value="<?= htmlspecialchars($_GET['max_price'] ?? '') ?>" min="0" step="0.01">
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-outline-primary me-2">Filtrează</button>
+            <button type="submit" class="btn btn-outline-primary">Filtrează</button>
             <a href="<?= BASE_URL ?>products" class="btn btn-secondary">Resetează filtre</a>
         </div>
     </div>
-</form>
-<form method="GET" class="mb-3 d-flex align-items-center">
-    <input type="text" name="search" class="form-control me-2" placeholder="Caută produs..." value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
-    <button type="submit" class="btn btn-outline-primary">Caută</button>
 </form>
 <table class="table">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nume</th>
-            <th>Preț</th>
+            <th>
+                <a href="<?= BASE_URL ?>products?sort=name&order=<?= ($sort === 'name' && $order === 'asc') ? 'desc' : 'asc' ?>
+    &category_id=<?= urlencode($_GET['category_id'] ?? '') ?>
+    &min_price=<?= urlencode($_GET['min_price'] ?? '') ?>
+    &max_price=<?= urlencode($_GET['max_price'] ?? '') ?>
+    &per_page=<?= $perPage ?>
+    &search=<?= urlencode($_GET['search'] ?? '') ?>">
+                    Nume <?= $sort === 'name' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
+                </a>
+            </th>
+            <th>
+                <a href="<?= BASE_URL ?>products?sort=price&order=<?= ($sort === 'price' && $order === 'asc') ? 'desc' : 'asc' ?>
+    &category_id=<?= urlencode($_GET['category_id'] ?? '') ?>
+    &min_price=<?= urlencode($_GET['min_price'] ?? '') ?>
+    &max_price=<?= urlencode($_GET['max_price'] ?? '') ?>
+    &per_page=<?= $perPage ?>
+    &search=<?= urlencode($_GET['search'] ?? '') ?>">
+                    Preț <?= $sort === 'price' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
+                </a>
+            </th>
             <th>Categorie</th>
             <th>Acțiuni</th>
         </tr>
@@ -101,7 +118,15 @@ ob_start();
         </li>
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
             <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                <a class="page-link" href="<?= BASE_URL ?>products?page=<?= $i ?>&per_page=<?= $perPage ?>"><?= $i ?></a>
+                <a class="page-link" href="<?= BASE_URL ?>products?page=<?= $i ?>
+    &category_id=<?= urlencode($_GET['category_id'] ?? '') ?>
+    &min_price=<?= urlencode($_GET['min_price'] ?? '') ?>
+    &max_price=<?= urlencode($_GET['max_price'] ?? '') ?>
+    &sort=<?= $sort ?>&order=<?= $order ?>
+    &per_page=<?= $perPage ?>
+    &search=<?= urlencode($_GET['search'] ?? '') ?>">
+                    <?= $i ?>
+                </a>
             </li>
         <?php endfor; ?>
         <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
