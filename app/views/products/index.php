@@ -118,15 +118,11 @@ ob_start();
         </li>
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
             <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                <a class="page-link" href="<?= BASE_URL ?>products?page=<?= $i ?>
-    &category_id=<?= urlencode($_GET['category_id'] ?? '') ?>
-    &min_price=<?= urlencode($_GET['min_price'] ?? '') ?>
-    &max_price=<?= urlencode($_GET['max_price'] ?? '') ?>
-    &sort=<?= $sort ?>&order=<?= $order ?>
-    &per_page=<?= $perPage ?>
-    &search=<?= urlencode($_GET['search'] ?? '') ?>">
+                
+                <a class="page-link" href="<?= BASE_URL . 'products?page=' . $i . '&per_page=' . $perPage . '&category_id=' . urlencode($_GET['category_id'] ?? '') . '&min_price=' . urlencode($_GET['min_price'] ?? '') . '&max_price=' . urlencode($_GET['max_price'] ?? '') . '&sort=' . $sort . '&order=' . $order . '&search=' . urlencode($_GET['search'] ?? '') ?>">
                     <?= $i ?>
-                </a>
+
+                </a>            
             </li>
         <?php endfor; ?>
         <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">

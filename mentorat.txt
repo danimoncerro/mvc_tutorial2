@@ -49,3 +49,7 @@ Pentru data viitoare:
 2. sa adaugam js 
 3. vue js
 
+Tema
+Incearca sa instalezi wsl pentru windows 10.
+
+
