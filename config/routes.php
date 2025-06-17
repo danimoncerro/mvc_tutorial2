@@ -1,6 +1,6 @@
 <?php
 
-define('BASE_URL', 'http://localhost/mvc_tutorial2/public/');
+define('BASE_URL', 'http://localhost:8080/');
 
 $router = new Router();
 

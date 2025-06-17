@@ -1,8 +1,8 @@
-version: '3.8'
-
 services:
   web:
-    image: php:8.2-apache
+    build:
+      context: .
+      dockerfile: Dockerfile  # Use the custom Dockerfile
     container_name: mvc_php_web
     volumes:
       - ./:/var/www/html
