@@ -89,6 +89,23 @@ ob_start();
         </li>
     </ul>
 </nav>
+
+<script>
+    console.log('Users loaded with sorting and pagination');
+    axios.get('<?= BASE_URL ?>api/users', {
+        params: {
+            per_page: <?= $perPage ?>,
+            page: <?= $page ?>,
+            sort: '<?= $sort ?>',
+            order: '<?= $order ?>'
+        }
+    }).then(response => {
+        console.log('API Response:', response.data);
+    }).catch(error => {
+        console.error('API Error:', error);
+    }); 
+</script>
+
 <?php
 $content = ob_get_clean();
 require_once APP_ROOT . '/app/views/layout.php';

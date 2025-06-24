@@ -52,4 +52,6 @@ Pentru data viitoare:
 Tema
 Incearca sa instalezi wsl pentru windows 10.
 
+4. Separat folderul API controllers.
+
 

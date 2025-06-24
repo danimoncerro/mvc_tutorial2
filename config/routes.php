@@ -34,6 +34,9 @@ $router->get('auth/login', 'AuthController@login');
 $router->post('auth/authenticate', 'AuthController@authenticate');
 $router->get('auth/logout', 'AuthController@logout');
 
+$router->get('api/categories', 'ApiCategoryController@index');
+$router->get('api/users', 'ApiUserController@index');
+
 
 
 return $router;

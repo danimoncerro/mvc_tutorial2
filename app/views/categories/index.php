@@ -74,6 +74,23 @@ $order = $_GET['order'] ?? 'asc';
         </li>
     </ul>
 </nav>
+
+<script>
+    console.log('Categories loaded with sorting and pagination');
+    axios.get('<?= BASE_URL ?>api/categories', {
+        params: {
+            per_page: <?= $perPage ?>,
+            page: <?= $page ?>,
+            sort: '<?= $sort ?>',
+            order: '<?= $order ?>'
+        }
+    }).then(response => {
+        console.log('API Response:', response.data);
+    }).catch(error => {
+        console.error('API Error:', error);
+    }); 
+</script>
+
 <?php
 $content = ob_get_clean();
 require_once APP_ROOT . '/app/views/layout.php';

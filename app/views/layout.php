@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'My MVC App' ?></title>
     <link rel="stylesheet" href="<?= BASE_URL ?>frontend/bootstrap/bootstrap.min.css">
+    <script src="<?= BASE_URL ?>frontend/js/axios.min.js"></script>
+    <script src="<?= BASE_URL ?>frontend/js/main.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
