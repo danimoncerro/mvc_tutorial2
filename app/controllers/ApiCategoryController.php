@@ -19,7 +19,7 @@ class ApiCategoryController
 
         header('Content-Type: application/json; charset=utf-8');
 
-         $perPage = $_GET['per_page'] ?? 5;
+        $perPage = $_GET['per_page'] ?? 5;
         $page = $_GET['page'] ?? 1;
         $offset = ($page - 1) * $perPage;
 

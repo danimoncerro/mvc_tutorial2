@@ -133,6 +133,75 @@ ob_start();
     </ul>
 </nav>
 
+<script>
+axios.get('<?= BASE_URL ?>api/products', {
+    params: {
+        per_page: <?= $perPage ?>,
+        page: <?= $page ?>,
+        sort: '<?= $sort ?>',
+        order: '<?= $order ?>',
+        category_id: '<?= $_GET['category_id'] ?? '' ?>',
+        min_price: '<?= $_GET['min_price'] ?? '' ?>',
+        max_price: '<?= $_GET['max_price'] ?? '' ?>',
+        search: '<?= $_GET['search'] ?? '' ?>'
+    }
+})
+.then(response => {
+    console.log('API Response:', response.data);
+    const products = response.data.products;
+    const tableBody = document.getElementById('apiProductsTable');
+
+    tableBody.innerHTML = '';
+
+    products.forEach(product => {
+        const row = document.createElement('tr');
+
+        const editUrl = '<?= BASE_URL ?>products/edit?id=' + product.id;
+        const deleteUrl = '<?= BASE_URL ?>products/delete?id=' + product.id;
+
+        row.innerHTML = `
+            <td>${product.id}</td>
+            <td>${product.name}</td>
+            <td>${product.price}</td>
+            <td>${product.category_name ?? 'Fără categorie'}</td>
+            <td>
+                <a href="${editUrl}" class="btn btn-sm btn-warning me-1">
+                    ✏️ Editează
+                </a>
+                <form action="${deleteUrl}" method="POST" style="display:inline;" onsubmit="return confirm('Ești sigur că vrei să ștergi acest produs?');">
+                    <button class="btn btn-sm btn-danger">🗑️ Șterge</button>
+                </form>
+            </td>
+        `;
+
+        tableBody.appendChild(row);
+    });
+
+})
+.catch(error => {
+    console.error('API Error:', error);
+});
+
+</script>
+
+<h4>Products API Table (Axios)</h4>
+<table class="table table-striped table-hover table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Nume</th>
+            <th>Preț</th>
+            <th>Categorie</th>
+            <th>Acțiuni</th>
+        </tr>
+    </thead>
+    <tbody id="apiProductsTable">
+        <!-- Datele vor fi generate aici -->
+    </tbody>
+</table>
+
+
+
 <?php
 $content = ob_get_clean();
 require_once APP_ROOT . '/app/views/layout.php';

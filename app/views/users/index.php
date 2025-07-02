@@ -91,20 +91,25 @@ ob_start();
 </nav>
 
 <script>
-    console.log('Users loaded with sorting and pagination');
-    axios.get('<?= BASE_URL ?>api/users', {
+
+
+// Exemplu de request cu axios
+axios.get('http://localhost:8080/api/users', {
         params: {
-            per_page: <?= $perPage ?>,
-            page: <?= $page ?>,
-            sort: '<?= $sort ?>',
-            order: '<?= $order ?>'
+            per_page: 5, // sau orice altă valoare dorită
+            page: 1, // pagina curentă
+            sort: 'id', // câmpul după care se sortează
+            order: 'asc' // ordinea de sortare
         }
-    }).then(response => {
-        console.log('API Response:', response.data);
-    }).catch(error => {
-        console.error('API Error:', error);
-    }); 
+    })
+    .then(function(response) {
+        afiseazaTabelDate(response.data.users);
+    })
+    .catch(function(error) {
+        document.getElementById('tabel-ajax').innerHTML = 'Eroare la preluarea datelor!';
+    });
 </script>
+<div id="tabel-ajax">Se incarca ...</div>
 
 <?php
 $content = ob_get_clean();

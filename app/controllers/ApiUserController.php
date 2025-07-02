@@ -39,6 +39,11 @@ class ApiUserController
         $users = $userModel->getPaginatedFilteredSorted($perPage, $offset, $role, $sort, $order);
         $totalUsers = $userModel->countFiltered($role);
         $totalPages = ceil($totalUsers / $perPage);
+
+        foreach ($users as &$user) {
+            unset($user['password']); // sau 'password', după cum e denumită cheia
+        }
+
         echo json_encode(
             [
                 'users' => $users,

@@ -36,6 +36,7 @@ $router->get('auth/logout', 'AuthController@logout');
 
 $router->get('api/categories', 'ApiCategoryController@index');
 $router->get('api/users', 'ApiUserController@index');
+$router->get('api/products', 'ApiProductController@index');
 
 
 

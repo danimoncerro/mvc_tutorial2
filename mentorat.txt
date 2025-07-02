@@ -55,3 +55,10 @@ Incearca sa instalezi wsl pentru windows 10.
 4. Separat folderul API controllers.
 
 
+tema:
+
+1. De facut si pentru produse 
+2. Sa arate tabela frumos cu design de bootstrap ce vine prin ajax
+3. Sa functioneze si filtrele si sortarile
+
+
