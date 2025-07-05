@@ -31,6 +31,12 @@ class CategoryController
         require_once APP_ROOT . '/app/views/categories/index.php';
     }
 
+    public function vueindex()
+    {
+
+        require_once APP_ROOT . '/app/views/categories/vueindex.php';
+    }
+
 
     public function create()
     {
