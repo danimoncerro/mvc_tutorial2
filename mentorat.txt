@@ -61,4 +61,10 @@ tema:
 2. Sa arate tabela frumos cu design de bootstrap ce vine prin ajax
 3. Sa functioneze si filtrele si sortarile
 
+tema:
+
+tot ce am facut in vuejs sa transformam in componente de vuejs
+sa afisam prin axios utilizatorii si produsele (daca am timp sa o fac sub forma de tabel)
+
+
 
