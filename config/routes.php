@@ -38,6 +38,7 @@ $router->get('vuecategories', 'CategoryController@vueindex');
 $router->get('api/categories', 'ApiCategoryController@index');
 $router->get('api/users', 'ApiUserController@index');
 $router->get('api/products', 'ApiProductController@index');
+$router->post('api/products/store', 'ApiProductController@store');
 
 
 

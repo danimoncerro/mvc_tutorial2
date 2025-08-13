@@ -6,8 +6,16 @@ ob_start();
 <div id="app" class="container">
 
     <h1>Products 
-        <span class="badge bg-secondary" v-if="products.length">{{ products.length }}</span>
+        <span class="badge bg-secondary" v-if="products.length">{{ totalproducts }}</span>
     </h1>
+
+    <div class="mb-3">
+        Titlu:<input type="text" class="form-control mb-2" v-model="product.name">
+        Pret: <input type="number" class="form-control mb-2" v-model="product.price">
+        Categorie: <input class="form-control mb-2" v-model="product.category_id">
+        <button class="btn btn-primary mb-2" @click="addProduct()">Adauga produs</button>
+
+    </div>
 
     <table class="table table-striped table-hover table-bordered">
         <thead class="table-light">
@@ -28,7 +36,7 @@ ob_start();
                 <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
                 <td>{{ product.price }}</td>
-                <td>{{ product.category }}</td> 
+                <td>{{ product.category_name }}</td> 
                 <td></td>
             </tr>
         </tbody>
@@ -37,12 +45,18 @@ ob_start();
 
 <!-- Aici incepe Vue.js -->
 <script>
-    const { createApp, ref, computed, onMounted } = Vue;
+    const { createApp, ref, computed, onMounted, reactive } = Vue;
 
     const app = createApp({
         setup() {
             
             const products = ref([]);
+            const totalproducts = ref(0);
+            const product = reactive({
+                name: '',
+                price: 0,
+                category_id: ''
+            });
 
             const showProducts = () => {
                 axios.get('<?= BASE_URL ?>api/products', {
@@ -59,10 +73,31 @@ ob_start();
                 })
                 .then(response => {
                     products.value = response.data.products;
+                    totalproducts.value = response.data.total_products;
 
                 })
                 .catch(error => {
                     console.error('API Error:', error);
+                });
+            }
+
+            const addProduct = () => {
+                axios.post('<?= BASE_URL ?>api/products/store', {
+                    name: product.name, 
+                    price: product.price,
+                    category_id: product.category_id
+                })
+                .then(response => {
+                    console.log('Product added:', response.data);
+                    // Reset the product form
+                    product.name = '';
+                    product.price = 0;
+                    product.category_id = '';
+                    // Refresh the product list
+                    showProducts();
+                })
+                .catch(error => {
+                    console.error('Error adding product:', error);
                 });
             }
 
@@ -72,7 +107,10 @@ ob_start();
 
 
             return{
-                products
+                products,
+                totalproducts,
+                product,
+                addProduct
             };
         }
     });                     

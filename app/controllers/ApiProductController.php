@@ -20,10 +20,6 @@ class ApiProductController
 
         header('Content-Type: application/json; charset=utf-8');
 
-
-        
-
-
         $perPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 5;
         $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
         $offset = ($page - 1) * $perPage;
@@ -67,8 +63,30 @@ class ApiProductController
             ]
         );
 
-
     }
 
+    public function store()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = $_POST['name'] ?? '';
+            $price = $_POST['price'] ?? '';
+            $category_id = $_POST['category_id'] ?? '';
+
+    
+            if ($name && $price && $category_id) {
+                $productModel = new Product(); // creezi instanță corectă
+                $productModel->create([        // apel corect pentru metodă non-statică
+                    'name' => $name,
+                    'price' => $price,
+                    'category_id' => $category_id
+                ]);
+                echo json_encode(['status' => 'success', 'message' => 'Produs adăugat cu succes.']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Nume, preț sau categorie lipsă.']);
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Metodă incorectă de accesare.']);
+        }
+    }
 
 }
