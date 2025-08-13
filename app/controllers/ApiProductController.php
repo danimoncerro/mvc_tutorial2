@@ -68,11 +68,21 @@ class ApiProductController
     public function store()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'] ?? '';
-            $price = $_POST['price'] ?? '';
-            $category_id = $_POST['category_id'] ?? '';
+            // Încearcă să citești datele ca JSON din input
+            $input = file_get_contents('php://input');
+            $data = json_decode($input, true);
+            
+            // Dacă nu există date JSON, încearcă $_POST
+            if ($data === null) {
+                $name = $_POST['name'] ?? '';
+                $price = $_POST['price'] ?? '';
+                $category_id = $_POST['category_id'] ?? '';
+            } else {
+                $name = $data['name'] ?? '';
+                $price = $data['price'] ?? '';
+                $category_id = $data['category_id'] ?? '';
+            }
 
-    
             if ($name && $price && $category_id) {
                 $productModel = new Product(); // creezi instanță corectă
                 $productModel->create([        // apel corect pentru metodă non-statică
@@ -80,11 +90,14 @@ class ApiProductController
                     'price' => $price,
                     'category_id' => $category_id
                 ]);
+                header('Content-Type: application/json');
                 echo json_encode(['status' => 'success', 'message' => 'Produs adăugat cu succes.']);
             } else {
+                header('Content-Type: application/json');
                 echo json_encode(['status' => 'error', 'message' => 'Nume, preț sau categorie lipsă.']);
             }
         } else {
+            header('Content-Type: application/json');
             echo json_encode(['status' => 'error', 'message' => 'Metodă incorectă de accesare.']);
         }
     }

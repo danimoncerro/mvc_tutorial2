@@ -68,3 +68,7 @@ sa afisam prin axios utilizatorii si produsele (daca am timp sa o fac sub forma 
 
 
 
+13.06.2025
+
+Muta formularul de adaugarea de produse intr-un modal bootstrap.
+Sa adaugam in formularul de filtrare si o filtrare dupa categorii cu dropdown de categorii.

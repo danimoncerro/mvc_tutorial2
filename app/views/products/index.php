@@ -8,12 +8,27 @@ ob_start();
     <h1>Products 
         <span class="badge bg-secondary" v-if="products.length">{{ totalproducts }}</span>
     </h1>
-
     <div class="mb-3">
+        <button class="btn btn-primary" @click="showProductForm = !showProductForm">Adauga produs</button>
+    </div>
+    <div class="mb-3" v-if="showProductForm">
         Titlu:<input type="text" class="form-control mb-2" v-model="product.name">
         Pret: <input type="number" class="form-control mb-2" v-model="product.price">
-        Categorie: <input class="form-control mb-2" v-model="product.category_id">
-        <button class="btn btn-primary mb-2" @click="addProduct()">Adauga produs</button>
+        Categorie: 
+        <select class="form-select mb-2" v-model="product.category_id">
+            <option v-for="category in categories" :key="category.id" :value="category.id">
+                {{ category.name }}
+            </option>
+        </select>
+        <button class="btn btn-primary mb-2" @click="addProduct()">Salveaza produs</button>
+
+    </div>
+
+    <div class="mb-3">
+        <input v-model="filters.search" type="text" class="form-control" placeholder="Cauta produs...">
+        <input v-model="filters.min_price" type="number" class="form-control" placeholder="Pret minim...">
+        <input v-model="filters.max_price" type="number" class="form-control" placeholder="Pret maxim...">
+        <button class="btn btn-secondary mt-2" @click="showProducts()">Cauta</button>
 
     </div>
 
@@ -57,6 +72,14 @@ ob_start();
                 price: 0,
                 category_id: ''
             });
+            const categories = ref([]);
+            const showProductForm = ref(false);
+            const filters = reactive({
+                category_id: '',
+                min_price: 0,
+                max_price: 999,
+                search: ''
+            });
 
             const showProducts = () => {
                 axios.get('<?= BASE_URL ?>api/products', {
@@ -64,11 +87,11 @@ ob_start();
                         per_page: 20,
                         page: 1,
                         sort: 'id',
-                        order: 'asc',
+                        order: 'desc',
                         category_id: '',
-                        min_price: 0,
-                        max_price: 999,
-                        search: ''
+                        min_price: filters.min_price,
+                        max_price: filters.max_price,
+                        search: filters.search
                     }
                 })
                 .then(response => {
@@ -79,6 +102,16 @@ ob_start();
                 .catch(error => {
                     console.error('API Error:', error);
                 });
+            }
+
+            const getCategories = () => {
+                axios.get('<?= BASE_URL ?>api/categories')
+                    .then(response => {
+                        categories.value = response.data.categories;
+                    })
+                    .catch(error => {
+                        console.error('API Error:', error);
+                    });
             }
 
             const addProduct = () => {
@@ -103,6 +136,7 @@ ob_start();
 
             onMounted(() => {
                 showProducts();
+                getCategories();
             });
 
 
@@ -110,7 +144,11 @@ ob_start();
                 products,
                 totalproducts,
                 product,
-                addProduct
+                addProduct,
+                categories,
+                showProductForm,
+                filters,
+                showProducts
             };
         }
     });                     
