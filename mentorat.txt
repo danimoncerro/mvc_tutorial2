@@ -68,7 +68,39 @@ sa afisam prin axios utilizatorii si produsele (daca am timp sa o fac sub forma 
 
 
 
-13.06.2025
+13.08.2025
 
 Muta formularul de adaugarea de produse intr-un modal bootstrap.
 Sa adaugam in formularul de filtrare si o filtrare dupa categorii cu dropdown de categorii.
+
+urmatoarele sedinte in 20 si 28 August
+
+
+
+
+ <!-- Modal pentru adăugarea produselor -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">`
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Adaugă utilizator nou</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form @submit.prevent="addUser()">
+                        <div class="mb-3">
+                            <label for="userEmail" class="form-label">Email utilizator</label>
+                            <input type="text" class="form-control" id="userEmail" v-model="user.email" required>
+                        </div>
+                        <div class="mb-3">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="btn btn-primary" @click="addUser()">
+                        <i class="bi bi-check-circle"></i> Salvează utilizator
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
