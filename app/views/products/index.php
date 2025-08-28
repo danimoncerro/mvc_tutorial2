@@ -128,6 +128,10 @@ ob_start();
                 <td>{{ product.price }}</td>
                 <td>{{ product.category_name }}</td> 
                 <td>
+                    <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editProductModal" @click="editProduct(product)" title="Editează produsul">
+                        <i class="bi bi-pencil"></i>
+                        Editează
+                    </button>
                     <button class="btn btn-danger btn-sm" @click="deleteProduct(product.id)" title="Șterge produsul">
                         <i class="bi bi-trash"></i>
                         Sterge
@@ -136,6 +140,45 @@ ob_start();
             </tr>
         </tbody>
     </table>
+
+        <!-- Modal pentru editarea produselor -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">`
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Editeaza produsul</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form @submit.prevent="addProduct()">
+                        <div class="mb-3">
+                            <label for="productName" class="form-label">Nume Produs</label>
+                            <input type="text" class="form-control" id="productName" v-model="product.name"  required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productPrice" class="form-label">Preț</label>
+                            <input type="number" class="form-control" id="productPrice" v-model="product.price" step="0.01" min="0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productCategory" class="form-label">Categorie</label>
+                            <select class="form-select" id="productCategory" v-model="product.category_id" required>
+                                <option value="">Selectează o categorie</option>
+                                <option v-for="category in categories" :key="category.id" :value="category.id">
+                                    {{ category.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="btn btn-primary" @click="addProduct()">
+                        <i class="bi bi-check-circle"></i> Salvează Produs
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div v-if="!showTableData && selectedProduct" class="card">
         <div class="card-header">
@@ -305,6 +348,13 @@ ob_start();
                 });
             }
 
+            const editProduct = (p) => {
+                
+                product.name = p.name;
+                product.price = p.price;
+                product.category_id = p.category_id;
+            }
+
             onMounted(() => {
                 showProducts();
                 getCategories();
@@ -329,7 +379,8 @@ ob_start();
                 increments,
                 hideTable,
                 showTable,
-                deleteProduct
+                deleteProduct,
+                editProduct
             };
         }
     });                     

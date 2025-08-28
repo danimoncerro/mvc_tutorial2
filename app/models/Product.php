@@ -54,12 +54,6 @@ class Product
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function delete($id)
-    {
-        $stmt = $this->db->prepare("DELETE FROM products WHERE id = :id");
-        $stmt->execute(['id' => $id]);
-    }
-
     public function getPaginated($limit, $offset)
     {
         $sql = "SELECT products.*, categories.name AS category_name
