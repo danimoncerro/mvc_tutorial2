@@ -232,6 +232,14 @@ class Product
         $stmt->execute();
         return $stmt->fetchColumn();
     }
+
+    public function delete($id)
+    {
+        $sql = "DELETE FROM products WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
 
 

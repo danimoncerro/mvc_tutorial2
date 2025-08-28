@@ -127,7 +127,12 @@ ob_start();
                 </td>
                 <td>{{ product.price }}</td>
                 <td>{{ product.category_name }}</td> 
-                <td></td>
+                <td>
+                    <button class="btn btn-danger btn-sm" @click="deleteProduct(product.id)" title="Șterge produsul">
+                        <i class="bi bi-trash"></i>
+                        Sterge
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -154,7 +159,7 @@ ob_start();
                 </div>
             </div>
             <div class="mt-4">
-                <button class="btn btn-primary" @click="showTableData = true; selectedProduct = null">
+                <button class="btn btn-primary" @click="showTable()">
                     <i class="bi bi-arrow-left"></i> Înapoi la lista de produse
                 </button>
                 <button class="btn btn-success ms-2">
@@ -194,6 +199,8 @@ ob_start();
             const incrementsnumber = ref(0);
 
             const showProducts = () => {
+              
+                showTable();
                 axios.get('<?= BASE_URL ?>api/products', {
                     params: {
                         per_page: 20,
@@ -209,6 +216,8 @@ ob_start();
                 .then(response => {
                     products.value = response.data.products;
                     totalproducts.value = response.data.total_products;
+
+                    
 
                 })
                 .catch(error => {
@@ -271,6 +280,31 @@ ob_start();
                 showTableData.value = false;
             }
 
+            const showTable = () => {
+                showTableData.value = true;
+                selectedProduct.value = null;
+            }
+
+            const deleteProduct = (productId) => {
+                if (!confirm('Ești sigur că vrei să ștergi acest produs?')) {
+                    return;
+                }
+
+                axios.post('<?= BASE_URL ?>api/products/delete?id=' + productId, {
+                    
+                })
+                .then(response => {
+                    console.log('Product deleted:', response.data);
+                     //Refresh the product list
+                    showProducts();
+                    alert('Produs șters cu succes!');
+                })
+                .catch(error => {
+                    console.error('Error deleting product:', error);
+                    alert('Eroare la ștergerea produsului!');
+                });
+            }
+
             onMounted(() => {
                 showProducts();
                 getCategories();
@@ -293,7 +327,9 @@ ob_start();
                 dinamictext2,
                 incrementsnumber,
                 increments,
-                hideTable
+                hideTable,
+                showTable,
+                deleteProduct
             };
         }
     });                     

@@ -102,4 +102,14 @@ class ApiProductController
         }
     }
 
+    public function delete()
+    {
+        
+        $productid = $_GET['id'];
+        $productModel = new Product();
+        $productModel->delete($productid);
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'success', 'message' => 'Produs șters cu succes.']);
+    }
+
 }
