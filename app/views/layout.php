@@ -11,6 +11,31 @@
     <script src="<?= BASE_URL ?>frontend/js/main.js"></script>
     <script src="<?= BASE_URL ?>frontend/js/components/ShowTitle.js"></script>
     <script src="<?= BASE_URL ?>frontend/js/components/IncrementComponent.js"></script>
+    <style>
+    .stoc-suficient {
+      background-color: green;
+      color: white;
+      font-weight: bold;
+      padding: 6px;
+      border-radius: 5px;
+    }
+
+    .stoc-limitat {
+      background-color: yellow;
+      color: red;
+      font-weight: bold;
+      padding: 6px;
+      border-radius: 5px;
+    }
+
+    .stoc-alerta {
+      background-color: red;
+      color: white;
+      font-weight: bold;
+      padding: 6px;
+      border-radius: 5px;
+    }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -32,32 +57,5 @@
         <?php if (isset($content)) echo $content; ?>
     </div>
 
-    
-    
-<style scoped>
-.stoc-suficient {
-  background-color: green;
-  color: white;
-  font-weight: bold;
-  padding: 6px;
-  border-radius: 5px;
-}
-
-.stoc-limitat {
-  background-color: yellow;
-  color: red;
-  font-weight: bold;
-  padding: 6px;
-  border-radius: 5px;
-}
-
-.stoc-alerta {
-  background-color: red;
-  color: white;
-  font-weight: bold;
-  padding: 6px;
-  border-radius: 5px;
-}
-</style>
 </body>
 </html>

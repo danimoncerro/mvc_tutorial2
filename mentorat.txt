@@ -78,29 +78,6 @@ urmatoarele sedinte in 20 si 28 August
 
 
 
- <!-- Modal pentru adăugarea produselor -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">`
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalLabel">Adaugă utilizator nou</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form @submit.prevent="addUser()">
-                        <div class="mb-3">
-                            <label for="userEmail" class="form-label">Email utilizator</label>
-                            <input type="text" class="form-control" id="userEmail" v-model="user.email" required>
-                        </div>
-                        <div class="mb-3">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="btn btn-primary" @click="addUser()">
-                        <i class="bi bi-check-circle"></i> Salvează utilizator
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+tema 20.08.2025
+
+in products daca dam click pe un produs sa dispara tabelul si sa apara detaliile produsului. Si sa afisam un butuon inapoi. Totul prin vuejs fara refresh.

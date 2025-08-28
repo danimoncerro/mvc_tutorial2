@@ -99,7 +99,7 @@ ob_start();
         </div>
     </div>
 
-    <table class="table table-striped table-hover table-bordered">
+    <table v-if="showTableData" class="table table-striped table-hover table-bordered">
         <thead class="table-light">
             <tr>
                 <th>ID</th>
@@ -120,6 +120,8 @@ ob_start();
                     class="product-name-cell"
                     @mouseenter="hoveredProductName = product.name"
                     @mouseleave="hoveredProductName = ''"
+                    @click="hideTable(product)"
+                    style="cursor: pointer;"
                 >
                     {{ product.name }}
                 </td>
@@ -129,6 +131,38 @@ ob_start();
             </tr>
         </tbody>
     </table>
+
+    <div v-if="!showTableData && selectedProduct" class="card">
+        <div class="card-header">
+            <h2><i class="bi bi-box-seam"></i> {{ selectedProduct.name }}</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h4>Descriere produs</h4>
+                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5>Detalii produs</h5>
+                            <p><strong>ID:</strong> {{ selectedProduct.id }}</p>
+                            <p><strong>Preț:</strong> {{ selectedProduct.price }} RON</p>
+                            <p><strong>Categorie:</strong> {{ selectedProduct.category_name }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button class="btn btn-primary" @click="showTableData = true; selectedProduct = null">
+                    <i class="bi bi-arrow-left"></i> Înapoi la lista de produse
+                </button>
+                <button class="btn btn-success ms-2">
+                    <i class="bi bi-cart-plus"></i> Adaugă în coș
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Aici incepe Vue.js -->
@@ -141,6 +175,8 @@ ob_start();
             const products = ref([]);
             const totalproducts = ref(0);
             const hoveredProductName = ref('');
+            const showTableData = ref(true);
+            const selectedProduct = ref(null);
             const product = reactive({
                 name: '',
                 price: 0,
@@ -230,6 +266,11 @@ ob_start();
                 incrementsnumber.value++;
             }
 
+            const hideTable = (product) => {
+                selectedProduct.value = product;
+                showTableData.value = false;
+            }
+
             onMounted(() => {
                 showProducts();
                 getCategories();
@@ -241,6 +282,8 @@ ob_start();
                 products,
                 totalproducts,
                 hoveredProductName,
+                showTableData,
+                selectedProduct,
                 product,
                 addProduct,
                 categories,
@@ -249,7 +292,8 @@ ob_start();
                 dinamictext,
                 dinamictext2,
                 incrementsnumber,
-                increments
+                increments,
+                hideTable
             };
         }
     });                     

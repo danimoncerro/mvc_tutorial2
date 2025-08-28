@@ -56,5 +56,40 @@ class ApiUserController
 
     }
 
+    public function store()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Încearcă să citești datele ca JSON din input
+            $input = file_get_contents('php://input');
+            $data = json_decode($input, true);
+            
+            // Dacă nu există date JSON, încearcă $_POST
+            if ($data === null) {
+                $email = $_POST['email'] ?? '';
+            } else {
+                $email = $data['email'] ?? '';
+          
+            }
+
+            if ($email) {
+                $userModel = new User(); // creezi instanță corectă
+                $userModel->create([        // apel corect pentru metodă non-statică
+                    'email' => $email,
+                    'password' => '12345',
+                    'role'=> 'livrator'
+                  
+                ]);
+                header('Content-Type: application/json');
+                echo json_encode(['status' => 'success', 'message' => 'User adăugat cu succes.']);
+            } else {
+                header('Content-Type: application/json');
+                echo json_encode(['status' => 'error', 'message' => 'Email lipsă.']);
+            }
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'error', 'message' => 'Metodă incorectă de accesare.']);
+        }
+    }
+
 
 }

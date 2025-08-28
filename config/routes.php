@@ -39,6 +39,7 @@ $router->get('api/categories', 'ApiCategoryController@index');
 $router->get('api/users', 'ApiUserController@index');
 $router->get('api/products', 'ApiProductController@index');
 $router->post('api/products/store', 'ApiProductController@store');
+$router->post('api/users/store', 'ApiUserController@store');
 
 
 

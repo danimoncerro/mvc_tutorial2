@@ -13,7 +13,32 @@ ob_start();
         </button>
     </div>
 
-   
+    <!-- Modal pentru adăugarea produselor -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Adaugă utilizator nou</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form @submit.prevent="addUser()">
+                        <div class="mb-3">
+                            <label for="userEmail" class="form-label">Email utilizator</label>
+                            <input type="text" class="form-control" id="userEmail" v-model="user.email" required>
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="btn btn-primary" @click="addUser()">
+                        <i class="bi bi-check-circle"></i> Salvează utilizator
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <table class="table table-striped table-hover table-bordered">
@@ -51,7 +76,7 @@ ob_start();
     </table>
 </div>
 
-    <!-- Aici incepe Vue.js -->
+<!-- Aici incepe Vue.js -->
 <script>
     const { createApp, ref, computed, onMounted, reactive } = Vue;
 
@@ -61,8 +86,8 @@ ob_start();
             const users = ref([]);
             const totalusers = ref(0);
             const user = reactive({
-                email: '',
-                role: ''
+                email: ''
+            
             });
 
             const showUsers = () => {
@@ -84,39 +109,39 @@ ob_start();
                 });
             }
 
-            // const addUser = () => {
-            //     // Validare simplă
-            //     if (!user.email || !user.role) {
-            //         alert('Te rog completează toate câmpurile!');
-            //         return;
-            //     }
+            const addUser = () => {
+                // Validare simplă
+                if (!user.email) {
+                    alert('Te rog completează toate câmpurile!');
+                    return;
+                }
 
-            //     axios.post('<?= BASE_URL ?>api/users/store', {
-            //         email: user.email,
-            //         role: user.role
-            //     })
-            //     .then(response => {
-            //         console.log('User added:', response.data);
+                axios.post('<?= BASE_URL ?>api/users/store', {
+                    email: user.email
+                    
+                })
+                .then(response => {
+                    console.log('User added:', response.data);
 
-            //         // Reset the user form
-            //         user.email = '';
+                    // Reset the user form
+                    user.email = '';
                
                     
-            //         // Închide modalul
-            //         const modal = bootstrap.Modal.getInstance(document.getElementById('addUsertModal'));
-            //         modal.hide();
+                    // Închide modalul
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+                    modal.hide();
                     
-            //         // Refresh the users list
-            //         showUsers();
+                    // Refresh the users list
+                    showUsers();
                     
-            //         // Afișează mesaj de succes (opțional)
-            //         alert('Utilizator adăugat cu succes!');
-            //     })
-            //     .catch(error => {
-            //         console.error('Error adding user:', error);
-            //         alert('Eroare la adăugarea utilizatorului!');
-            //     });
-            // }
+                    // Afișează mesaj de succes (opțional)
+                    alert('Utilizator adăugat cu succes!');
+                })
+                .catch(error => {
+                    console.error('Error adding user:', error);
+                    alert('Eroare la adăugarea utilizatorului!');
+                });
+            }
 
 
              onMounted(() => {
@@ -128,7 +153,7 @@ ob_start();
                 users,
                 showUsers,
                 totalusers,
-                //addUser,
+                addUser,
                 user
             };
         }
