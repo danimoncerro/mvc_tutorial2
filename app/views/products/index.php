@@ -172,8 +172,8 @@ ob_start();
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="btn btn-primary" @click="addProduct()">
-                        <i class="bi bi-check-circle"></i> Salvează Produs
+                    <button type="button" class="btn btn-primary" @click="updateProduct()">
+                        <i class="bi bi-check-circle"></i> Editeaza Produs
                     </button>
                 </div>
             </div>
@@ -228,7 +228,8 @@ ob_start();
             const product = reactive({
                 name: '',
                 price: 0,
-                category_id: ''
+                category_id: '',
+                id:'',
             });
             const categories = ref([]);
             const filters = reactive({
@@ -353,6 +354,37 @@ ob_start();
                 product.name = p.name;
                 product.price = p.price;
                 product.category_id = p.category_id;
+                product.id = p.id;
+
+            }
+            const updateProduct = () => {
+                axios.post('<?= BASE_URL ?>api/products/edit?id=' + product.id, {
+                    name: product.name, 
+                    price: product.price,
+                    category_id: product.category_id
+                })
+                .then(response => {
+                    console.log('Product modified:', response.data);
+                    
+                    // Reset the product form
+                    product.name = '';
+                    product.price = 0;
+                    product.category_id = '';
+                    
+                    // Închide modalul
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+                    modal.hide();
+                    
+                    // Refresh the product list
+                    showProducts();
+                    
+                    // Afișează mesaj de succes (opțional)
+                    //alert('Produs modificat cu succes!');
+                })
+                .catch(error => {
+                    console.error('Error adding product:', error);
+                    alert('Eroare la adăugarea produsului!');
+                });
             }
 
             onMounted(() => {
@@ -380,7 +412,8 @@ ob_start();
                 hideTable,
                 showTable,
                 deleteProduct,
-                editProduct
+                editProduct,
+                updateProduct
             };
         }
     });                     

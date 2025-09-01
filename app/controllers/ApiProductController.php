@@ -112,4 +112,21 @@ class ApiProductController
         echo json_encode(['status' => 'success', 'message' => 'Produs șters cu succes.']);
     }
 
+    public function edit()
+    {
+        $productid = $_GET['id'];
+        $productModel = new Product();
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if ($data) {
+            $productModel->update($productid, $data);
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'success', 'message' => 'Produs actualizat cu succes.']);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'error', 'message' => 'Datele produsului sunt invalide.']);
+        }
+    }
+
 }

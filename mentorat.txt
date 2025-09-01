@@ -81,3 +81,10 @@ urmatoarele sedinte in 20 si 28 August
 tema 20.08.2025
 
 in products daca dam click pe un produs sa dispara tabelul si sa apara detaliile produsului. Si sa afisam un butuon inapoi. Totul prin vuejs fara refresh.
+
+
+tema 28.08.2025
+
+- implementare delete si edit pentru categorii si pentru utilizatori
+- editare inline, cu dublu click pe pret sa se transforme in editare cu un buton save langa. Cand se apas save se actualizeaza pretul pentru acel produs.
+
