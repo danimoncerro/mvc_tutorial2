@@ -11,6 +11,7 @@
     <script src="<?= BASE_URL ?>frontend/js/main.js"></script>
     <script src="<?= BASE_URL ?>frontend/js/components/ShowTitle.js"></script>
     <script src="<?= BASE_URL ?>frontend/js/components/IncrementComponent.js"></script>
+    
     <style>
     .stoc-suficient {
       background-color: green;

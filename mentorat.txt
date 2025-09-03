@@ -88,3 +88,6 @@ tema 28.08.2025
 - implementare delete si edit pentru categorii si pentru utilizatori
 - editare inline, cu dublu click pe pret sa se transforme in editare cu un buton save langa. Cand se apas save se actualizeaza pretul pentru acel produs.
 
+tema 03.09.2005
+
+implementare search pentru user (dupa campul email)

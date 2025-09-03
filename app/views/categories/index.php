@@ -2,11 +2,11 @@
 $title = 'Categories List';
 ob_start();
 ?>
+<script src="<?= BASE_URL ?>frontend/js/components/ShowCategoryTitle.js"></script>
 <div id="app" class="container">
 
-    <h1>Categories 
-        <span class="badge bg-secondary" v-if="categories.length">{{ totalcategories }}</span>
-    </h1>
+    <show-category-title :categories="categories"></show-category-title>
+
     <div class="mb-3">
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
             <i class="bi bi-plus-circle"></i> Adauga categorie
@@ -15,7 +15,7 @@ ob_start();
     
     <div class="mb-3">
         <div class="col-md-3">
-                <input v-model="search" @input="searchCategories()" type="text" class="form-control" placeholder="Caută categorie   ...">
+                <input v-model="search" type="text" class="form-control" placeholder="Caută categorie   ...">
         </div>
     </div>
 
@@ -121,9 +121,12 @@ ob_start();
 
 <!-- Aici incepe Vue.js -->
 <script>
-    const { createApp, ref, computed, onMounted, reactive } = Vue;
+    const { createApp, ref, computed, onMounted, reactive, watch } = Vue;
 
     const app = createApp({
+        components: {
+            'show-category-title': ShowCategoryTitle
+        },
         setup() {
             
             const categories = ref([]);
@@ -275,6 +278,15 @@ ob_start();
 
             onMounted(() => {
                 showCategories();
+            });
+
+            watch(search, (value) => {
+                if (value.length > 2) {
+                    searchCategories();
+                }
+                if (value.length === 0) {
+                    showCategories();
+                }
             });
 
             return{
