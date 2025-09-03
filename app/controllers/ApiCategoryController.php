@@ -36,9 +36,89 @@ class ApiCategoryController
             [
                 'categories' => $categories,
                 'total_pages' => $totalPages,
-                'current_page' => $page
+                'current_page' => $page,
+                'total_categories' => $totalCategories
             ]
         );
+    }
+
+    public function store()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        // Obține datele din corpul cererii
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+
+        if (!$data || !isset($data['name']) || !isset($data['description'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Date invalide']);
+            return;
+        }
+
+        $categoryModel = new Category();
+        $result = $categoryModel->create($data['name'], $data['description']);
+
+        if ($result) {
+            echo json_encode(['success' => true, 'message' => 'Categoria a fost adăugată cu succes']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'Eroare la adăugarea categoriei']);
+        }
+    }
+
+    public function edit()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID lipsă']);
+            return;
+        }
+
+        // Obține datele din corpul cererii
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+
+        if (!$data || !isset($data['name']) || !isset($data['description'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Date invalide']);
+            return;
+        }
+
+        $categoryModel = new Category();
+        $result = $categoryModel->update($id, $data['name'], $data['description']);
+
+        if ($result) {
+            echo json_encode(['success' => true, 'message' => 'Categoria a fost actualizată cu succes']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'Eroare la actualizarea categoriei']);
+        }
+    }
+
+    public function delete()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID lipsă']);
+            return;
+        }
+
+        $categoryModel = new Category();
+        $result = $categoryModel->delete($id);
+
+        if ($result) {
+            echo json_encode(['success' => true, 'message' => 'Categoria a fost ștearsă cu succes']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'Eroare la ștergerea categoriei']);
+        }
     }
 
 

@@ -1,100 +1,289 @@
 <?php
 $title = 'Categories List';
 ob_start();
-
-// Inițializează sortarea dacă nu vine din controller
-$sort = $_GET['sort'] ?? 'id';
-$order = $_GET['order'] ?? 'asc';
 ?>
-<h1>Categories</h1>
-<a href='<?= BASE_URL ?>categories/create' class='btn btn-primary'>Adaugă categorie</a>
+<div id="app" class="container">
 
-<form method="GET" class="mb-3 d-flex align-items-center">
-    <label for="per_page" class="me-2">Categorie pe pagină:</label>
-    <select name="per_page" id="per_page" class="form-select w-auto me-2" onchange="this.form.submit()">
-        <?php foreach ([3, 5, 10, 20] as $opt): ?>
-            <option value="<?= $opt ?>" <?= (isset($_GET['per_page']) && $_GET['per_page'] == $opt) || (!isset($_GET['per_page']) && $perPage == $opt) ? 'selected' : '' ?>>
-                <?= $opt ?> / pagină
-            </option>
-        <?php endforeach; ?>
-    </select>
-</form>
+    <h1>Categories 
+        <span class="badge bg-secondary" v-if="categories.length">{{ totalcategories }}</span>
+    </h1>
+    <div class="mb-3">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+            <i class="bi bi-plus-circle"></i> Adauga categorie
+        </button>
+    </div>
+    
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                <a href="<?= BASE_URL ?>categories?sort=id&order=<?= ($sort === 'id' && $order === 'asc') ? 'desc' : 'asc' ?>&per_page=<?= $perPage ?>">
-                    ID <?= $sort === 'id' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
-                </a>
-            </th>
-            <th>
-                <a href="<?= BASE_URL ?>categories?sort=name&order=<?= ($sort === 'name' && $order === 'asc') ? 'desc' : 'asc' ?>&per_page=<?= $perPage ?>">
-                    Nume <?= $sort === 'name' ? ($order === 'asc' ? '▲' : '▼') : '' ?>
-                </a>
-            </th>
-            <th>Acțiuni</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($categories as $category): ?>
-        <?php
-            $editUrl = BASE_URL . "categories/edit?id=" . $category['id'];
-            $deleteUrl = BASE_URL . "categories/delete?id=" . $category['id'];
-        ?>
-        <tr>
-            <td><?= htmlspecialchars($category['id']) ?></td>
-            <td><?= htmlspecialchars($category['name']) ?></td>
-            <td>
-                <a href='<?=$editUrl ?>'>✏️ Editează</a> 
-                <form action='<?=$deleteUrl ?>' method='POST' class='d-inline m-0 p-0'>
-                    <button type="submit" onclick="return confirm('Ești sigur că vrei să ștergi această categorie?');">🗑️ Șterge</button>
-                </form>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-<nav>
-    <ul class="pagination">
-        <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-            <a class="page-link" href="<?= BASE_URL ?>categories?page=<?= max(1, $page - 1) ?>&per_page=<?= $perPage ?>&sort=<?= $sort ?>&order=<?= $order ?>" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                <a class="page-link" href="<?= BASE_URL ?>categories?page=<?= $i ?>&per_page=<?= $perPage ?>&sort=<?= $sort ?>&order=<?= $order ?>"><?= $i ?></a>
-            </li>
-        <?php endfor; ?>
-        <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-            <a class="page-link" href="<?= BASE_URL ?>categories?page=<?= min($totalPages, $page + 1) ?>&per_page=<?= $perPage ?>&sort=<?= $sort ?>&order=<?= $order ?>" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+    <!-- Modal pentru adăugarea categoriilor -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCategoryModalLabel">Adaugă Categorie Nouă</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form @submit.prevent="addCategory()">
+                        <div class="mb-3">
+                            <label for="categoryName" class="form-label">Nume Categorie</label>
+                            <input type="text" class="form-control" id="categoryName" v-model="category.name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoryDescription" class="form-label">Descriere</label>
+                            <textarea class="form-control" id="categoryDescription" v-model="category.description" rows="3" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
+                    <button type="button" class="btn btn-primary" @click="addCategory()">
+                        <i class="bi bi-check-circle"></i> Salvează Categorie
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+
+    <table v-if="showTableData" class="table table-striped table-hover table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>
+                    Nume 
+                </th>
+                <th>Acțiuni</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="category in categories" :key="category.id">
+                <td>{{ category.id }}</td>
+                <td 
+                    class="category-name-cell"
+                    @mouseenter="hoveredCategoryName = category.name"
+                    @mouseleave="hoveredCategoryName = ''"
+                    @click="hideTable(category)"
+                    style="cursor: pointer;"
+                >
+                    {{ category.name }}
+                </td>
+                <td>
+                    <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editCategoryModal" @click="editCategory(category)" title="Editează categoria">
+                        <i class="bi bi-pencil"></i>
+                        Editează
+                    </button>
+                    <button class="btn btn-danger btn-sm" @click="deleteCategory(category.id)" title="Șterge categoria">
+                        <i class="bi bi-trash"></i>
+                        Sterge
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+        <!-- Modal pentru editarea categoriilor -->
+        <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editCategoryModalLabel">Editează categoria</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form @submit.prevent="updateCategory()">
+                            <div class="mb-3">
+                                <label for="categoryName" class="form-label">Nume Categorie</label>
+                                <input type="text" class="form-control" id="categoryName" v-model="editingCategory.name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="categoryDescription" class="form-label">Descriere</label>
+                                <textarea class="form-control" id="categoryDescription" v-model="editingCategory.description" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
+                        <button type="button" class="btn btn-primary" @click="updateCategory()">
+                            <i class="bi bi-check-circle"></i> Actualizează Categoria
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+<!-- Aici incepe Vue.js -->
 <script>
+    const { createApp, ref, computed, onMounted, reactive } = Vue;
 
+    const app = createApp({
+        setup() {
+            
+            const categories = ref([]);
+            const totalcategories = ref(0);
+            const showTableData = ref(true);
+            const selectedCategory = ref(null);
+            const hoveredCategoryName = ref('');
+            const incrementsnumber = ref(0);
+            const editingCategory = reactive({
+                id: '',
+                name: '',
+                description: ''
+            });
+            const category = reactive({
+                name: '',
+                description: '',
+                id: '',
+            });
+            
+            const showCategories = () => {
+                axios.get('<?= BASE_URL ?>api/categories', {
+                    params: {
+                        per_page: 20,
+                        page: 1,
+                        sort: 'id',
+                        order: 'desc'
+                    }
+                })
+                .then(response => {
+                    categories.value = response.data.categories;
+                    totalcategories.value = response.data.total_categories;
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
+                });
+            }
 
-// Exemplu de request cu axios
-axios.get('http://localhost:8080/api/categories', {
-        params: {
-            per_page: 5, // sau orice altă valoare dorită
-            page: 1, // pagina curentă
-            sort: 'id', // câmpul după care se sortează
-            order: 'asc' // ordinea de sortare
+            const addCategory = () => {
+                // Validare simplă
+                if (!category.name || !category.description) {
+                    alert('Te rog completează toate câmpurile!');
+                    return;
+                }
+
+                axios.post('<?= BASE_URL ?>api/categories/store', {
+                    name: category.name,
+                    description: category.description
+                })
+                .then(response => {
+                    console.log('Category added:', response.data);
+
+                    // Reset the category form
+                    category.name = '';
+                    category.description = '';
+
+                    // Închide modalul
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
+                    modal.hide();
+
+                    // Refresh the category list
+                    showCategories();
+
+                    // Afișează mesaj de succes (opțional)
+                    alert('Categorie adăugată cu succes!');
+                })
+                .catch(error => {
+                    console.error('Error adding category:', error);
+                    alert('Eroare la adăugarea categoriei!');
+                });
+            }
+
+            const increments = () => {
+                incrementsnumber.value++;
+            }
+
+            const hideTable = (category) => {
+                selectedCategory.value = category;
+                showTableData.value = false;
+            }
+
+            const showTable = () => {
+                showTableData.value = true;
+                selectedCategory.value = null;
+            }
+
+            const deleteCategory = (categoryId) => {
+                if (!confirm('Ești sigur că vrei să ștergi această categorie?')) {
+                    return;
+                }
+
+                axios.post('<?= BASE_URL ?>api/categories/delete?id=' + categoryId, {
+
+                })
+                .then(response => {
+                    console.log('Category deleted:', response.data);
+                     //Refresh the category list
+                    showCategories();
+                    alert('Categorie șters cu succes!');
+                })
+                .catch(error => {
+                    console.error('Error deleting category:', error);
+                    alert('Eroare la ștergerea categoriei!');
+                });
+            }
+
+            const editCategory = (cat) => {
+                editingCategory.name = cat.name;
+                editingCategory.description = cat.description;
+                editingCategory.id = cat.id;
+            }
+            
+            const updateCategory = () => {
+                axios.post('<?= BASE_URL ?>api/categories/edit?id=' + editingCategory.id, {
+                    name: editingCategory.name, 
+                    description: editingCategory.description
+                })
+                .then(response => {
+                    console.log('Category modified:', response.data);
+
+                    // Reset the editing category form
+                    editingCategory.name = '';
+                    editingCategory.description = '';
+                    editingCategory.id = '';
+                    
+                    // Închide modalul
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
+                    modal.hide();
+
+                    // Refresh the category list
+                    showCategories();
+                })
+                .catch(error => {
+                    console.error('Error adding category:', error);
+                    alert('Eroare la adăugarea categoriei!');
+                });
+            }
+
+            onMounted(() => {
+                showCategories();
+            });
+
+            return{
+                categories,
+                totalcategories,
+                showTableData,
+                selectedCategory,
+                hoveredCategoryName,
+                incrementsnumber,
+                editingCategory,
+                category,
+                showCategories,
+                addCategory,
+                editCategory,
+                updateCategory,
+                deleteCategory,
+                hideTable,
+                showTable,
+                increments
+            };
         }
-    })
-    .then(function(response) {
-        afiseazaTabelDate(response.data.categories);
-    })
-    .catch(function(error) {
-        document.getElementById('tabel-ajax').innerHTML = 'Eroare la preluarea datelor!';
-    });
+    });                     
+    
+    app.mount('#app');
+
 </script>
-<div id="tabel-ajax">Se incarca ...</div>
 
 <?php
 $content = ob_get_clean();

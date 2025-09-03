@@ -36,6 +36,9 @@ $router->get('auth/logout', 'AuthController@logout');
 $router->get('vuecategories', 'CategoryController@vueindex');
 
 $router->get('api/categories', 'ApiCategoryController@index');
+$router->post('api/categories/store', 'ApiCategoryController@store');
+$router->post('api/categories/edit', 'ApiCategoryController@edit');
+$router->post('api/categories/delete', 'ApiCategoryController@delete');
 $router->get('api/users', 'ApiUserController@index');
 $router->get('api/products', 'ApiProductController@index');
 $router->post('api/products/store', 'ApiProductController@store');

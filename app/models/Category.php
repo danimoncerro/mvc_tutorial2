@@ -16,19 +16,21 @@ class Category
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function create($data)
+    public function create($name, $description = '')
     {
-        $stmt = $this->db->prepare("INSERT INTO categories (name) VALUES (:name)");
-        $stmt->execute([
-            ':name' => $data['name'],
+        $stmt = $this->db->prepare("INSERT INTO categories (name, description) VALUES (:name, :description)");
+        return $stmt->execute([
+            ':name' => $name,
+            ':description' => $description
         ]);
     }
 
-    public function update($id, $data)
+    public function update($id, $name, $description = '')
     {
-        $stmt = $this->db->prepare("UPDATE categories SET name = :name WHERE id = :id");
-        $stmt->execute([
-            ':name' => $data['name'],
+        $stmt = $this->db->prepare("UPDATE categories SET name = :name, description = :description WHERE id = :id");
+        return $stmt->execute([
+            ':name' => $name,
+            ':description' => $description,
             ':id' => $id
         ]);
     }
@@ -43,7 +45,7 @@ class Category
     public function delete($id)
     {
         $stmt = $this->db->prepare("DELETE FROM categories WHERE id = :id");
-        $stmt->execute([':id' => $id]);
+        return $stmt->execute([':id' => $id]);
     }
 
     public function getAllSorted($sort = 'id', $order = 'asc')
