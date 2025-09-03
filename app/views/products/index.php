@@ -3,6 +3,28 @@ $title = 'Products List';
 ob_start();
 ?>
 
+<style>
+.editing-price {
+    background-color: #fff3cd !important;
+    border: 2px solid #ffc107 !important;
+}
+
+.price-display {
+    display: inline-flex;
+    align-items: center;
+}
+
+.price-display:hover {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+
+.price-display:hover .bi-pencil-square {
+    color: #0d6efd !important;
+}
+</style>
+
 <div id="app" class="container">
 
     <h1>Products 
@@ -125,7 +147,33 @@ ob_start();
                 >
                     {{ product.name }}
                 </td>
-                <td>{{ product.price }}</td>
+                <td 
+                    @click="startEditPrice(product)"
+                    style="cursor: pointer;"
+                    :class="{ 'editing-price': editingPriceId === product.id }"
+                >
+                    <span v-if="editingPriceId !== product.id" class="price-display">
+                        {{ product.price }} RON
+                        <i class="bi bi-pencil-square text-muted ms-1" style="font-size: 0.8em;"></i>
+                    </span>
+                    <div v-else class="d-flex align-items-center">
+                        <input 
+                            type="text" 
+                            class="form-control form-control-sm me-2" 
+                            v-model="editingPrice"
+                            @keyup.enter="savePrice(product)"
+                            @keyup.escape="cancelEditPrice()"
+                            style="width: 100px;"
+                            ref="priceInput"
+                            pattern="[0-9]+([.][0-9]+)?"
+                            placeholder="0.00"
+                        >
+                        <button @click="savePrice(product)" class="btn btn-success btn-sm" title="Salvează prețul">
+                            <i class="bi bi-check-lg me-1"></i>
+                            Salvează
+                        </button>
+                    </div>
+                </td>
                 <td>{{ product.category_name }}</td> 
                 <td>
                     <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editProductModal" @click="editProduct(product)" title="Editează produsul">
@@ -225,6 +273,8 @@ ob_start();
             const hoveredProductName = ref('');
             const showTableData = ref(true);
             const selectedProduct = ref(null);
+            const editingPriceId = ref(null);
+            const editingPrice = ref(0);
             const product = reactive({
                 name: '',
                 price: 0,
@@ -387,6 +437,70 @@ ob_start();
                 });
             }
 
+            // Funcții pentru editarea inline a prețului
+            const startEditPrice = (product) => {
+                editingPriceId.value = product.id;
+                editingPrice.value = product.price;
+                
+                // Focus pe input după următorul tick
+                setTimeout(() => {
+                    const input = document.querySelector('input[type="number"]');
+                    if (input) {
+                        input.focus();
+                        input.select();
+                    }
+                }, 50);
+            }
+
+            const savePrice = (product) => {
+                // Convertește la număr și validează
+                const newPrice = parseFloat(editingPrice.value);
+                
+                if (isNaN(newPrice)) {
+                    alert('Te rog introdu un preț valid!');
+                    return;
+                }
+
+                if (newPrice === parseFloat(product.price)) {
+                    cancelEditPrice();
+                    return;
+                }
+
+                // Validare preț
+                if (newPrice < 0) {
+                    alert('Prețul nu poate fi negativ!');
+                    return;
+                }
+
+                // Actualizează prețul în backend
+                axios.post('<?= BASE_URL ?>api/products/edit?id=' + product.id, {
+                    name: product.name,
+                    price: newPrice,
+                    category_id: product.category_id
+                })
+                .then(response => {
+                    console.log('Price updated:', response.data);
+                    
+                    // Actualizează prețul în lista locală
+                    const productIndex = products.value.findIndex(p => p.id === product.id);
+                    if (productIndex !== -1) {
+                        products.value[productIndex].price = newPrice;
+                    }
+                    
+                    // Resetează editarea
+                    cancelEditPrice();
+                })
+                .catch(error => {
+                    console.error('Error updating price:', error);
+                    alert('Eroare la actualizarea prețului!');
+                });
+            }
+
+            const cancelEditPrice = () => {
+                editingPriceId.value = null;
+                editingPrice.value = 0;
+            }
+
             onMounted(() => {
                 showProducts();
                 getCategories();
@@ -413,7 +527,12 @@ ob_start();
                 showTable,
                 deleteProduct,
                 editProduct,
-                updateProduct
+                updateProduct,
+                editingPriceId,
+                editingPrice,
+                startEditPrice,
+                savePrice,
+                cancelEditPrice
             };
         }
     });                     
