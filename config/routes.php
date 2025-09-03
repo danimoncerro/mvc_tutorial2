@@ -40,6 +40,8 @@ $router->get('api/users', 'ApiUserController@index');
 $router->get('api/products', 'ApiProductController@index');
 $router->post('api/products/store', 'ApiProductController@store');
 $router->post('api/users/store', 'ApiUserController@store');
+$router->post('api/users/delete', 'ApiUserController@delete');
+$router->post('api/users/edit', 'ApiUserController@edit');
 $router->post('api/products/delete', 'ApiProductController@delete');
 $router->post('api/products/edit', 'ApiProductController@edit');
 

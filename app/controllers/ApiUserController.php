@@ -91,5 +91,32 @@ class ApiUserController
         }
     }
 
+    public function delete()
+    {
+        
+        $userid = $_GET['id'];
+        $userModel = new User();
+        $userModel->delete($userid);
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'success', 'message' => 'Utilizator șters cu succes.']);
+    }
+
+    public function edit()
+    {
+        $userid = $_GET['id'];
+        $userModel = new User();
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+
+        if ($data) {
+            $userModel->update($userid, $data);
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'success', 'message' => 'Utilizator actualizat cu succes.']);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'error', 'message' => 'Datele utilizatorului sunt invalide.']);
+        }
+    }
+
 
 }
