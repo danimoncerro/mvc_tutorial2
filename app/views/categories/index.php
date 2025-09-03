@@ -15,7 +15,7 @@ ob_start();
     
     <div class="mb-3">
         <div class="col-md-3">
-                <input v-model="filters.search" type="text" class="form-control" placeholder="Caută categorie   ...">
+                <input v-model="search" @input="searchCategories()" type="text" class="form-control" placeholder="Caută categorie   ...">
         </div>
     </div>
 
@@ -132,9 +132,7 @@ ob_start();
             const selectedCategory = ref(null);
             const hoveredCategoryName = ref('');
             const incrementsnumber = ref(0);
-            const filters = reactive({
-                search: ''
-            });
+            const search = ref('');
             const editingCategory = reactive({
                 id: '',
                 name: '',
@@ -233,9 +231,7 @@ ob_start();
             }
 
             const searchCategories = () => {
-                axios.get('<?= BASE_URL ?>api/categories/search', {
-                    search: filters.search
-                })
+                axios.get('<?= BASE_URL ?>api/categories/search?search=' + search.value)
                 .then(response => {
                     categories.value = response.data.categories;
                     totalcategories.value = response.data.total_categories;
@@ -298,7 +294,8 @@ ob_start();
                 hideTable,
                 showTable,
                 increments,
-                filters
+                search,
+                searchCategories
             };
         }
     });                     
