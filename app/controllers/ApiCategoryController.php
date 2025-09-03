@@ -42,6 +42,15 @@ class ApiCategoryController
         );
     }
 
+    public function search(){
+        header('Content-Type: application/json; charset=utf-8');
+
+        $searchTerm = $_GET['search'] ?? '';
+        $categoryModel = new Category();
+        $categories = $categoryModel->search($searchTerm);
+
+        echo json_encode(['categories' => $categories]);
+    }
     public function store()
     {
         header('Content-Type: application/json; charset=utf-8');

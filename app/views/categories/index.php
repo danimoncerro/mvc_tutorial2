@@ -13,6 +13,11 @@ ob_start();
         </button>
     </div>
     
+    <div class="mb-3">
+        <div class="col-md-3">
+                <input v-model="filters.search" type="text" class="form-control" placeholder="Caută categorie   ...">
+        </div>
+    </div>
 
     <!-- Modal pentru adăugarea categoriilor -->
     <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
@@ -127,6 +132,9 @@ ob_start();
             const selectedCategory = ref(null);
             const hoveredCategoryName = ref('');
             const incrementsnumber = ref(0);
+            const filters = reactive({
+                search: ''
+            });
             const editingCategory = reactive({
                 id: '',
                 name: '',
@@ -224,6 +232,19 @@ ob_start();
                 });
             }
 
+            const searchCategories = () => {
+                axios.get('<?= BASE_URL ?>api/categories/search', {
+                    search: filters.search
+                })
+                .then(response => {
+                    categories.value = response.data.categories;
+                    totalcategories.value = response.data.total_categories;
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
+                });
+            }
+
             const editCategory = (cat) => {
                 editingCategory.name = cat.name;
                 editingCategory.description = cat.description;
@@ -276,7 +297,8 @@ ob_start();
                 deleteCategory,
                 hideTable,
                 showTable,
-                increments
+                increments,
+                filters
             };
         }
     });                     

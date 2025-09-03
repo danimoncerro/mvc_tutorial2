@@ -70,7 +70,7 @@ ob_start();
                 <td>
                     {{ user.actions }}
 
-                    <button class="btn btn-warning btn-sm me-2" @click="editUser(user)" title="Editează utilizatorul">
+                    <button class="btn btn-warning btn-sm me-2"  data-bs-toggle="modal" data-bs-target="#editUserModal" @click="editUser(user)" title="Editează utilizatorul">
                         <i class="bi bi-pencil"></i>
                         Editează
                     </button>
@@ -209,8 +209,8 @@ ob_start();
                 editingUser.email = u.email;
 
                 // Deschide modalul de editare
-                const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
-                modal.show();
+                //const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+                //modal.show();
             }
 
             const updateUser = () => {

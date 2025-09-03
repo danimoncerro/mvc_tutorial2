@@ -42,6 +42,13 @@ class Category
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function search($term)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM categories WHERE name LIKE :term");
+        $stmt->execute([':term' => "%$term%"]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function delete($id)
     {
         $stmt = $this->db->prepare("DELETE FROM categories WHERE id = :id");
