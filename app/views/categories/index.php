@@ -2,52 +2,22 @@
 $title = 'Categories List';
 ob_start();
 ?>
+
 <script src="<?= BASE_URL ?>frontend/js/components/ShowCategoryTitle.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/AddCategory.js"></script>
+
 <div id="app" class="container">
 
     <show-category-title :categories="categories"></show-category-title>
+    <add-category :savelink="'<?= BASE_URL ?>api/categories/store'" @show-categories="showCategories"></add-category>
 
-    <div class="mb-3">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-            <i class="bi bi-plus-circle"></i> Adauga categorie
-        </button>
-    </div>
-    
     <div class="mb-3">
         <div class="col-md-3">
                 <input v-model="search" type="text" class="form-control" placeholder="Caută categorie   ...">
         </div>
     </div>
 
-    <!-- Modal pentru adăugarea categoriilor -->
-    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addCategoryModalLabel">Adaugă Categorie Nouă</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form @submit.prevent="addCategory()">
-                        <div class="mb-3">
-                            <label for="categoryName" class="form-label">Nume Categorie</label>
-                            <input type="text" class="form-control" id="categoryName" v-model="category.name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="categoryDescription" class="form-label">Descriere</label>
-                            <textarea class="form-control" id="categoryDescription" v-model="category.description" rows="3" required></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="btn btn-primary" @click="addCategory()">
-                        <i class="bi bi-check-circle"></i> Salvează Categorie
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
 
     <table v-if="showTableData" class="table table-striped table-hover table-bordered">
@@ -125,7 +95,8 @@ ob_start();
 
     const app = createApp({
         components: {
-            'show-category-title': ShowCategoryTitle
+            'show-category-title': ShowCategoryTitle,
+            'add-category': AddCategory
         },
         setup() {
             
@@ -141,11 +112,7 @@ ob_start();
                 name: '',
                 description: ''
             });
-            const category = reactive({
-                name: '',
-                description: '',
-                id: '',
-            });
+            
             
             const showCategories = () => {
                 axios.get('<?= BASE_URL ?>api/categories', {
@@ -165,39 +132,6 @@ ob_start();
                 });
             }
 
-            const addCategory = () => {
-                // Validare simplă
-                if (!category.name || !category.description) {
-                    alert('Te rog completează toate câmpurile!');
-                    return;
-                }
-
-                axios.post('<?= BASE_URL ?>api/categories/store', {
-                    name: category.name,
-                    description: category.description
-                })
-                .then(response => {
-                    console.log('Category added:', response.data);
-
-                    // Reset the category form
-                    category.name = '';
-                    category.description = '';
-
-                    // Închide modalul
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
-                    modal.hide();
-
-                    // Refresh the category list
-                    showCategories();
-
-                    // Afișează mesaj de succes (opțional)
-                    alert('Categorie adăugată cu succes!');
-                })
-                .catch(error => {
-                    console.error('Error adding category:', error);
-                    alert('Eroare la adăugarea categoriei!');
-                });
-            }
 
             const increments = () => {
                 incrementsnumber.value++;
@@ -298,9 +232,7 @@ ob_start();
                 hoveredCategoryName,
                 incrementsnumber,
                 editingCategory,
-                category,
                 showCategories,
-                addCategory,
                 editCategory,
                 updateCategory,
                 deleteCategory,
