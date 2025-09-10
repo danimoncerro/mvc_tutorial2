@@ -46,6 +46,8 @@ $router->post('api/products/store', 'ApiProductController@store');
 $router->post('api/users/store', 'ApiUserController@store');
 $router->post('api/users/delete', 'ApiUserController@delete');
 $router->post('api/users/edit', 'ApiUserController@edit');
+$router->get('api/categories/search', 'ApiCategoryController@search');
+$router->get('api/users/search', 'ApiUserController@search');
 $router->post('api/products/delete', 'ApiProductController@delete');
 $router->post('api/products/edit', 'ApiProductController@edit');
 

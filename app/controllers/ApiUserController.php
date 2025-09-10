@@ -91,6 +91,24 @@ class ApiUserController
         }
     }
 
+    public function search(){
+        header('Content-Type: application/json; charset=utf-8');
+
+        $searchTerm = $_GET['search'] ?? '';
+        $userModel = new User();
+        $users = $userModel->search($searchTerm);
+
+        // Elimină parolele din răspuns pentru securitate
+        foreach ($users as &$user) {
+            unset($user['password']);
+        }
+
+        echo json_encode([
+            'users' => $users,
+            'total_users' => count($users)
+        ]);
+    }
+
     public function delete()
     {
         

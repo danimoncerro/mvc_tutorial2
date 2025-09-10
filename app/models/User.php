@@ -64,6 +64,13 @@ class User
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function search($term)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE email LIKE :term");
+        $stmt->execute([':term' => "%$term%"]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function delete($id)
     {
         $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");

@@ -13,6 +13,12 @@ ob_start();
         </button>
     </div>
 
+        <div class="mb-3">
+        <div class="col-md-3">
+                <input v-model="search" type="text" class="form-control" placeholder="Search for users  ...">
+        </div>
+    </div>
+
     <!-- Modal pentru adăugarea utilizatorilor -->
     <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -116,13 +122,12 @@ ob_start();
 
 <!-- Aici incepe Vue.js -->
 <script>
-    const { createApp, ref, computed, onMounted, reactive } = Vue;
-
-    const app = createApp({
+        const { createApp, ref, computed, onMounted, reactive, watch } = Vue;    const app = createApp({
         setup() {
            
             const users = ref([]);
             const totalusers = ref(0);
+            const search = ref('');
             const user = reactive({
                 email: ''
             });
@@ -181,6 +186,22 @@ ob_start();
                 .catch(error => {
                     console.error('Error adding user:', error);
                     alert('Eroare la adăugarea utilizatorului!');
+                });
+            }
+
+            const searchUsers = () => {
+                if (search.value.trim() === '') {
+                    showUsers();
+                    return;
+                }
+                
+                axios.get('<?= BASE_URL ?>api/users/search?search=' + search.value)
+                .then(response => {
+                    users.value = response.data.users;
+                    totalusers.value = response.data.users.length;
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
                 });
             }
 
@@ -244,6 +265,18 @@ ob_start();
                 showUsers();
             });
 
+            // Watch pentru căutare în timp real
+
+            watch(search, (value) => {
+                if (value.length > 2) {
+                    searchUsers();
+                }
+                if (value.length === 0) {
+                    showUsers();
+                }
+            });
+
+
 
             return{
                 users,
@@ -254,7 +287,10 @@ ob_start();
                 editingUser,
                 deleteUser,
                 editUser,
-                updateUser
+                updateUser,
+                search,
+                searchUsers
+
             };
         }
     });                     
