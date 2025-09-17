@@ -5,6 +5,7 @@ ob_start();
 
 <script src="<?= BASE_URL ?>frontend/js/components/ShowCategoryTitle.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/AddCategory.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/DeleteCategory.js"></script>
 
 <div id="app" class="container">
 
@@ -47,10 +48,14 @@ ob_start();
                         <i class="bi bi-pencil"></i>
                         Editează
                     </button>
+
+                    <delete-category :deletelink="'<?= BASE_URL ?>api/categories/delete?id=' + category.id" @show-categories="showCategories"></delete-category>
+                    <!--
                     <button class="btn btn-danger btn-sm" @click="deleteCategory(category.id)" title="Șterge categoria">
                         <i class="bi bi-trash"></i>
                         Sterge
                     </button>
+                    -->
                 </td>
             </tr>
         </tbody>
@@ -96,7 +101,8 @@ ob_start();
     const app = createApp({
         components: {
             'show-category-title': ShowCategoryTitle,
-            'add-category': AddCategory
+            'add-category': AddCategory,
+            'delete-category': DeleteCategory
         },
         setup() {
             
@@ -147,25 +153,7 @@ ob_start();
                 selectedCategory.value = null;
             }
 
-            const deleteCategory = (categoryId) => {
-                if (!confirm('Ești sigur că vrei să ștergi această categorie?')) {
-                    return;
-                }
-
-                axios.post('<?= BASE_URL ?>api/categories/delete?id=' + categoryId, {
-
-                })
-                .then(response => {
-                    console.log('Category deleted:', response.data);
-                     //Refresh the category list
-                    showCategories();
-                    alert('Categorie șters cu succes!');
-                })
-                .catch(error => {
-                    console.error('Error deleting category:', error);
-                    alert('Eroare la ștergerea categoriei!');
-                });
-            }
+            
 
             const searchCategories = () => {
                 axios.get('<?= BASE_URL ?>api/categories/search?search=' + search.value)
@@ -235,7 +223,6 @@ ob_start();
                 showCategories,
                 editCategory,
                 updateCategory,
-                deleteCategory,
                 hideTable,
                 showTable,
                 increments,

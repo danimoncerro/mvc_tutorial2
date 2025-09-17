@@ -91,3 +91,8 @@ tema 28.08.2025
 tema 03.09.2005
 
 implementare search pentru user (dupa campul email)
+
+tema 10.09.2025
+
+delete users, delete category, delete product de pus in componente
+edit de pus in componente
