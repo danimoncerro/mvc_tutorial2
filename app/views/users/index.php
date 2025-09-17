@@ -4,6 +4,7 @@ ob_start();
 ?>
 
 <script src="<?= BASE_URL ?>frontend/js/components/AddUser.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/DeleteUser.js"></script>
 
 
 <div id="app" class="container">
@@ -54,11 +55,14 @@ ob_start();
                         <i class="bi bi-pencil"></i>
                         Editează
                     </button>
-                    
+
+                    <delete-user :deletelink="'<?= BASE_URL ?>api/users/delete?id=' + user.id" @show-users="showUsers"></delete-user>
+                    <!--
                     <button class="btn btn-danger btn-sm" @click="deleteUser(user.id)" title="Șterge utilizatorul">
                         <i class="bi bi-trash"></i>
                         Sterge
                     </button>
+                    -->
                 </td> 
                 
             </tr>
@@ -100,7 +104,8 @@ ob_start();
         
         const app = createApp({
             components: {
-            'add-user': AddUser
+            'add-user': AddUser,
+            'delete-user': DeleteUser
         },
         setup() {
            
@@ -147,25 +152,6 @@ ob_start();
                 })
                 .catch(error => {
                     console.error('API Error:', error);
-                });
-            }
-
-            const deleteUser = (userId) => {
-                if (!confirm('Ești sigur că vrei să ștergi acest utilizator?')) {
-                    return;
-                }
-
-                axios.post('<?= BASE_URL ?>api/users/delete?id=' + userId, {
-                })
-                .then(response => {
-                    console.log('User deleted:', response.data);
-                     //Refresh the user list
-                    showUsers();
-                    alert('Utilizator șters cu succes!');
-                })
-                .catch(error => {
-                    console.error('Error deleting user:', error);
-                    alert('Eroare la ștergerea utilizatorului!');
                 });
             }
 
@@ -228,7 +214,6 @@ ob_start();
                 showUsers,
                 totalusers,
                 editingUser,
-                deleteUser,
                 editUser,
                 updateUser,
                 search,
