@@ -5,6 +5,7 @@ ob_start();
 
 <script src="<?= BASE_URL ?>frontend/js/components/AddProduct.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/DeleteProduct.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/EditProduct.js"></script>
 
 <style>
 .editing-price {
@@ -157,44 +158,14 @@ ob_start();
         </tbody>
     </table>
 
-        <!-- Modal pentru editarea produselor -->
-    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">`
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editProductModalLabel">Editeaza produsul</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form @submit.prevent="addProduct()">
-                        <div class="mb-3">
-                            <label for="productName" class="form-label">Nume Produs</label>
-                            <input type="text" class="form-control" id="productName" v-model="product.name"  required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="productPrice" class="form-label">Preț</label>
-                            <input type="number" class="form-control" id="productPrice" v-model="product.price" step="0.01" min="0" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="productCategory" class="form-label">Categorie</label>
-                            <select class="form-select" id="productCategory" v-model="product.category_id" required>
-                                <option value="">Selectează o categorie</option>
-                                <option v-for="category in categories" :key="category.id" :value="category.id">
-                                    {{ category.name }}
-                                </option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="btn btn-primary" @click="updateProduct()">
-                        <i class="bi bi-check-circle"></i> Editeaza Produs
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Componenta EditProduct -->
+    <edit-product 
+        :updatelink="'<?= BASE_URL ?>api/products/edit'" 
+        :product="product"
+        :categories="categories"
+        @show-products="showProducts">
+
+    </edit-product>
 
     <div v-if="!showTableData && selectedProduct" class="card">
         <div class="card-header">
@@ -239,7 +210,8 @@ ob_start();
 
         components: {
            'add-product': AddProduct,
-           'delete-product': DeleteProduct
+           'delete-product': DeleteProduct,
+           'edit-product': EditProduct
         },
 
         setup() {
@@ -331,35 +303,7 @@ ob_start();
                 product.id = p.id;
 
             }
-            const updateProduct = () => {
-                axios.post('<?= BASE_URL ?>api/products/edit?id=' + product.id, {
-                    name: product.name, 
-                    price: product.price,
-                    category_id: product.category_id
-                })
-                .then(response => {
-                    console.log('Product modified:', response.data);
-                    
-                    // Reset the product form
-                    product.name = '';
-                    product.price = 0;
-                    product.category_id = '';
-                    
-                    // Închide modalul
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
-                    modal.hide();
-                    
-                    // Refresh the product list
-                    showProducts();
-                    
-                    // Afișează mesaj de succes (opțional)
-                    //alert('Produs modificat cu succes!');
-                })
-                .catch(error => {
-                    console.error('Error adding product:', error);
-                    alert('Eroare la adăugarea produsului!');
-                });
-            }
+            
 
             // Funcții pentru editarea inline a prețului
             const startEditPrice = (product) => {
@@ -449,7 +393,6 @@ ob_start();
                 hideTable,
                 showTable,
                 editProduct,
-                updateProduct,
                 editingPriceId,
                 editingPrice,
                 startEditPrice,
