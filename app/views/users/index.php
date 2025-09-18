@@ -5,6 +5,7 @@ ob_start();
 
 <script src="<?= BASE_URL ?>frontend/js/components/AddUser.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/DeleteUser.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/EditUser.js"></script>
 
 
 <div id="app" class="container">
@@ -69,31 +70,14 @@ ob_start();
         </tbody>
     </table>
 
-    <!-- Modal pentru editarea utilizatorilor -->
-    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editUserModalLabel">Editează utilizator</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form @submit.prevent="updateUser()">
-                        <div class="mb-3">
-                            <label for="editUserEmail" class="form-label">Email utilizator</label>
-                            <input type="text" class="form-control" id="editUserEmail" v-model="editingUser.email" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
-                    <button type="button" class="btn btn-primary" @click="updateUser()">
-                        <i class="bi bi-check-circle"></i> Salvează modificările
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Componenta EditUser -->
+    <edit-user 
+        :updatelink="'<?= BASE_URL ?>api/users/edit'" 
+        :editing-user="editingUser"
+        @show-users="showUsers">
+
+    </edit-user>
+
 </div>
 
                     
@@ -105,7 +89,8 @@ ob_start();
         const app = createApp({
             components: {
             'add-user': AddUser,
-            'delete-user': DeleteUser
+            'delete-user': DeleteUser,
+            'edit-user': EditUser
         },
         setup() {
            
@@ -165,31 +150,6 @@ ob_start();
                 //modal.show();
             }
 
-            const updateUser = () => {
-                axios.post('<?= BASE_URL ?>api/users/edit?id=' + editingUser.id, {
-                    email: editingUser.email
-                })
-                .then(response => {
-                    console.log('User modified:', response.data);
-
-                    // Reset the user form
-                    editingUser.email = '';
-
-                    // Închide modalul
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
-                    modal.hide();
-
-                    // Refresh the user list
-                    showUsers();
-
-                    // Afișează mesaj de succes (opțional)
-                    //alert('Produs modificat cu succes!');
-                })
-                .catch(error => {
-                    console.error('Error adding product:', error);
-                    alert('Eroare la adăugarea produsului!');
-                });
-            }
 
 
              onMounted(() => {
@@ -215,7 +175,6 @@ ob_start();
                 totalusers,
                 editingUser,
                 editUser,
-                updateUser,
                 search,
                 searchUsers
 
