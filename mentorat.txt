@@ -96,3 +96,9 @@ tema 10.09.2025
 
 delete users, delete category, delete product de pus in componente
 edit de pus in componente
+
+tema 18.09.2005
+
+de implementat search pentru product si pentru user
+
+optional de implementat search category incluzand metoda search categories.

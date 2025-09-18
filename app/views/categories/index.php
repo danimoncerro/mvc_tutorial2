@@ -7,17 +7,16 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/AddCategory.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/DeleteCategory.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/EditCategory.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/SearchCategory.js"></script>
 
 <div id="app" class="container">
 
     <show-category-title :categories="categories"></show-category-title>
     <add-category :savelink="'<?= BASE_URL ?>api/categories/store'" @show-categories="showCategories"></add-category>
 
-    <div class="mb-3">
-        <div class="col-md-3">
-                <input v-model="search" type="text" class="form-control" placeholder="Caută categorie   ...">
-        </div>
-    </div>
+<!--  Componenta de cautare  -->
+    <search-category @search-categories="searchCategories"></search-category>
+    
 
     
 
@@ -78,7 +77,8 @@ ob_start();
             'show-category-title': ShowCategoryTitle,
             'add-category': AddCategory,
             'delete-category': DeleteCategory,
-            'edit-category': EditCategory  // Adaugă această linie
+            'edit-category': EditCategory,
+            'search-category': SearchCategory
         },
         setup() {
             
@@ -88,7 +88,6 @@ ob_start();
             const selectedCategory = ref(null);
             const hoveredCategoryName = ref('');
             const incrementsnumber = ref(0);
-            const search = ref('');
             const editingCategory = reactive({
                 id: '',
                 name: '',
@@ -96,6 +95,17 @@ ob_start();
             });
             
             
+            const searchCategories = (search) => {
+            axios.get('<?= BASE_URL ?>api/categories/search?search=' + search)
+            .then(response => {
+                categories.value = response.data.categories;
+                totalcategories.value = response.data.total_categories;
+            })
+            .catch(error => {
+                console.error('API Error:', error);
+            });
+            }
+
             const showCategories = () => {
                 axios.get('<?= BASE_URL ?>api/categories', {
                     params: {
@@ -131,16 +141,7 @@ ob_start();
 
             
 
-            const searchCategories = () => {
-                axios.get('<?= BASE_URL ?>api/categories/search?search=' + search.value)
-                .then(response => {
-                    categories.value = response.data.categories;
-                    totalcategories.value = response.data.total_categories;
-                })
-                .catch(error => {
-                    console.error('API Error:', error);
-                });
-            }
+            
 
             const editCategory = (category) => {
                 editingCategory.id = category.id;
@@ -152,14 +153,7 @@ ob_start();
                 showCategories();
             });
 
-            watch(search, (value) => {
-                if (value.length > 2) {
-                    searchCategories();
-                }
-                if (value.length === 0) {
-                    showCategories();
-                }
-            });
+           
 
 
             return{
@@ -174,9 +168,8 @@ ob_start();
                 hideTable,
                 showTable,
                 increments,
-                search,
-                searchCategories,
-                editingCategory  // Adaugă această linie
+                editingCategory,  // Adaugă această linie
+                searchCategories
             };
         }
     });                     
