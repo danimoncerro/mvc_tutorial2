@@ -4,6 +4,7 @@ ob_start();
 ?>
 
 <script src="<?= BASE_URL ?>frontend/js/components/AddProduct.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/DeleteProduct.js"></script>
 
 <style>
 .editing-price {
@@ -144,11 +145,14 @@ ob_start();
                         <i class="bi bi-pencil"></i>
                         Editează
                     </button>
+                    
+                    <delete-product :deletelink="'<?= BASE_URL ?>api/products/delete?id=' + product.id" @show-products="showProducts"></delete-product>
+                    <!--
                     <button class="btn btn-danger btn-sm" @click="deleteProduct(product.id)" title="Șterge produsul">
                         <i class="bi bi-trash"></i>
                         Sterge
                     </button>
-                </td>
+                    -->
             </tr>
         </tbody>
     </table>
@@ -234,7 +238,8 @@ ob_start();
     const app = createApp({
 
         components: {
-           'add-product': AddProduct
+           'add-product': AddProduct,
+           'delete-product': DeleteProduct
         },
 
         setup() {
@@ -316,25 +321,7 @@ ob_start();
                 selectedProduct.value = null;
             }
 
-            const deleteProduct = (productId) => {
-                if (!confirm('Ești sigur că vrei să ștergi acest produs?')) {
-                    return;
-                }
-
-                axios.post('<?= BASE_URL ?>api/products/delete?id=' + productId, {
-                    
-                })
-                .then(response => {
-                    console.log('Product deleted:', response.data);
-                     //Refresh the product list
-                    showProducts();
-                    alert('Produs șters cu succes!');
-                })
-                .catch(error => {
-                    console.error('Error deleting product:', error);
-                    alert('Eroare la ștergerea produsului!');
-                });
-            }
+            
 
             const editProduct = (p) => {
                 
@@ -461,7 +448,6 @@ ob_start();
                 increments,
                 hideTable,
                 showTable,
-                deleteProduct,
                 editProduct,
                 updateProduct,
                 editingPriceId,

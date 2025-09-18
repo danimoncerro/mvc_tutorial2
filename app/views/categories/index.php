@@ -6,6 +6,7 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/ShowCategoryTitle.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/AddCategory.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/DeleteCategory.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/EditCategory.js"></script>
 
 <div id="app" class="container">
 
@@ -44,55 +45,29 @@ ob_start();
                     {{ category.name }}
                 </td>
                 <td>
-                    <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editCategoryModal" @click="editCategory(category)" title="Editează categoria">
+                    <button class="btn btn-warning btn-sm me-2"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#editCategoryModal"  
+                    @click="editCategory(category)" title="Editează categoria">
                         <i class="bi bi-pencil"></i>
                         Editează
                     </button>
 
                     <delete-category :deletelink="'<?= BASE_URL ?>api/categories/delete?id=' + category.id" @show-categories="showCategories"></delete-category>
-                    <!--
-                    <button class="btn btn-danger btn-sm" @click="deleteCategory(category.id)" title="Șterge categoria">
-                        <i class="bi bi-trash"></i>
-                        Sterge
-                    </button>
-                    -->
                 </td>
             </tr>
         </tbody>
     </table>
 
-        <!-- Modal pentru editarea categoriilor -->
-        <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editCategoryModalLabel">Editează categoria</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form @submit.prevent="updateCategory()">
-                            <div class="mb-3">
-                                <label for="categoryName" class="form-label">Nume Categorie</label>
-                                <input type="text" class="form-control" id="categoryName" v-model="editingCategory.name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="categoryDescription" class="form-label">Descriere</label>
-                                <textarea class="form-control" id="categoryDescription" v-model="editingCategory.description" rows="3"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
-                        <button type="button" class="btn btn-primary" @click="updateCategory()">
-                            <i class="bi bi-check-circle"></i> Actualizează Categoria
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <!-- Componenta EditCategory -->
+    <edit-category 
+        :updatelink="'<?= BASE_URL ?>api/categories/edit'" 
+        :editing-category="editingCategory"
+        @show-categories="showCategories">
+    </edit-category>
 
 </div>
+
 
 <!-- Aici incepe Vue.js -->
 <script>
@@ -102,7 +77,8 @@ ob_start();
         components: {
             'show-category-title': ShowCategoryTitle,
             'add-category': AddCategory,
-            'delete-category': DeleteCategory
+            'delete-category': DeleteCategory,
+            'edit-category': EditCategory  // Adaugă această linie
         },
         setup() {
             
@@ -166,36 +142,10 @@ ob_start();
                 });
             }
 
-            const editCategory = (cat) => {
-                editingCategory.name = cat.name;
-                editingCategory.description = cat.description;
-                editingCategory.id = cat.id;
-            }
-            
-            const updateCategory = () => {
-                axios.post('<?= BASE_URL ?>api/categories/edit?id=' + editingCategory.id, {
-                    name: editingCategory.name, 
-                    description: editingCategory.description
-                })
-                .then(response => {
-                    console.log('Category modified:', response.data);
-
-                    // Reset the editing category form
-                    editingCategory.name = '';
-                    editingCategory.description = '';
-                    editingCategory.id = '';
-                    
-                    // Închide modalul
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
-                    modal.hide();
-
-                    // Refresh the category list
-                    showCategories();
-                })
-                .catch(error => {
-                    console.error('Error adding category:', error);
-                    alert('Eroare la adăugarea categoriei!');
-                });
+            const editCategory = (category) => {
+                editingCategory.id = category.id;
+                editingCategory.name = category.name;
+                editingCategory.description = category.description || '';
             }
 
             onMounted(() => {
@@ -219,15 +169,14 @@ ob_start();
                 selectedCategory,
                 hoveredCategoryName,
                 incrementsnumber,
-                editingCategory,
                 showCategories,
                 editCategory,
-                updateCategory,
                 hideTable,
                 showTable,
                 increments,
                 search,
-                searchCategories
+                searchCategories,
+                editingCategory  // Adaugă această linie
             };
         }
     });                     
@@ -239,3 +188,4 @@ ob_start();
 <?php
 $content = ob_get_clean();
 require_once APP_ROOT . '/app/views/layout.php';
+?>
