@@ -102,3 +102,14 @@ tema 18.09.2005
 de implementat search pentru product si pentru user
 
 optional de implementat search category incluzand metoda search categories.
+
+tema 24.09.2025
+
+de mutat users, products, categories in folder prefix admin
+
+Exemplu /users -> /admin/users
+
+sa mutam fizic toate controlere legate de administrare (produsul, cateogoriile si utilizatorii)
+intr-un subfolder in folderul controllers.
+
+

@@ -22,6 +22,15 @@ const AddUser = {
                                 <label for="userEmail" class="form-label">Email utilizator</label>
                                 <input type="text" class="form-control" id="userEmail" v-model="user.email" required>
                             </div>
+                            <div class="mb-3">
+                                <label for="role" class="form-label">Rol utilizator</label>
+                                <select class="form-select" id="role" v-model="user.role" required>
+                                    <option value="">Selectează un rol</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="livrator">Livrator</option>
+                                    <option value="client">Client</option>
+                                </select>
+                            </div>
                             
                         </form>
                     </div>
@@ -47,7 +56,7 @@ const AddUser = {
         
         const user = reactive({
             name: '',
-            description: ''
+            role: ''
         });
 
         const addUser = () => {
@@ -58,7 +67,8 @@ const AddUser = {
                 }
 
                 axios.post(props.savelink, {
-                    email: user.email
+                    email: user.email,
+                    role: user.role
                     
                 })
                 .then(response => {

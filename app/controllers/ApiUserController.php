@@ -66,9 +66,10 @@ class ApiUserController
             // Dacă nu există date JSON, încearcă $_POST
             if ($data === null) {
                 $email = $_POST['email'] ?? '';
+                $role = $_POST['role'] ?? '';
             } else {
                 $email = $data['email'] ?? '';
-          
+                $role = $data['role'] ?? '';
             }
 
             if ($email) {
@@ -76,7 +77,7 @@ class ApiUserController
                 $userModel->create([        // apel corect pentru metodă non-statică
                     'email' => $email,
                     'password' => '12345',
-                    'role'=> 'livrator'
+                    'role'=> $role
                   
                 ]);
                 header('Content-Type: application/json');
