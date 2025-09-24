@@ -76,7 +76,7 @@ class ApiUserController
                 $userModel = new User(); // creezi instanță corectă
                 $userModel->create([        // apel corect pentru metodă non-statică
                     'email' => $email,
-                    'password' => '12345',
+                    'password' => password_hash('12345', PASSWORD_DEFAULT),
                     'role'=> $role
                   
                 ]);

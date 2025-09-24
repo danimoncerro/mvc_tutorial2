@@ -17,6 +17,15 @@ const EditUser = {
                             <label for="editUserEmail" class="form-label">Email utilizator</label>
                             <input type="text" class="form-control" id="editUserEmail" v-model="editingUser.email" required>
                         </div>
+                        <div class="mb-3">
+                                <label for="role" class="form-label">Rol utilizator</label>
+                                <select class="form-select" id="role" v-model="editingUser.role" required>
+                                    <option value="">Selectează un rol</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="livrator">Livrator</option>
+                                    <option value="client">Client</option>
+                                </select>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">

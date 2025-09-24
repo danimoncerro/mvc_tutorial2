@@ -35,6 +35,10 @@ $router->post('auth/authenticate', 'AuthController@authenticate');
 $router->get('auth/logout', 'AuthController@logout');
 $router->get('vuecategories', 'CategoryController@vueindex');
 
+$router->get('cart', 'CartController@viewCart');
+$router->post('cart/add', 'CartController@addToCart');
+$router->post('cart/remove', 'CartController@removeFromCart');
+
 $router->get('api/categories', 'ApiCategoryController@index');
 $router->post('api/categories/store', 'ApiCategoryController@store');
 $router->post('api/categories/edit', 'ApiCategoryController@edit');
