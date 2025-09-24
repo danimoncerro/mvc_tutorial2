@@ -6,6 +6,7 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/AddProduct.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/DeleteProduct.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/EditProduct.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/SearchProduct.js"></script>
 
 <style>
 .editing-price {
@@ -79,11 +80,12 @@ ob_start();
                     </option>
                 </select>
             </div>
-            <div class="col-md-2">
-                <button class="btn btn-secondary w-100" @click="showProducts()">
-                    <i class="bi bi-search"></i> Caută
-                </button>
-            </div>
+            <!--  Componenta de cautare  -->
+            <search-product 
+                @search-products="searchProducts"
+                @show-products="showProducts">
+            </search-product>
+
         </div>
     </div>
 
@@ -211,7 +213,8 @@ ob_start();
         components: {
            'add-product': AddProduct,
            'delete-product': DeleteProduct,
-           'edit-product': EditProduct
+           'edit-product': EditProduct,
+           'search-product': SearchProduct
         },
 
         setup() {
@@ -224,180 +227,83 @@ ob_start();
             const editingPriceId = ref(null);
             const editingPrice = ref(0);
             const product = reactive({
-                name: '',
-                price: 0,
-                category_id: '',
                 id:'',
             });
             const categories = ref([]);
             const filters = reactive({
-                category_id: '',
-                min_price: 0,
-                max_price: 999,
                 search: ''
             });
             const dinamictext = ref('');
             const dinamictext2 = ref('');
             const incrementsnumber = ref(0);
 
+
             const showProducts = () => {
-              
-                showTable();
                 axios.get('<?= BASE_URL ?>api/products', {
                     params: {
                         per_page: 20,
                         page: 1,
                         sort: 'id',
-                        order: 'desc',
-                        category_id: filters.category_id,
-                        min_price: filters.min_price,
-                        max_price: filters.max_price,
-                        search: filters.search
+                        order: 'desc'
                     }
                 })
                 .then(response => {
                     products.value = response.data.products;
                     totalproducts.value = response.data.total_products;
-
-                    
-
                 })
                 .catch(error => {
                     console.error('API Error:', error);
                 });
-            }
+            };
 
-            const getCategories = () => {
-                axios.get('<?= BASE_URL ?>api/categories')
+            const searchProducts = (searchTerm) => {
+                if (searchTerm.length > 2) {
+                    axios.get('<?= BASE_URL ?>api/products', {
+                        params: {
+                            per_page: 20,
+                            page: 1,
+                            sort: 'id',
+                            order: 'desc',
+                            search: searchTerm
+                        }
+                    })
                     .then(response => {
-                        categories.value = response.data.categories;
+                        products.value = response.data.products;
+                        totalproducts.value = response.data.total_products;
                     })
                     .catch(error => {
-                        console.error('API Error:', error);
+                        console.error('Search Error:', error);
                     });
-            }
-
-            
+                } else if (searchTerm.length === 0) {
+                    showProducts();
+                }
+            };
 
             const increments = () => {
                 incrementsnumber.value++;
-            }
-
-            const hideTable = (product) => {
-                selectedProduct.value = product;
-                showTableData.value = false;
-            }
-
-            const showTable = () => {
-                showTableData.value = true;
-                selectedProduct.value = null;
-            }
-
-            
-
-            const editProduct = (p) => {
-                
-                product.name = p.name;
-                product.price = p.price;
-                product.category_id = p.category_id;
-                product.id = p.id;
-
-            }
-            
-
-            // Funcții pentru editarea inline a prețului
-            const startEditPrice = (product) => {
-                editingPriceId.value = product.id;
-                editingPrice.value = product.price;
-                
-                // Focus pe input după următorul tick
-                setTimeout(() => {
-                    const input = document.querySelector('input[type="number"]');
-                    if (input) {
-                        input.focus();
-                        input.select();
-                    }
-                }, 50);
-            }
-
-            const savePrice = (product) => {
-                // Convertește la număr și validează
-                const newPrice = parseFloat(editingPrice.value);
-                
-                if (isNaN(newPrice)) {
-                    alert('Te rog introdu un preț valid!');
-                    return;
-                }
-
-                if (newPrice === parseFloat(product.price)) {
-                    cancelEditPrice();
-                    return;
-                }
-
-                // Validare preț
-                if (newPrice < 0) {
-                    alert('Prețul nu poate fi negativ!');
-                    return;
-                }
-
-                // Actualizează prețul în backend
-                axios.post('<?= BASE_URL ?>api/products/edit?id=' + product.id, {
-                    name: product.name,
-                    price: newPrice,
-                    category_id: product.category_id
-                })
-                .then(response => {
-                    console.log('Price updated:', response.data);
-                    
-                    // Actualizează prețul în lista locală
-                    const productIndex = products.value.findIndex(p => p.id === product.id);
-                    if (productIndex !== -1) {
-                        products.value[productIndex].price = newPrice;
-                    }
-                    
-                    // Resetează editarea
-                    cancelEditPrice();
-                })
-                .catch(error => {
-                    console.error('Error updating price:', error);
-                    alert('Eroare la actualizarea prețului!');
-                });
-            }
-
-            const cancelEditPrice = () => {
-                editingPriceId.value = null;
-                editingPrice.value = 0;
-            }
+            };
 
             onMounted(() => {
                 showProducts();
-                getCategories();
-                //increments(); // Call increments to initialize the incrementsnumber
             });
 
-
-            return{
+            return {
                 products,
                 totalproducts,
                 hoveredProductName,
                 showTableData,
                 selectedProduct,
+                editingPriceId,
+                editingPrice,
                 product,
                 categories,
                 filters,
-                showProducts,
                 dinamictext,
                 dinamictext2,
                 incrementsnumber,
-                increments,
-                hideTable,
-                showTable,
-                editProduct,
-                editingPriceId,
-                editingPrice,
-                startEditPrice,
-                savePrice,
-                cancelEditPrice
+                showProducts,
+                searchProducts,
+                increments
             };
         }
     });                     

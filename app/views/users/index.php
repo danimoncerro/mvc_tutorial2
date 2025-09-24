@@ -6,6 +6,7 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/AddUser.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/DeleteUser.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/EditUser.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/SearchUser.js"></script>
 
 
 <div id="app" class="container">
@@ -15,11 +16,11 @@ ob_start();
 
     <add-user :savelink="'<?= BASE_URL ?>api/users/store'" @show-users="showUsers"></add-user>
 
-    <div class="mb-3">
-        <div class="col-md-3">
-                <input v-model="search" type="text" class="form-control" placeholder="Search for users  ...">
-        </div>
-    </div>
+    <!--  Componenta de cautare  -->
+    <search-user 
+        @search-users="searchUsers"
+        @show-users="showUsers">
+    </search-user>
 
     
 
@@ -90,7 +91,8 @@ ob_start();
             components: {
             'add-user': AddUser,
             'delete-user': DeleteUser,
-            'edit-user': EditUser
+            'edit-user': EditUser,
+            'search-user': SearchUser
         },
         setup() {
            
@@ -124,13 +126,14 @@ ob_start();
 
             
 
-            const searchUsers = () => {
-                if (search.value.trim() === '') {
+            const searchUsers = (s) => {
+
+                if (s === '') {
                     showUsers();
                     return;
                 }
                 
-                axios.get('<?= BASE_URL ?>api/users/search?search=' + search.value)
+                axios.get('<?= BASE_URL ?>api/users/search?search=' + s)
                 .then(response => {
                     users.value = response.data.users;
                     totalusers.value = response.data.users.length;
