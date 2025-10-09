@@ -319,6 +319,59 @@ ob_start();
                 });
             }
 
+            const startEditPrice = (product) => {
+                editingPriceId.value = product.id;
+                editingPrice.value = product.price;
+                
+                // Focus pe input după ce DOM-ul se actualizează
+                setTimeout(() => {
+                    const input = document.querySelector('.editing-price input');
+                    if (input) {
+                        input.focus();
+                        input.select(); // Selectează tot textul pentru editare rapidă
+                    }
+                }, 50);
+            };
+
+            const savePrice = (product) => {
+                // Validează prețul
+                const newPrice = parseFloat(editingPrice.value);
+                if (isNaN(newPrice) || newPrice < 0) {
+                    alert('Te rog introdu un preț valid!');
+                    return;
+                }
+
+                // Trimite request-ul de actualizare
+                axios.post('<?= BASE_URL ?>api/products/update-price', {
+                    id: product.id,
+                    price: newPrice
+                })
+                .then(response => {
+                    console.log('Preț actualizat cu succes:', response.data);
+                    
+                    // Actualizează prețul în lista locală
+                    const productIndex = products.value.findIndex(p => p.id === product.id);
+                    if (productIndex !== -1) {
+                        products.value[productIndex].price = newPrice;
+                    }
+                    
+                    // Ieși din modul de editare
+                    cancelEditPrice();
+                    
+                    // Opțional: afișează mesaj de succes
+                    // showSuccessMessage('Prețul a fost actualizat cu succes!');
+                })
+                .catch(error => {
+                    console.error('Eroare la actualizarea prețului:', error);
+                    alert('Eroare la actualizarea prețului. Te rog încearcă din nou!');
+                });
+            };
+
+            const cancelEditPrice = () => {
+                editingPriceId.value = null;
+                editingPrice.value = 0;
+            };
+
             onMounted(() => {
                 showProducts();
                 showCategories();
@@ -343,6 +396,9 @@ ob_start();
                 increments,
                 editingProduct,
                 editProduct,
+                startEditPrice,      // ✅ Definită
+                savePrice,           // ✅ Definită
+                cancelEditPrice      // ✅ Adăugată
             };
         }
     });                     

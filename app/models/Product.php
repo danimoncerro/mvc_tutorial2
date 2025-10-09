@@ -47,6 +47,15 @@ class Product
         ]);
     }
 
+    public function updatePrice($id, $price)
+    {
+        $stmt = $this->db->prepare("UPDATE products SET price = :price WHERE id = :id");
+        $stmt->execute([
+            'price' => $price,
+            'id' => $id
+        ]);
+    }   
+
     public function find($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM products WHERE id = :id");

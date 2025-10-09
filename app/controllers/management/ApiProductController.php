@@ -129,4 +129,26 @@ class ApiProductController
         }
     }
 
+    public function updatePrice()
+    {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $id = $data['id'] ?? null;
+        $price = $data['price'] ?? null;
+        $productModel = new Product();
+
+
+        if ($id && $price) {
+            try {
+                $productModel->updatePrice($id, $price);
+                echo json_encode(['status' => 'success', 'message' => 'Prețul produsului a fost actualizat cu succes.']);
+            } catch (PDOException $e) {
+                error_log("Error updating product price: " . $e->getMessage());
+                echo json_encode(['status' => 'error', 'message' => 'Eroare la actualizarea prețului produsului.']);
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'ID-ul sau prețul produsului sunt invalide.']);
+        }
+    }
+
 }
