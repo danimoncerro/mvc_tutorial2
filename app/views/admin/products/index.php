@@ -164,7 +164,7 @@ ob_start();
     <!-- Componenta EditProduct -->
     <edit-product 
         :updatelink="'<?= BASE_URL ?>api/products/edit'" 
-        :product="product"
+        :product="editingProduct"
         :categories="categories"
         @show-products="showProducts">
 
@@ -237,6 +237,12 @@ ob_start();
             const dinamictext = ref('');
             const dinamictext2 = ref('');
             const incrementsnumber = ref(0);
+            const editingProduct = reactive({
+                id: '',
+                name: '',
+                price: '',
+                category_id: ''
+            });
 
 
             const showProducts = () => {
@@ -280,6 +286,18 @@ ob_start();
                 }
             };
 
+            const editProduct = (p) => {
+                // Populează editingProduct cu datele produsului selectat
+                editingProduct.id = p.id;
+                editingProduct.name = p.name;
+                editingProduct.price = p.price;
+                editingProduct.category_id = p.category_id;
+
+                // Deschide modalul de editare
+                //const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+                //modal.show();
+            }
+
             const increments = () => {
                 incrementsnumber.value++;
             };
@@ -322,7 +340,9 @@ ob_start();
                 incrementsnumber,
                 showProducts,
                 searchProducts,
-                increments
+                increments,
+                editingProduct,
+                editProduct,
             };
         }
     });                     
