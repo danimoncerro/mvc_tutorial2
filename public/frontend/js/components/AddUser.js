@@ -27,7 +27,7 @@ const AddUser = {
                                 <select class="form-select" id="role" v-model="user.role" required>
                                     <option value="">Selectează un rol</option>
                                     <option value="admin">Admin</option>
-                                    <option value="livrator">Livrator</option>
+                                    <option value="livrator">Livrator1</option>
                                     <option value="client">Client</option>
                                 </select>
                             </div>

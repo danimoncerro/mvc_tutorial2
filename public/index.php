@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 session_start();
 define('APP_ROOT', dirname(__DIR__));
 

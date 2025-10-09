@@ -83,7 +83,18 @@ ob_start();
             };
 
             const addToCart = (product) => {
-                alert(`Produsul "${product.name}" a fost adăugat în coș!`);
+                axios.get('<?= BASE_URL ?>cart/add', {
+                    params: {
+                        product_id: product.id,
+                        quantity: 1
+                    }
+                })
+                .then(response => {
+                    alert(`Produsul "${product.name}" a fost adăugat în coș!`);
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
+                });
             };
 
 

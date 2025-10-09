@@ -33,7 +33,14 @@ class Router
 
     protected function callAction($controller, $method)
     {
-        $controllerPath = APP_ROOT . '/app/controllers/' . $controller . '.php';
+        // Verifică dacă controller-ul conține subdirectoare
+        if (strpos($controller, '/') !== false) {
+            $controllerPath = APP_ROOT . '/app/controllers/' . $controller . '.php';
+            $controllerName = basename($controller);
+        } else {
+            $controllerPath = APP_ROOT . '/app/controllers/' . $controller . '.php';
+            $controllerName = $controller;
+        }
 
         if (!file_exists($controllerPath)) {
             echo "Controllerul $controller nu a fost găsit.";
@@ -41,10 +48,10 @@ class Router
         }
 
         require_once $controllerPath;
-        $controllerInstance = new $controller;
+        $controllerInstance = new $controllerName;
 
         if (!method_exists($controllerInstance, $method)) {
-            echo "Metoda $method nu există în controllerul $controller.";
+            echo "Metoda $method nu există în controllerul $controllerName.";
             exit;
         }
 

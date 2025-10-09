@@ -18,7 +18,7 @@ class ProductController
     public function index()
     {
 
-        require_once APP_ROOT . '/app/views/products/index.php';
+        require_once APP_ROOT . '/app/views/admin/products/index.php';
     }
 
 
@@ -26,7 +26,7 @@ class ProductController
     {
         $categoryModel = new Category();
         $categories = $categoryModel->all();
-        require_once APP_ROOT . '/app/views/products/create.php';
+        require_once APP_ROOT . '/app/views/admin/products/create.php';
     }
 
     
@@ -72,7 +72,7 @@ class ProductController
         $categoryModel = new Category();
         $categories = $categoryModel->all();
 
-        require_once APP_ROOT . '/app/views/products/edit.php';
+        require_once APP_ROOT . '/app/views/admin/products/edit.php';
     }
 
     public function update()

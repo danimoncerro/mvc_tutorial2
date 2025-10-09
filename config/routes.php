@@ -5,25 +5,25 @@ define('BASE_URL', 'http://localhost:8080/');
 $router = new Router();
 
 $router->get('', 'HomeController@index');
-$router->get('products', 'ProductController@index');
-$router->get('products/show', 'ProductController@show');
-$router->get('products/create', 'ProductController@create');
-$router->post('products/store', 'ProductController@store');
-$router->get('products/edit', 'ProductController@edit');  
-$router->post('products/delete', 'ProductController@delete');
-$router->post('products/update', 'ProductController@update'); // Salvare modificări
-$router->get('users', 'UserController@index');
-$router->get('users/create', 'UserController@create');
-$router->post('users/store', 'UserController@store');
-$router->get('users/edit', 'UserController@edit');
-$router->post('users/update', 'UserController@update'); 
-$router->post('users/delete', 'UserController@delete');
-$router->get('categories', 'CategoryController@index');
-$router->get('categories/create', 'CategoryController@create');
-$router->post('categories/store', 'CategoryController@store');
-$router->get('categories/edit', 'CategoryController@edit');
-$router->post('categories/update', 'CategoryController@update'); 
-$router->post('categories/delete', 'CategoryController@delete');
+$router->get('products', 'management/ProductController@index');
+$router->get('products/show', 'management/ProductController@show');
+$router->get('products/create', 'management/ProductController@create');
+$router->post('products/store', 'management/ProductController@store');
+$router->get('products/edit', 'management/ProductController@edit');  
+$router->post('products/delete', 'management/ProductController@delete');
+$router->post('products/update', 'management/ProductController@update'); // Salvare modificări
+$router->get('users', 'management/UserController@index');
+$router->get('users/create', 'management/UserController@create');
+$router->post('users/store', 'management/UserController@store');
+$router->get('users/edit', 'management/UserController@edit');
+$router->post('users/update', 'management/UserController@update'); 
+$router->post('users/delete', 'management/UserController@delete');
+$router->get('categories', 'management/CategoryController@index');
+$router->get('categories/create', 'management/CategoryController@create');
+$router->post('categories/store', 'management/CategoryController@store');
+$router->get('categories/edit', 'management/CategoryController@edit');
+$router->post('categories/update', 'management/CategoryController@update'); 
+$router->post('categories/delete', 'management/CategoryController@delete');
 $router->get('orders', 'OrderController@index');
 $router->get('orders/create', 'OrderController@create');
 $router->post('orders/store', 'OrderController@store');
@@ -36,26 +36,23 @@ $router->get('auth/logout', 'AuthController@logout');
 $router->get('vuecategories', 'CategoryController@vueindex');
 
 $router->get('cart', 'CartController@viewCart');
-$router->post('cart/add', 'CartController@addToCart');
-$router->post('cart/remove', 'CartController@removeFromCart');
+$router->get('cart/add', 'CartController@addToCart');
+$router->get('cart/remove', 'CartController@removeFromCart');
 
-$router->get('api/categories', 'ApiCategoryController@index');
-$router->post('api/categories/store', 'ApiCategoryController@store');
-$router->post('api/categories/edit', 'ApiCategoryController@edit');
-$router->post('api/categories/delete', 'ApiCategoryController@delete');
-$router->get('api/categories/search', 'ApiCategoryController@search');
-$router->get('api/users', 'ApiUserController@index');
-$router->get('api/products', 'ApiProductController@index');
-$router->post('api/products/store', 'ApiProductController@store');
-$router->post('api/users/store', 'ApiUserController@store');
-$router->post('api/users/delete', 'ApiUserController@delete');
-$router->post('api/users/edit', 'ApiUserController@edit');
-$router->get('api/categories/search', 'ApiCategoryController@search');
-$router->get('api/users/search', 'ApiUserController@search');
-$router->post('api/products/delete', 'ApiProductController@delete');
-$router->post('api/products/edit', 'ApiProductController@edit');
-
-
-
+$router->get('api/categories', 'management/ApiCategoryController@index');
+$router->post('api/categories/store', 'management/ApiCategoryController@store');
+$router->post('api/categories/edit', 'management/ApiCategoryController@edit');
+$router->post('api/categories/delete', 'management/ApiCategoryController@delete');
+$router->get('api/categories/search', 'management/ApiCategoryController@search');
+$router->get('api/categories/search', 'management/ApiCategoryController@search');
+$router->get('api/users', 'management/ApiUserController@index');
+$router->post('api/users/store', 'management/ApiUserController@store');
+$router->post('api/users/delete', 'management/ApiUserController@delete');
+$router->post('api/users/edit', 'management/ApiUserController@edit');
+$router->get('api/users/search', 'management/ApiUserController@search');
+$router->get('api/products', 'management/ApiProductController@index');
+$router->post('api/products/store', 'management/ApiProductController@store');
+$router->post('api/products/delete', 'management/ApiProductController@delete');
+$router->post('api/products/edit', 'management/ApiProductController@edit');
 
 return $router;

@@ -28,13 +28,13 @@ class CategoryController
         $totalPages = ceil($totalCategories / $perPage);
         $categories = $categoryModel->getAllSortedPaginated($sort, $order, $perPage, $offset);
 
-        require_once APP_ROOT . '/app/views/categories/index.php';
+        require_once APP_ROOT . '/app/views/admin/categories/index.php';
     }
 
     public function vueindex()
     {
 
-        require_once APP_ROOT . '/app/views/categories/vueindex.php';
+        require_once APP_ROOT . '/app/views/admin/categories/vueindex.php';
     }
 
 
@@ -43,7 +43,7 @@ class CategoryController
         require_once APP_ROOT . '/app/models/Category.php';
         $categoryModel = new Category();
         $categories = $categoryModel->all();
-        require_once APP_ROOT . '/app/views/categories/create.php';
+        require_once APP_ROOT . '/app/views/admin/categories/create.php';
     }
 
     
@@ -89,7 +89,7 @@ class CategoryController
             return;
         }
 
-        require_once APP_ROOT . '/app/views/categories/edit.php';
+        require_once APP_ROOT . '/app/views/admin/categories/edit.php';
     }
 
     public function update()

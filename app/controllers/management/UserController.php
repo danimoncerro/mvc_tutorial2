@@ -36,13 +36,14 @@ class UserController
         $totalUsers = $userModel->countFiltered($role);
         $totalPages = ceil($totalUsers / $perPage);
 
-        require_once APP_ROOT . '/app/views/users/index.php';
+
+        require_once APP_ROOT . '/app/views/admin/users/index.php';
     }
 
 
     public function create()
     {
-        require_once APP_ROOT . '/app/views/users/create.php';
+        require_once APP_ROOT . '/app/views/admin/users/create.php';
     }
 
     
@@ -89,7 +90,7 @@ class UserController
             return;
         }
 
-        require_once APP_ROOT . '/app/views/users/edit.php';
+        require_once APP_ROOT . '/app/views/admin/users/edit.php';
     }
 
 
