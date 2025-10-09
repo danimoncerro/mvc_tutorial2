@@ -144,7 +144,8 @@ ob_start();
                 </td>
                 <td>{{ product.category_name }}</td> 
                 <td>
-                    <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editProductModal" @click="editProduct(product)" title="Editează produsul">
+                    <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editProductModal" 
+                        @click="editProduct(product)" title="Editează produsul">
                         <i class="bi bi-pencil"></i>
                         Editează
                     </button>
@@ -283,8 +284,26 @@ ob_start();
                 incrementsnumber.value++;
             };
 
+            const showCategories = () => {
+                axios.get('<?= BASE_URL ?>api/categories', {
+                    params: {
+                        per_page: 20,
+                        page: 1,
+                        sort: 'name',
+                        order: 'asc'
+                    }
+                })
+                .then(response => {
+                    categories.value = response.data.categories;
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
+                });
+            }
+
             onMounted(() => {
                 showProducts();
+                showCategories();
             });
 
             return {
