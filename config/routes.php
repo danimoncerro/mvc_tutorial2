@@ -55,5 +55,6 @@ $router->post('api/products/store', 'management/ApiProductController@store');
 $router->post('api/products/delete', 'management/ApiProductController@delete');
 $router->post('api/products/edit', 'management/ApiProductController@edit');
 $router->post('api/products/update-price', 'management/ApiProductController@updatePrice');
+$router->get('api/cart', 'ApiCartController@viewCart');
 
 return $router;

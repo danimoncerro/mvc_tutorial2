@@ -112,6 +112,15 @@ Exemplu /users -> /admin/users
 sa mutam fizic toate controlere legate de administrare (produsul, cateogoriile si utilizatorii)
 intr-un subfolder in folderul controllers.
 
+tema 09.10.2025
+
+sa afisam numele, pretul si subtotal pentru produs
+stergere produs din cos, 
+
+optional - actualizare de cantitate (ca si la actualizare pret)
+
+de revizuit tot ce am facut pana acum
+
 
 
 
