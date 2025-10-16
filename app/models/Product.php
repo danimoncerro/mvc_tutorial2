@@ -243,6 +243,28 @@ class Product
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function getById($id)
+    {
+        try {
+            $stmt = $this->db->prepare("
+                SELECT p.id, p.name, p.price, c.name as category_name 
+                FROM products p 
+                LEFT JOIN categories c ON p.category_id = c.id 
+                WHERE p.id = ?
+            ");
+            $stmt->execute([$id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // DEBUG
+            error_log("getById query result for ID $id: " . print_r($result, true));
+            
+            return $result;
+        } catch (PDOException $e) {
+            error_log("Error getting product by ID: " . $e->getMessage());
+            return false;
+        }
+    }
 }
 
 

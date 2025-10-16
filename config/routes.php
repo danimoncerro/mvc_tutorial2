@@ -56,5 +56,7 @@ $router->post('api/products/delete', 'management/ApiProductController@delete');
 $router->post('api/products/edit', 'management/ApiProductController@edit');
 $router->post('api/products/update-price', 'management/ApiProductController@updatePrice');
 $router->get('api/cart', 'ApiCartController@viewCart');
+$router->post('api/cart/remove', 'ApiCartController@removeFromCart');
+$router->post('api/cart/update-qty', 'ApiCartController@updateQuantity'); // ← nou
 
 return $router;
