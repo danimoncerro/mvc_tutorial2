@@ -4,7 +4,8 @@ ob_start();
 ?>
 
 <div id="app" class="container">
-    <h1 class="my-4">Coș de cumpărături</h1>
+    <h1 class="my-4">Coș de cumpărături <span class="badge bg-secondary" v-if="cart.length">{{ totalcartitems }}</span></h1>
+
     <div v-if="cart.length > 0">
         <table class="table table-bordered">
             <thead>
@@ -128,9 +129,24 @@ ob_start();
                     .catch(() => alert('Eroare la ștergerea produsului!'));
             };
 
-            const totalCart = computed(() =>
-                cart.value.reduce((t, it) => t + (it.product_price * it.quantity), 0).toFixed(2)
-            );
+            const totalcartitems = computed( () =>
+            {
+                let total = 0;
+                cart.value.forEach(item => {
+                    total += item.quantity;
+                });
+                return total;
+            });
+
+            const totalCart = computed(() => {
+                let total = 0;
+                cart.value.forEach(item => {
+                    total += item.product_price * item.quantity;
+                });
+                return total.toFixed(2);
+            });
+
+
 
             onMounted(getCart);
 
@@ -142,7 +158,9 @@ ob_start();
                 editingQty,
                 startEditQty,
                 saveQty,
-                cancelEditQty
+                cancelEditQty,
+                totalcartitems   
+                
             };
         }
     });
