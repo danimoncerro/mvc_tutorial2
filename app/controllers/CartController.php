@@ -1,4 +1,5 @@
 <?php
+require_once APP_ROOT . '/app/models/Product.php';
 
 class CartController
 {
@@ -11,11 +12,15 @@ class CartController
 
         $cart = $_SESSION['cart'] ?? [];
 
+
         if ($productId) {
+            $product = (new Product())->getById($productId);
+        
             // Adaugă produsul în coș (de exemplu, în sesiune sau bază de date)
             $cart[$productId] = [
                 'quantity' => ($cart[$productId]['quantity'] ?? 0) + $quantity,
-                'product_id' => $productId
+                'product_id' => $productId,
+                'price' => $product['price'] ?? 0
             ];
             $_SESSION['cart'] = $cart;  
             header('Content-Type: application/json');

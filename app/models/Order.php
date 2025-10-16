@@ -30,11 +30,14 @@ class Order
 
     public function create($data)
     {
-        $stmt = $this->db->prepare("INSERT INTO orders (user_id, status) VALUES (:user_id, :status)");
+        $stmt = $this->db->prepare("INSERT INTO orders (user_id, status, total_order) VALUES (:user_id, :status, :total_order)");
         $stmt->execute([
             'user_id' => $data['user_id'],
-            'status' => $data['status']
+            'status' => $data['status'],
+            'total_order' => $data['total_order']
         ]);
+
+        return $this->db->lastInsertId();
 
     }
 

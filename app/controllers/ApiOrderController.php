@@ -1,0 +1,62 @@
+<?php
+require_once APP_ROOT . '/config/database.php';
+require_once APP_ROOT . '/app/models/OrderItem.php';
+require_once APP_ROOT . '/app/models/Order.php';
+
+class ApiOrderController
+{
+    public function createOrder()
+    {
+
+
+        try {
+            // Verifică dacă există produse în coș
+            $sessionCart = $_SESSION['cart'] ?? [];
+            if (empty($sessionCart)) {
+                echo json_encode(['error' => 'Coșul este gol.']);
+                return;
+            }
+
+            $orderModel = new Order();
+            $orderItemModel = new OrderItem();
+
+            // Calculează totalul comenzii
+            $total = 0;
+            foreach ($sessionCart as $cartItem) {
+                // Preia prețul produsului din baza de date
+                $price = $cartItem['price'] ?? 0;
+                $total += $price * $cartItem['quantity'];
+            }
+
+            // Creează comanda
+            $orderId = $orderModel->create([
+                'user_id' => $_SESSION['user']['id' ] ?? null, // Poate fi null pentru utilizatori neautentificați
+                'total_order'   => $total,
+                'status'  => 'pending',
+            ]);
+
+            // Creează itemii comenzii
+            foreach ($sessionCart as $cartItem) {
+                // Preia prețul produsului din baza de date
+             
+                $price = $cartItem['price'] ?? 0;
+
+                $orderItemModel->create([
+                    'order_id'   => $orderId,
+                    'product_id' => $cartItem['product_id'],
+                    'qty'        => $cartItem['quantity'],
+                    'price'      => $price,
+                ]);
+            }
+
+            // Golește coșul după creare comandă
+            unset($_SESSION['cart']);
+
+            echo json_encode(['success' => true, 'order_id' => $orderId]);
+
+        } catch (Exception $e) {
+            error_log("Order API Error: " . $e->getMessage());
+            echo json_encode(['error' => 'Eroare: ' . $e->getMessage()]);
+        }
+    }
+}
