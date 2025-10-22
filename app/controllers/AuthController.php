@@ -21,6 +21,7 @@ class AuthController
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user']['id'] = $user['id'];
             $_SESSION['user']['email'] = $user['email'];
+            $_SESSION['user']['role'] = $user['role'];
             header("Location: " . BASE_URL . "products");
             exit;
         } else {

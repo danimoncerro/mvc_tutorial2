@@ -66,7 +66,7 @@ ob_start();
             const showOrders = () => {
                 axios.get('<?= BASE_URL ?>api/orders', {
                     params: {
-                        email: 'dani3@email.com'
+                        user_id: '<?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>'
                     }
                 })
                 .then(response => {

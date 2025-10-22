@@ -21,15 +21,18 @@ ob_start();
                             <small class="text-muted">Categorie: {{ product.category_name }}</small>
                         </p>
                     </div>
-                    <div class="card-footer">
-                        <small class="text-muted">
-                            <button class="btn btn-warning btn-sm me-2"  
-                            @click="addToCart(product)" title="Adaugă în coș">
-                                <i class="bi bi-cart-plus"></i>
-                                Adaugă în coș
-                            </button>
-                        </small>
-                    </div>
+                    <?php
+                    if ($_SESSION['user']['role'] == 'client'): ?>
+                        <div class="card-footer">
+                            <small class="text-muted">
+                                <button class="btn btn-warning btn-sm me-2"  
+                                @click="addToCart(product)" title="Adaugă în coș">
+                                    <i class="bi bi-cart-plus"></i>
+                                    Adaugă în coș
+                                </button>
+                            </small>
+                        </div>
+                    <?php endif ?>
                 </div>
             </div>
         </div>

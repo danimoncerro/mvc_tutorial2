@@ -64,10 +64,16 @@ class ApiOrderController
     {
         header('Content-Type: application/json');
         
+        $user_id = $_GET['user_id'];
+
         try {
             $orderModel = new Order();
-            $orders = $orderModel->all();  // sau getPaginated() dacă ai
-            
+            if ($_SESSION['user']['role'] == 'client'){
+                $orders = $orderModel->myOrders($user_id);  
+            }
+            else {
+                $orders = $orderModel->all();
+            }
             echo json_encode([
                 'orders' => $orders,
                 'total_orders' => count($orders)

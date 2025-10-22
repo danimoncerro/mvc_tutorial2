@@ -28,6 +28,21 @@ class Order
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    public function myOrders($user_id)
+    {
+        $sql = "SELECT orders.*, users.email AS user_email
+                FROM orders
+                LEFT JOIN users ON orders.user_id = users.id
+                where users.id = :user_id
+                ";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            'user_id' => $user_id
+        ]);
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function create($data)
     {

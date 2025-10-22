@@ -47,7 +47,13 @@
             <a class="nav-link ms-3" href="<?= BASE_URL ?>categories">Categories</a> 
             <a class="nav-link ms-3" href="<?= BASE_URL ?>users">Users</a>
             <a class="nav-link ms-3" href="<?= BASE_URL ?>cart">Cart</a>
-            <a class="nav-link ms-3" href="<?= BASE_URL ?>orders">My orders</a>
+
+            <?php if ($_SESSION['user']['role'] == 'client'): ?>
+
+              <a class="nav-link ms-3" href="<?= BASE_URL ?>orders">My orders</a>
+              <?php else: ?>
+                  <a class="nav-link ms-3" href="<?= BASE_URL ?>orders">All orders</a> 
+            <?php endif ?>
             <span class="ms-3"><?= htmlspecialchars($_SESSION['user']['email']) ?></span>
             <a href="<?= BASE_URL ?>auth/logout" class="btn btn-danger btn-sm ms-3">Logout</a>
         <?php else: ?>
