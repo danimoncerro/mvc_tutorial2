@@ -59,5 +59,7 @@ $router->get('api/cart', 'ApiCartController@viewCart');
 $router->post('api/cart/remove', 'ApiCartController@removeFromCart');
 $router->post('api/cart/update-qty', 'ApiCartController@updateQuantity'); // ← nou
 $router->post('api/order/create', 'ApiOrderController@createOrder');
+$router->get('api/cart', 'ApiCartController@viewCart');
+$router->get('api/orders', 'ApiOrderController@index');
 
 return $router;

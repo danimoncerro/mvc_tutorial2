@@ -59,4 +59,21 @@ class ApiOrderController
             echo json_encode(['error' => 'Eroare: ' . $e->getMessage()]);
         }
     }
+
+    public function index()
+    {
+        header('Content-Type: application/json');
+        
+        try {
+            $orderModel = new Order();
+            $orders = $orderModel->all();  // sau getPaginated() dacă ai
+            
+            echo json_encode([
+                'orders' => $orders,
+                'total_orders' => count($orders)
+            ]);
+        } catch (Exception $e) {
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
 }

@@ -1,12 +1,7 @@
-
-
 <?php
 
 //require_once '../../config/database.php'; // dacă nu ai autoload
 require_once APP_ROOT . '/config/database.php';
-
-
-
 
 class Order
 {
@@ -23,7 +18,13 @@ class Order
         $sql = "SELECT orders.*, users.email AS user_email
                 FROM orders
                 LEFT JOIN users ON orders.user_id = users.id";
-        $stmt = $this->db->query($sql);
+        //$stmt = $this->db->query($sql);
+        $stmt = $this->db->query("
+            SELECT o.*, u.email as user_email
+            FROM orders o
+            LEFT JOIN users u ON u.id = o.user_id
+            ORDER BY o.id DESC
+        ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     

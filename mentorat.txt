@@ -122,5 +122,11 @@ optional - actualizare de cantitate (ca si la actualizare pret)
 de revizuit tot ce am facut pana acum
 
 
+TEMA 16.10.2025
+
+Listeaza toate comenzile userului logat.
+Adauga in bara de navigare meniul "comenzile mele".
+
+
 
 

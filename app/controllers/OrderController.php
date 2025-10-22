@@ -15,10 +15,9 @@ class OrderController
 
     public function index()
     {
-        $orderModel = new Order();
-        $orders = $orderModel->all();
+        //$orderModel = new Order();
+        //$orders = $orderModel->all();
         require_once APP_ROOT . '/app/views/orders/index.php';
-    
     }
 
 
