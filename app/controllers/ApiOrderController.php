@@ -68,7 +68,9 @@ class ApiOrderController
         $user_id = $_GET['user_id'];
         $usermodel = new User();
         $user = $usermodel->find($user_id);
-        $status = $_GET['status'];
+        $status = $_GET['status'] ?? null;
+
+        //var_dump($status);
 
         try {
             $orderModel = new Order();

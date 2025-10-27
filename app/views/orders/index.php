@@ -25,10 +25,7 @@ ob_start();
         </div>
 
          <!--  Componenta de cautare  -->
-        <search-order 
-            @search-orders="searchOrders"
-            @show-orders="showOrders">
-        </search-order>
+        
 
     </div>
 
@@ -208,6 +205,7 @@ ob_start();
             return{
                 orders,
                 showOrders,
+                searchOrders, // ADAUGĂ ACEASTA
                 totalorders,
                 editingStatus,
                 editingStatusId,

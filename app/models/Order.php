@@ -16,14 +16,29 @@ class Order
     {
         $sql = "SELECT o.*, u.email as user_email
             FROM orders o
-            LEFT JOIN users u ON u.id = o.user_id
-            WHERE o.status=:status
-            ORDER BY o.id DESC";
+            LEFT JOIN users u ON u.id = o.user_id";
+
+        if (!is_null($status)){
+            $sql.= " WHERE o.status=:status";
+        }
+       
+
+        $sql.= " ORDER BY o.id DESC";
+            
         //$stmt = $this->db->query($sql);
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
-            'status'=>$status
-        ]);
+
+        if (!is_null($status)){
+            $stmt->execute([
+                'status'=>$status
+            ]);
+        }
+
+        else {
+            $stmt->execute();
+        }
+
+       
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
