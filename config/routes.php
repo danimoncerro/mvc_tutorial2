@@ -61,5 +61,6 @@ $router->post('api/cart/update-qty', 'ApiCartController@updateQuantity'); // ←
 $router->post('api/order/create', 'ApiOrderController@createOrder');
 $router->get('api/cart', 'ApiCartController@viewCart');
 $router->get('api/orders', 'ApiOrderController@index');
+$router->post('api/orders/update-status', 'ApiOrderController@updateStatus');
 
 return $router;

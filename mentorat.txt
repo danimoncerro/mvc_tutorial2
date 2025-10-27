@@ -127,6 +127,9 @@ TEMA 16.10.2025
 Listeaza toate comenzile userului logat.
 Adauga in bara de navigare meniul "comenzile mele".
 
+Tema de reparat edit status
+Filtrare dupa status doar pentru admin
+
 
 
 

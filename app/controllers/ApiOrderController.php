@@ -82,4 +82,26 @@ class ApiOrderController
             echo json_encode(['error' => $e->getMessage()]);
         }
     }
+
+    public function updateStatus()
+    {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $id = $data['id'] ?? null;
+        $status = $data['status'] ?? null;
+        $orderModel = new Order();
+
+
+        if ($id && $status) {
+            try {
+                $orderModel->updateStatus($id, $status);
+                echo json_encode(['status' => 'success', 'message' => 'Statusul comenzii a fost actualizat cu succes.']);
+            } catch (PDOException $e) {
+                error_log("Error updating order status: " . $e->getMessage());
+                echo json_encode(['status' => 'error', 'message' => 'Eroare la actualizarea statusului comenzii.']);
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'ID-ul sau statusul comenzii sunt invalide.']);
+        }
+    }
 }
