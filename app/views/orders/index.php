@@ -23,6 +23,13 @@ ob_start();
             </div>
 
         </div>
+
+         <!--  Componenta de cautare  -->
+        <search-order 
+            @search-orders="searchOrders"
+            @show-orders="showOrders">
+        </search-order>
+
     </div>
 
     
@@ -136,6 +143,30 @@ ob_start();
                     console.error('API Error:', error);
                 });
             }
+
+            const searchOrders = (searchTerm) => {
+                if (searchTerm.length > 2) {
+                    axios.get('<?= BASE_URL ?>api/orders', {
+                        params: {
+                            per_page: 20,
+                            page: 1,
+                            sort: 'id',
+                            order: 'desc',
+                            status: status
+                        }
+                    })
+                    .then(response => {
+                        orders.value = response.data.orders;
+                     
+                    })
+                    .catch(error => {
+                        console.error('Search Error:', error);
+                    });
+                } else if (searchTerm.length === 0) {
+                    showOrders();
+                }
+            };
+
 
             const startEditStatus = (order) => {
                 editingStatusId.value = order.id;

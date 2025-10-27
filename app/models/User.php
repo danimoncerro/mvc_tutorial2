@@ -56,7 +56,8 @@ class User
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
     }
-
+    
+// cauta utilizatorul dupa id
     public function find($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");

@@ -2,6 +2,7 @@
 require_once APP_ROOT . '/config/database.php';
 require_once APP_ROOT . '/app/models/OrderItem.php';
 require_once APP_ROOT . '/app/models/Order.php';
+require_once APP_ROOT . '/app/models/User.php';
 
 class ApiOrderController
 {
@@ -65,10 +66,12 @@ class ApiOrderController
         header('Content-Type: application/json');
         
         $user_id = $_GET['user_id'];
+        $usermodel = new User();
+        $user = $usermodel->find($user_id);
 
         try {
             $orderModel = new Order();
-            if ($_SESSION['user']['role'] == 'client'){
+            if ($user['role'] == 'client'){
                 $orders = $orderModel->myOrders($user_id);  
             }
             else {
