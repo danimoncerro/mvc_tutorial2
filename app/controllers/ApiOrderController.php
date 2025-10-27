@@ -91,7 +91,7 @@ class ApiOrderController
         $status = $data['status'] ?? null;
         $orderModel = new Order();
 
-
+        //var_dump($status, $id);
         if ($id && $status) {
             try {
                 $orderModel->updateStatus($id, $status);

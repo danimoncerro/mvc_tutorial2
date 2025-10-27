@@ -57,11 +57,13 @@ class Order
 
     }
 
-    public function update($id, $data)
+    public function updateStatus($id, $status)
     {
         $stmt = $this->db->prepare("UPDATE orders SET status = :status WHERE id = :id");
         $stmt->execute([
-            'id' => $id
+            'id' => $id,
+            'status' => $status
+
         ]);
     }
 
