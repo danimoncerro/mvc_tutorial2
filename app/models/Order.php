@@ -43,18 +43,32 @@ class Order
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    public function myOrders($user_id)
+    public function myOrders($user_id, $status)
     {
         $sql = "SELECT orders.*, users.email AS user_email
                 FROM orders
                 LEFT JOIN users ON orders.user_id = users.id
                 where users.id = :user_id
                 ";
-        
+
+        if (!is_null($status)){
+            $sql.= " AND orders.status=:status";
+        }
+
+
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
-            'user_id' => $user_id
-        ]);
+
+        if (!is_null($status)){
+            $stmt->execute([
+                'user_id' => $user_id,
+                'status' => $status
+            ]);
+        }
+
+        else {
+            $stmt->execute();
+        }
+       
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

@@ -75,7 +75,7 @@ class ApiOrderController
         try {
             $orderModel = new Order();
             if ($user['role'] == 'client'){
-                $orders = $orderModel->myOrders($user_id);  
+                $orders = $orderModel->myOrders($user_id, $status);  
             }
             else {
                 $orders = $orderModel->all($status);
