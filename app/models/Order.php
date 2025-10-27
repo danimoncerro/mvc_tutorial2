@@ -12,19 +12,19 @@ class Order
         $this->db = Database::connect();
     }
 
-    public function all()
+    public function all($status)
     {
- 
-        $sql = "SELECT orders.*, users.email AS user_email
-                FROM orders
-                LEFT JOIN users ON orders.user_id = users.id";
-        //$stmt = $this->db->query($sql);
-        $stmt = $this->db->query("
-            SELECT o.*, u.email as user_email
+        $sql = "SELECT o.*, u.email as user_email
             FROM orders o
             LEFT JOIN users u ON u.id = o.user_id
-            ORDER BY o.id DESC
-        ");
+            WHERE o.status=:status
+            ORDER BY o.id DESC";
+        //$stmt = $this->db->query($sql);
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            'status'=>$status
+        ]);
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     

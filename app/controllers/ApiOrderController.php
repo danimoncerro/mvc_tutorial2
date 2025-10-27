@@ -68,6 +68,7 @@ class ApiOrderController
         $user_id = $_GET['user_id'];
         $usermodel = new User();
         $user = $usermodel->find($user_id);
+        $status = $_GET['status'];
 
         try {
             $orderModel = new Order();
@@ -75,7 +76,8 @@ class ApiOrderController
                 $orders = $orderModel->myOrders($user_id);  
             }
             else {
-                $orders = $orderModel->all();
+                $orders = $orderModel->all($status);
+                
             }
             echo json_encode([
                 'orders' => $orders,
