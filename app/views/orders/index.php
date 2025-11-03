@@ -197,7 +197,19 @@ ob_start();
             }
 
             const sortOrder = (column) => {
+
                 orderColumn.value = column;
+
+                if (orderDirection.value == 'desc') {
+                    orderDirection.value = 'asc';
+                }
+
+                else {
+                    orderDirection.value = 'desc';
+                }
+
+                console.log(orderDirection.value);
+
                 showOrders();
             }
 
