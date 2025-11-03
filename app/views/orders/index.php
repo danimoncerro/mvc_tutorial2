@@ -34,20 +34,38 @@ ob_start();
     <table class="table table-striped table-hover table-bordered">
         <thead class="table-light">
             <tr>
-                <th>ID</th>
-                <th>
+                <th
+                    @click="sortOrder('id')"
+                    style="cursor: pointer;"
+                    title="Click pentru sortare dupa ID"
+                >
+                    ID
+                </th>
+                <th
+                    @click="sortOrder('user_id')"
+                    style="cursor: pointer;"
+                    title="Click pentru sortare dupa username"
+                >
                     User 
                 </th>
-                <th>
+                <th
+                    @click="sortOrder('status')"
+                    style="cursor: pointer;"
+                    title="Click pentru sortare dupa status"
+                >
                     Status
                 </th>
-                <th>
+                <th
+                    @click="sortOrder('created_at')"
+                    style="cursor: pointer;"
+                    title="Click pentru sortare dupa data"
+                >
                     Data
                 </th>
                 <th 
-                    @click="startSortingTotalOrder()"
+                    @click="sortOrder('total_order')"
                     style="cursor: pointer;"
-                    title="Click pentru sortare"
+                    title="Click pentru sortare dupa total order"
                 >
                     Total order
                 </th>
@@ -142,7 +160,8 @@ ob_start();
             const editingStatus = ref('');
             const editingStatusId = ref(null);
             const currentUserId = <?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>;
-            const sortOrder = ref('desc');
+            const orderDirection = ref('desc');
+            const orderColumn = ref('id');
 
             const showOrders = () => {
 
@@ -154,7 +173,9 @@ ob_start();
                 }
 
                 const params = {
-                    user_id: currentUserId
+                    user_id: currentUserId,
+                    order_column: orderColumn.value,
+                    order_direction: orderDirection.value
                 };
 
                 // Adaugă filtrul de status dacă este setat
@@ -173,6 +194,11 @@ ob_start();
                 .catch(error => {
                     console.error('API Error:', error);
                 });
+            }
+
+            const sortOrder = (column) => {
+                orderColumn.value = column;
+                showOrders();
             }
 
             const searchOrders = (searchTerm) => {
@@ -279,6 +305,8 @@ ob_start();
                 cancelEditStatus,
                 saveStatus,
                 startSortingTotalOrder,
+                orderDirection,
+                orderColumn,
                 sortOrder
             };
         }

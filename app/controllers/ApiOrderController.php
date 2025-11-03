@@ -69,6 +69,8 @@ class ApiOrderController
         $usermodel = new User();
         $user = $usermodel->find($user_id);
         $status = $_GET['status'] ?? null;
+        $order_column = $_GET['order_column'] ?? 'id';
+        $order_direction = $_GET['order_direction'] ?? 'ASC';
 
         //var_dump($status);
 
@@ -78,7 +80,7 @@ class ApiOrderController
                 $orders = $orderModel->myOrders($user_id, $status);  
             }
             else {
-                $orders = $orderModel->all($status);
+                $orders = $orderModel->all($status, $order_column, $order_direction);
                 
             }
             echo json_encode([

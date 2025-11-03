@@ -12,7 +12,11 @@ class Order
         $this->db = Database::connect();
     }
 
-    public function all($status)
+    public function all(
+        $status,
+        $order_column = 'id',
+        $order_direction = 'desc'
+        )
     {
         $sql = "SELECT o.*, u.email as user_email
             FROM orders o
@@ -23,7 +27,7 @@ class Order
         }
        
 
-        $sql.= " ORDER BY o.id DESC";
+        $sql.= " ORDER BY o.$order_column $order_direction";
             
         //$stmt = $this->db->query($sql);
         $stmt = $this->db->prepare($sql);
