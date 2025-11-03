@@ -42,6 +42,37 @@ class Order
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function allTotalOrders($status)
+    {
+        $sql = "SELECT o.*, u.email as user_email
+            FROM orders o
+            LEFT JOIN users u ON u.id = o.user_id";
+
+        if (!is_null($status)){
+            $sql.= " WHERE o.status=:status";
+        }
+       
+
+        $sql.= " ORDER BY o.total_order ASC";
+            
+        //$stmt = $this->db->query($sql);
+        $stmt = $this->db->prepare($sql);
+
+        if (!is_null($status)){
+            $stmt->execute([
+                'status'=>$status
+            ]);
+        }
+
+        else {
+            $stmt->execute();
+        }
+
+       
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     
     public function myOrders($user_id, $status)
     {
@@ -66,7 +97,43 @@ class Order
         }
 
         else {
-            $stmt->execute();
+            $stmt->execute([
+                'user_id' => $user_id
+            ]);
+        }
+       
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function myOrdersTotalOrders($user_id, $status)
+    {
+        $sql = "SELECT orders.*, users.email AS user_email
+                FROM orders
+                LEFT JOIN users ON orders.user_id = users.id
+                where users.id = :user_id
+                ";
+
+        if (!is_null($status)){
+            $sql.= " AND orders.status=:status";
+        }
+
+        $sql.= " ORDER BY orders.total_order ASC";
+
+
+        $stmt = $this->db->prepare($sql);
+
+        if (!is_null($status)){
+            $stmt->execute([
+                'user_id' => $user_id,
+                'status' => $status
+            ]);
+        }
+
+        else {
+            $stmt->execute([
+                'user_id' => $user_id
+            ]);
         }
        
         

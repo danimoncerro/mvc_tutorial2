@@ -90,6 +90,35 @@ class ApiOrderController
         }
     }
 
+    public function sortByTotalOrders()
+    {
+        header('Content-Type: application/json');
+        
+        $user_id = $_GET['user_id'];
+        $usermodel = new User();
+        $user = $usermodel->find($user_id);
+        $status = $_GET['status'] ?? null;
+
+        //var_dump($status);
+
+        try {
+            $orderModel = new Order();
+            if ($user['role'] == 'client'){
+                $orders = $orderModel->myOrdersTotalOrders($user_id, $status);  
+            }
+            else {
+                $orders = $orderModel->allTotalOrders($status);
+                
+            }
+            echo json_encode([
+                'orders' => $orders,
+                'total_orders' => count($orders)
+            ]);
+        } catch (Exception $e) {
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
+
     public function updateStatus()
     {
         $input = file_get_contents('php://input');

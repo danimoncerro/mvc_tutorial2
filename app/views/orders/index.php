@@ -44,7 +44,11 @@ ob_start();
                 <th>
                     Data
                 </th>
-                <th>
+                <th 
+                    @click="startSortingTotalOrder()"
+                    style="cursor: pointer;"
+                    title="Click pentru sortare"
+                >
                     Total order
                 </th>
             </tr>
@@ -90,6 +94,35 @@ ob_start();
             </tr>
         </tbody>
     </table>
+
+    <!-- Paginare -->
+    <nav aria-label="Page navigation" v-if="totalPages > 1">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">
+                    <i class="bi bi-chevron-left"></i> Anterior
+                </a>
+            </li>
+            
+            <li 
+                class="page-item" 
+                v-for="page in totalPages" 
+                :key="page"
+                :class="{ active: page === currentPage }"
+            >
+                <a class="page-link" href="#" @click.prevent="changePage(page)">
+                    {{ page }}
+                </a>
+            </li>
+            
+            <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">
+                    Următorul <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
 </div>
 
 <!-- Aici incepe Vue.js -->
@@ -109,6 +142,7 @@ ob_start();
             const editingStatus = ref('');
             const editingStatusId = ref(null);
             const currentUserId = <?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>;
+            const sortOrder = ref('desc');
 
             const showOrders = () => {
 
@@ -198,6 +232,36 @@ ob_start();
                 });
             };
 
+            const startSortingTotalOrder = () => {
+                console.log('Current User ID:', currentUserId);
+    
+                if (!currentUserId) {
+                    console.error('User ID is null - user not logged in?');
+                    return;
+                }
+
+                const params = {
+                    user_id: currentUserId
+                };
+
+                // Adaugă filtrul de status dacă este setat
+                if (filters.value.status) {
+                    params.status = filters.value.status;
+                }
+
+                axios.get('<?= BASE_URL ?>api/total_order', {
+                    params: params
+                })
+                .then(response => {
+                    console.log('Orders:', response.data);
+                    orders.value = response.data.orders || [];
+                    totalorders.value = response.data.total_orders || 0;
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
+                });
+            };
+
             onMounted(() => {
                 showOrders();
             });
@@ -214,6 +278,8 @@ ob_start();
                 startEditStatus,
                 cancelEditStatus,
                 saveStatus,
+                startSortingTotalOrder,
+                sortOrder
             };
         }
     });                     

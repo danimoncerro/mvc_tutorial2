@@ -130,6 +130,11 @@ Adauga in bara de navigare meniul "comenzile mele".
 Tema de reparat edit status
 Filtrare dupa status doar pentru admin
 
+Tema 27.10.2025
+
+1. Adaugare sortare dupa un camp (directia ascending, descending) atat pentru admin cat si pentru client.
+2. Paginare pentru comenzi atat pentru admin cat si pentru client.
+
 
 
 
