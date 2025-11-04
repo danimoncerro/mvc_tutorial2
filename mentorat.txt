@@ -135,6 +135,15 @@ Tema 27.10.2025
 1. Adaugare sortare dupa un camp (directia ascending, descending) atat pentru admin cat si pentru client.
 2. Paginare pentru comenzi atat pentru admin cat si pentru client.
 
+limit si offset
+
+LIMIT 0, 10  ->prima pagina cu 10 comenzi afisate
+LIMIT 10, 10  ->pagina 2 cu 10 comenzi
+
+primul element este offset-ul
+
+LIMIT offset, numar_de_elemente
+
 
 
 

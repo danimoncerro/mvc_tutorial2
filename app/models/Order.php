@@ -78,19 +78,23 @@ class Order
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    public function myOrders($user_id, $status)
+    public function myOrders(
+        $user_id, 
+        $status,
+        $order_column = 'id',
+        $order_direction = 'desc'
+    )
     {
         $sql = "SELECT orders.*, users.email AS user_email
                 FROM orders
                 LEFT JOIN users ON orders.user_id = users.id
-                where users.id = :user_id
-                ";
+                WHERE users.id = :user_id"; // Capitalizat WHERE
 
         if (!is_null($status)){
-            $sql.= " AND orders.status=:status";
+            $sql.= " AND orders.status = :status"; // Schimbat WHERE în AND și o. în orders.
         }
 
-
+        $sql.= " ORDER BY orders.$order_column $order_direction";
         $stmt = $this->db->prepare($sql);
 
         if (!is_null($status)){
@@ -99,13 +103,11 @@ class Order
                 'status' => $status
             ]);
         }
-
         else {
             $stmt->execute([
                 'user_id' => $user_id
             ]);
         }
-       
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

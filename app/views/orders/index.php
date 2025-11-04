@@ -208,8 +208,6 @@ ob_start();
                     orderDirection.value = 'desc';
                 }
 
-                console.log(orderDirection.value);
-
                 showOrders();
             }
 
