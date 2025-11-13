@@ -119,6 +119,7 @@ ob_start();
             <li class="page-item" style="cursor: pointer" :class="{disabled: currentPage ===1 }">
                 <a class="page-link" @click="goToPage(currentPage - 1)" tabindex="-1">Previous</a>
             </li>
+            <!-- avem in total 6 pagini -->
             <!-- tratam prima pagina -->
             <li class="page-item active" style="cursor: pointer" v-if="currentPage < 2">
                 <a class="page-link" @click="goToPage(currentPage)">
@@ -139,19 +140,36 @@ ob_start();
             </li>
 
             <!-- tratam pagina > 1 -->
-            <li class="page-item" style="cursor: pointer" v-if="currentPage>1">
+            <li class="page-item" style="cursor: pointer" v-if="currentPage>1 && currentPage<totalPages">
                 <a class="page-link" @click="goToPage(currentPage - 1)">
                     {{ currentPage - 1}}
                 </a>
             </li>
-            <li class="page-item active"  style="cursor: pointer"  v-if="currentPage>1">
+            <li class="page-item active"  style="cursor: pointer"  v-if="currentPage>1 && currentPage<totalPages">
                 <a class="page-link" @click="goToPage(currentPage)">
                     {{ currentPage}}
                 </a>
             </li>
-            <li class="page-item" style="cursor: pointer"  v-if="currentPage>1">
+            <li class="page-item" style="cursor: pointer"  v-if="currentPage>1 && currentPage<totalPages">
                 <a class="page-link" @click="goToPage(currentPage + 1)">
                     {{ currentPage + 1 }}
+                </a>
+            </li>
+
+            <!-- tratam utlima pagina -->
+            <li class="page-item" style="cursor: pointer" v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage - 2)">
+                    {{ currentPage - 2}}
+                </a>
+            </li>
+            <li class="page-item"  style="cursor: pointer"  v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage - 1)">
+                    {{ currentPage - 1}}
+                </a>
+            </li>
+            <li class="page-item active" style="cursor: pointer"  v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage)">
+                    {{ currentPage }}
                 </a>
             </li>
              
