@@ -4,6 +4,8 @@ $title = 'Orders List';
 ob_start();
 ?>
 
+<script src="<?= BASE_URL ?>frontend/js/components/OrderDetail.js"></script>
+
 <div id="app" class="container">
     <h1>Orders 
         <span class="badge bg-secondary" v-if="orders.length">{{ totalorders }}</span>
@@ -67,6 +69,9 @@ ob_start();
                 >
                     Total order
                 </th>
+                <th>
+                    Actiuni
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -106,6 +111,10 @@ ob_start();
                 <td>
                     {{ order.total_order }}
                 </td> 
+
+                <td>
+                        <order-detail :savelink="'<?= BASE_URL ?>api/orders/showDetails'"></order-detail>
+                </td>
                 
             </tr>
         </tbody>
@@ -208,6 +217,12 @@ ob_start();
         const { createApp, ref, onMounted} = Vue;   
         
         const app = createApp({
+
+            components: {
+                'order-detail': OrderDetail,
+           
+            },
+
             
         setup() {
            

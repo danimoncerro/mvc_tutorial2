@@ -145,5 +145,12 @@ primul element este offset-ul
 LIMIT offset, numar_de_elemente
 
 
+Tema 13.11.2025
+
+Detalii comanda
+
+Sa se afiseze in detalii comanda ceea ce vrem sa vedem ca si administrator.
+
+
 
 
