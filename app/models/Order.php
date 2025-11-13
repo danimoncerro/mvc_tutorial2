@@ -14,22 +14,32 @@ class Order
 
     public function all(
         $status,
+        $page,
         $order_column = 'id',
-        $order_direction = 'desc'
+        $order_direction = 'DESC',
+        //$limit1 = 5
+        $perPage = 5
+        
         )
     {
+
+        //error_log("  - totalPages: " . $totalPages);
         $sql = "SELECT o.*, u.email as user_email
             FROM orders o
-            LEFT JOIN users u ON u.id = o.user_id";
+            LEFT JOIN users u ON u.id = o.user_id
+            WHERE 1=1";
+                //"AND o.id IN (2, 4, 8, 9)";
 
         if (!is_null($status)){
-            $sql.= " WHERE o.status=:status";
+            $sql.= " AND o.status=:status";
         }
-       
-
-        $sql.= " ORDER BY o.$order_column $order_direction";
+        $limit = $perPage;
+        $offset = ($page - 1) * $perPage;
+        $sql .= " ORDER BY o.$order_column $order_direction";
+        $sql .= " LIMIT $limit OFFSET $offset";   
+  
             
-        //$stmt = $this->db->query($sql);
+        $stmt = $this->db->query($sql);
         $stmt = $this->db->prepare($sql);
 
         if (!is_null($status)){
@@ -37,6 +47,8 @@ class Order
                 'status'=>$status
             ]);
         }
+
+
 
         else {
             $stmt->execute();
@@ -77,24 +89,46 @@ class Order
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function countAll($status = null)
+    {
+        $sql = "SELECT COUNT(*) as total FROM orders WHERE 1=1";
+        
+        if (!is_null($status)){
+            $sql .= " AND status = :status";
+        }
+        
+        $stmt = $this->db->prepare($sql);
+        
+        if (!is_null($status)){
+            $stmt->execute(['status' => $status]);
+        } else {
+            $stmt->execute();
+        }
+        
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)$result['total'];  // ← RETURNEAZĂ NUMĂR
+    } 
     
     public function myOrders(
         $user_id, 
         $status,
         $order_column = 'id',
         $order_direction = 'desc'
-    )
+        )
     {
         $sql = "SELECT orders.*, users.email AS user_email
                 FROM orders
                 LEFT JOIN users ON orders.user_id = users.id
-                WHERE users.id = :user_id"; // Capitalizat WHERE
+                WHERE users.id = :user_id
+                ";
 
         if (!is_null($status)){
-            $sql.= " AND orders.status = :status"; // Schimbat WHERE în AND și o. în orders.
+            $sql.= " WHERE o.status=:status";
+            
         }
 
-        $sql.= " ORDER BY orders.$order_column $order_direction";
+        $sql.= " ORDER BY o.$order_column $order_direction";
         $stmt = $this->db->prepare($sql);
 
         if (!is_null($status)){
@@ -103,11 +137,13 @@ class Order
                 'status' => $status
             ]);
         }
+
         else {
             $stmt->execute([
                 'user_id' => $user_id
             ]);
         }
+       
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -117,7 +153,7 @@ class Order
         $sql = "SELECT orders.*, users.email AS user_email
                 FROM orders
                 LEFT JOIN users ON orders.user_id = users.id
-                where users.id = :user_id
+                WHERE users.id = :user_id
                 ";
 
         if (!is_null($status)){

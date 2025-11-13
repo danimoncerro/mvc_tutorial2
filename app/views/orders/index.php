@@ -14,7 +14,7 @@ ob_start();
         <div class="row g-3">
            
             <div class="col-md-3">
-                <select v-model="filters.status" class="form-select" @change="showOrders()">
+                <select v-model="filters.status" class="form-select" @change="showOrders(1)">
                     <option value="">Toate statusurile</option>
                     <option v-for="status in allStatuses" :key="status" :value="status">
                         {{ status }}
@@ -28,8 +28,6 @@ ob_start();
         
 
     </div>
-
-    
 
     <table class="table table-striped table-hover table-bordered">
         <thead class="table-light">
@@ -114,32 +112,60 @@ ob_start();
     </table>
 
     <!-- Paginare -->
-    <nav aria-label="Page navigation" v-if="totalPages > 1">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">
-                    <i class="bi bi-chevron-left"></i> Anterior
+
+
+    <nav aria-label="Paginare comenzi">
+        <ul class="pagination">
+            <li class="page-item" style="cursor: pointer" :class="{disabled: currentPage ===1 }">
+                <a class="page-link" @click="goToPage(currentPage - 1)" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item" style="cursor: pointer" v-if="currentPage>1">
+                <a class="page-link" @click="goToPage(currentPage-1)">
+                    {{ currentPage - 1 }}
                 </a>
             </li>
-            
-            <li 
-                class="page-item" 
-                v-for="page in totalPages" 
-                :key="page"
-                :class="{ active: page === currentPage }"
-            >
-                <a class="page-link" href="#" @click.prevent="changePage(page)">
-                    {{ page }}
+            <li class="page-item" style="cursor: pointer">
+                <a class="page-link" @click="goToPage(currentPage)">
+                    {{ currentPage}}
                 </a>
             </li>
-            
-            <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-                <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">
-                    Următorul <i class="bi bi-chevron-right"></i>
+            <li class="page-item" style="cursor: pointer">
+                <a class="page-link" @click="goToPage(currentPage + 1)">
+                    {{ currentPage + 1 }}
                 </a>
+            </li>
+            <li class="page-item" style="cursor: pointer">
+                <a class="page-link" @click="goToPage(currentPage + 2)">
+                    {{ currentPage + 2 }}
+                </a>
+            </li>
+            <li class="page-item" style="cursor: pointer" :class="{disabled: currentPage === totalPages }">
+                <a class="page-link"  @click="goToPage(currentPage + 1)">Next</a>
             </li>
         </ul>
+
+        <div class="mb-3">
+            <h5>Orders/page</h5>
+            <div class="row g-3">
+            
+                <div class="col-md-3">
+                    <select v-model="filters.page" class="form-select" @change="showOrders(1)">
+                        <option value="">5 orders</option>
+                        <option v-for="page in perPages" :key="page" :value="page">
+                            {{ page }} orders
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="text-muted mt-2">
+            Pagina {{ currentPage }} din {{ totalPages }} (Total: {{ totalorders }} comenzi)
+        </div>
+
     </nav>
+
 
 </div>
 
@@ -154,8 +180,12 @@ ob_start();
             const orders = ref([]);
             const totalorders = ref(0);
             const allStatuses = ref(['pending', 'delivered', 'canceled']);
+            const perPages = ref([10, 15, 20]);
+            const currentPage = ref(1);
+            const totalPages = ref(1);
             const filters = ref({
-                status: ''
+                status: '',
+                page: ''
             });
             const editingStatus = ref('');
             const editingStatusId = ref(null);
@@ -163,9 +193,13 @@ ob_start();
             const orderDirection = ref('desc');
             const orderColumn = ref('id');
 
-            const showOrders = () => {
-
+            const showOrders = (page) => {
+                
+                //page = currentPage.value;
                 console.log('Current User ID:', currentUserId);
+                console.log('totalPages:' , totalPages.value);
+                console.log('Showing page:', page);
+                
     
                 if (!currentUserId) {
                     console.error('User ID is null - user not logged in?');
@@ -175,13 +209,21 @@ ob_start();
                 const params = {
                     user_id: currentUserId,
                     order_column: orderColumn.value,
-                    order_direction: orderDirection.value
+                    order_direction: orderDirection.value,
+                    page: page
                 };
 
                 // Adaugă filtrul de status dacă este setat
                 if (filters.value.status) {
                     params.status = filters.value.status;
                 }
+
+                if (filters.value.page) {
+                    params.per_page = filters.value.page;
+                    console.log('Params:', params);
+                }
+
+
 
                 axios.get('<?= BASE_URL ?>api/orders', {
                     params: params
@@ -190,10 +232,28 @@ ob_start();
                     console.log('Orders:', response.data);
                     orders.value = response.data.orders || [];
                     totalorders.value = response.data.total_orders || 0;
+                    //currentPage.value = response.data.current_page || 3;
+                    totalPages.value = response.data.total_pages || 1;
+
+                    
+                    console.log('Total Pages din .then (response:', totalPages.value);
                 })
                 .catch(error => {
                     console.error('API Error:', error);
                 });
+            }
+
+            const goToPage = (page) => {
+                console.log('Going to page:', page);
+                
+                if (page < 1 || page > totalPages.value) {
+                    console.log('Invalid page:', page);
+                    return;  // Previne navigarea la pagini invalide
+                }
+                
+                currentPage.value = page;
+                console.log('Current Page din .then (response:', currentPage.value);
+                showOrders(page);
             }
 
             const sortOrder = (column) => {
@@ -208,7 +268,7 @@ ob_start();
                     orderDirection.value = 'desc';
                 }
 
-                showOrders();
+                showOrders(1);
             }
 
             const searchOrders = (searchTerm) => {
@@ -219,7 +279,7 @@ ob_start();
                             page: 1,
                             sort: 'id',
                             order: 'desc',
-                            status: status
+                            status: filters.value.status
                         }
                     })
                     .then(response => {
@@ -299,7 +359,7 @@ ob_start();
             };
 
             onMounted(() => {
-                showOrders();
+                showOrders(1);
             });
 
             return{
@@ -317,7 +377,11 @@ ob_start();
                 startSortingTotalOrder,
                 orderDirection,
                 orderColumn,
-                sortOrder
+                sortOrder,
+                perPages,
+                currentPage,
+                totalPages,
+                goToPage
             };
         }
     });                     

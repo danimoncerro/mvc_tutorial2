@@ -69,23 +69,40 @@ class ApiOrderController
         $usermodel = new User();
         $user = $usermodel->find($user_id);
         $status = $_GET['status'] ?? null;
+        $page = $_GET['page'] ?? 2;
         $order_column = $_GET['order_column'] ?? 'id';
         $order_direction = $_GET['order_direction'] ?? 'ASC';
+        $perPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 5;
+        $currentPage = $_GET['currentPage'] ?? 1;
+        //$perPage = 9;
+        //$limit1 = 10;
+
 
         //var_dump($status);
+        //var_dump($page);
 
         try {
             $orderModel = new Order();
             if ($user['role'] == 'client'){
-                $orders = $orderModel->myOrders($user_id, $status,$order_column, $order_direction);  
+                $orders = $orderModel->myOrders($user_id, $status, $page, $order_column, $order_direction);  
+                $totalOrders = $orderModel->myOrdersTotalOrders($user_id, $status);
             }
             else {
-                $orders = $orderModel->all($status, $order_column, $order_direction);
+                //$totalPages = ($totalOrders > 0 && $perPage > 0) ? (int)ceil($totalOrders / $perPage) : 1;
+                $orders = $orderModel->all($status, $page, $order_column, $order_direction, $perPage);
+                $totalOrders = $orderModel->countAll($status);
                 
             }
+
+            $totalPages = ($totalOrders > 0 && $perPage > 0) ? (int)ceil($totalOrders / $perPage) : 1;
+            
             echo json_encode([
                 'orders' => $orders,
-                'total_orders' => count($orders)
+                'total_orders' => count($orders),
+                'current_page' => $currentPage,
+                'per_page' => $perPage,
+                'total_pages' => $totalPages
+
             ]);
         } catch (Exception $e) {
             echo json_encode(['error' => $e->getMessage()]);
@@ -114,7 +131,8 @@ class ApiOrderController
             }
             echo json_encode([
                 'orders' => $orders,
-                'total_orders' => count($orders)
+                'total_orders' => count($orders),
+                'total_pages' => $totalPages
             ]);
         } catch (Exception $e) {
             echo json_encode(['error' => $e->getMessage()]);
