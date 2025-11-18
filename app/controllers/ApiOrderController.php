@@ -160,4 +160,15 @@ class ApiOrderController
             echo json_encode(['status' => 'error', 'message' => 'ID-ul sau statusul comenzii sunt invalide.']);
         }
     }
+
+    public function orderDetail()
+    {
+        header('Content-Type: application/json');
+
+        $orderId = $_GET['order_id'];
+        $orderItemModel = new OrderItem();
+        $orderItems = $orderItemModel->findByOrder($orderId);
+
+        echo json_encode([$orderItems]);    
+    }
 }

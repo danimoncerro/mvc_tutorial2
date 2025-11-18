@@ -32,6 +32,8 @@ ob_start();
 
     </div>
 
+    <order7-detail :order="selectedOrder" :detaillink="detaillink"></order7-detail>
+    
     <table class="table table-striped table-hover table-bordered">
         <thead class="table-light">
             <tr>
@@ -116,7 +118,7 @@ ob_start();
                 <td>   
 
                         <!-- Buton pentru deschidere modal -->
-                    <order7-detail :order="selectedOrder"></order7-detail>
+                    
                     <button 
                         @click="showOrderDetails(order)" 
                         class="btn btn-warning btn-sm me-2" 
@@ -251,6 +253,7 @@ ob_start();
             const orderDirection = ref('desc');
             const orderColumn = ref('id');
             const selectedOrder = ref(null); 
+            const detaillink = ref('');
 
             const showOrders = (page) => {
                 
@@ -420,6 +423,7 @@ ob_start();
             const showOrderDetails = (order) => {
                 console.log('Afisez detalii pentru comanda:', order);
                 selectedOrder.value = order;
+                detaillink.value='<?= BASE_URL ?>api/orderdetail?order_id=' + order.id; 
             };
 
             onMounted(() => {
@@ -447,7 +451,8 @@ ob_start();
                 totalPages,
                 goToPage,
                 selectedOrder,
-                showOrderDetails
+                showOrderDetails,
+                detaillink
             };
         }
     });   

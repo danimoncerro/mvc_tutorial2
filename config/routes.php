@@ -63,5 +63,6 @@ $router->get('api/cart', 'ApiCartController@viewCart');
 $router->get('api/orders', 'ApiOrderController@index');
 $router->get('api/total_order', 'ApiOrderController@sortByTotalOrders');
 $router->post('api/orders/update-status', 'ApiOrderController@updateStatus');
+$router->get('api/orderdetail', 'ApiOrderController@orderDetail') ;
 
 return $router;
