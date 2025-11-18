@@ -4,7 +4,8 @@ $title = 'Orders List';
 ob_start();
 ?>
 
-<script src="<?= BASE_URL ?>frontend/js/components/OrderDetail.js"></script>
+
+<script src="<?= BASE_URL ?>frontend/js/components/Order7Detail.js"></script>
 
 <div id="app" class="container">
     <h1>Orders 
@@ -112,8 +113,21 @@ ob_start();
                     {{ order.total_order }}
                 </td> 
 
-                <td>
-                        <order-detail :savelink="'<?= BASE_URL ?>api/orders/showDetails'"></order-detail>
+                <td>   
+
+                        <!-- Buton pentru deschidere modal -->
+                    <order7-detail :order="selectedOrder"></order7-detail>
+                    <button 
+                        @click="showOrderDetails(order)" 
+                        class="btn btn-warning btn-sm me-2" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#order7DetailModal" 
+                        title="Detalii comanda"
+                    >
+                        <i class="bi bi-pencil"></i>
+                        Detalii comanda
+                    </button>
+
                 </td>
                 
             </tr>
@@ -214,15 +228,10 @@ ob_start();
 
 <!-- Aici incepe Vue.js -->
 <script>
-        const { createApp, ref, onMounted} = Vue;   
+    const { createApp, ref, onMounted} = Vue;   
         
-        const app = createApp({
-
-            components: {
-                'order-detail': OrderDetail,
-           
-            },
-
+    const app = createApp({
+        
             
         setup() {
            
@@ -241,6 +250,7 @@ ob_start();
             const currentUserId = <?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>;
             const orderDirection = ref('desc');
             const orderColumn = ref('id');
+            const selectedOrder = ref(null); 
 
             const showOrders = (page) => {
                 
@@ -407,6 +417,11 @@ ob_start();
                 });
             };
 
+            const showOrderDetails = (order) => {
+                console.log('Afisez detalii pentru comanda:', order);
+                selectedOrder.value = order;
+            };
+
             onMounted(() => {
                 showOrders(1);
             });
@@ -430,11 +445,15 @@ ob_start();
                 perPages,
                 currentPage,
                 totalPages,
-                goToPage
+                goToPage,
+                selectedOrder,
+                showOrderDetails
             };
         }
-    });                     
+    });   
     
+    
+    app.component('order7-detail', Order7Detail);
     app.mount('#app');
 </script>
 
