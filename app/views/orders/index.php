@@ -256,11 +256,8 @@ ob_start();
 
 <!-- Aici incepe Vue.js -->
 <script>
-    const { createApp, ref, onMounted} = Vue;   
-        
-    const app = createApp({
-        
-            
+    const { createApp, ref, computed, onMounted, reactive } = Vue;
+    const app = createApp({    
         setup() {
            
             const orders = ref([]);
@@ -490,10 +487,11 @@ ob_start();
                 fetchOrderItems9(order.id)
                 
             };
-
+            
             const fetchOrderItems9 = (orderId) => { 
 
             //structura pentru axios - sa nu uiti niciodata
+            
             console.log("Încarcă produse pentru comanda9:", orderId);
     
             axios.get('<?= BASE_URL ?>api/order-items', {
