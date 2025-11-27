@@ -6,8 +6,6 @@ ob_start();
 
 
 <script src="<?= BASE_URL ?>frontend/js/components/Order7Detail.js"></script>
-<script src="<?= BASE_URL ?>frontend/js/components/Order8Detail.js"></script>
-<script src="<?= BASE_URL ?>frontend/js/components/Order9Detail.js"></script>
 
 
 <div id="app" class="container">
@@ -29,17 +27,14 @@ ob_start();
             </div>
 
         </div>
-
-         <!--  Componenta de cautare  -->
         
 
     </div>
 
-    <order7-detail :order="selectedOrder" :detaillink="detaillink"></order7-detail>
-    <order8-detail :order8="selectedOrder" :orderDetails8="orderDetails8"></order8-detail>
-    <order9-detail :order9="selectedOrder" :orderDetails9="orderDetails9" :orderItems9="orderItems9"></order9-detail>
+    <order7-detail :order="selectedOrder" 
+                   :marks="marks">
+    </order7-detail>
 
-    
     <table class="table table-striped table-hover table-bordered">
         <thead class="table-light">
             <tr>
@@ -135,27 +130,6 @@ ob_start();
                         <i class="bi bi-pencil"></i>
                         Detalii comanda
                     </button>
-                    <button 
-                        @click="showOrderDetails8(order)" 
-                        class="btn btn-warning btn-sm me-2" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#order8DetailModal" 
-                        title="Detalii comanda"
-                    >
-                        <i class="bi bi-pencil"></i>
-                        Detalii comanda8
-                    </button>
-                    <button 
-                        @click="showOrderDetails9(order)" 
-                        class="btn btn-warning btn-sm me-2" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#order9DetailModal" 
-                        title="Detalii comanda"
-                    >
-                        <i class="bi bi-eye"></i>
-                        Detalii 9 comanda
-                    </button>
-
                 </td>
                 
             </tr>
@@ -261,7 +235,6 @@ ob_start();
         setup() {
            
             const orders = ref([]);
-            const orders8 = ref([]);
             const totalorders = ref(0);
             const allStatuses = ref(['pending', 'delivered', 'canceled']);
             const perPages = ref([10, 15, 20]);
@@ -278,9 +251,7 @@ ob_start();
             const orderColumn = ref('id');
             const selectedOrder = ref(null); 
             const detaillink = ref('');
-            const orderDetails8 = ref('null');
-            const orderDetails9 = ref('null');
-            const orderItems9 = ref([]);
+            const marks = ref([]);
 
             const showOrders = (page) => {
                 
@@ -451,61 +422,19 @@ ob_start();
                 console.log('Afisez detalii pentru comanda:', order);
                 selectedOrder.value = order;
                 detaillink.value='<?= BASE_URL ?>api/orderdetail?order_id=' + order.id; 
+
+
+                axios.get('<?= BASE_URL ?>api/orderdetail?order_id=' + order.id )
+                    .then(response => {
+                        marks.value = response.data;
+                    })
+                    .catch(error => {
+                        console.error('API Error:', error);
+                    });
+
+
             };
 
-            const showOrderDetails8 = (order) => { 
-
-                //structura pentru axios - sa nu uiti niciodata
-                console.log("Afisez detalii8 pentru comenzi:", order);
-                selectedOrder.value = order;
-
-                axios.get('<?= BASE_URL ?>api/orderdetail8',{
-                    params: { order_id: order.id }
-                }).then(response => {
-                    console.log(response.data)
-                    orderDetails8.value = response.data;      
-                }).catch(erro => {
-                    console.error('Eroare:', error);
-                });
-                
-            };
-
-            const showOrderDetails9 = (order) => {
-
-                //structura pentru axios - sa nu uiti niciodata
-                console.log("Afisez detalii9 pentru comenzi:", order);
-                selectedOrder.value = order;
-
-                axios.get('<?= BASE_URL ?>api/orderdetail9',{
-                    params: { order_id: order.id }
-                }).then(response => {
-                    console.log(response.data)
-                    orderDetails9.value = response.data;      
-                }).catch(erro => {
-                    console.error('Eroare:', error);
-                });
-                fetchOrderItems9(order.id)
-                
-            };
-            
-            const fetchOrderItems9 = (orderId) => { 
-
-            //structura pentru axios - sa nu uiti niciodata
-            
-            console.log("Încarcă produse pentru comanda9:", orderId);
-    
-            axios.get('<?= BASE_URL ?>api/order-items', {
-                params: { order_id: orderId }
-            })
-            .then(response => {
-                console.log('Order items9:', response.data);
-                orderItems9.value = response.data.items || response.data || [];
-            })
-            .catch(error => {
-                console.error('Eroare la încărcarea produselor cu items9:', error);
-            });
-                
-        }
 
             onMounted(() => {
                 showOrders(1);
@@ -513,7 +442,6 @@ ob_start();
 
             return{
                 orders,
-                orders8,
                 showOrders,
                 searchOrders, // ADAUGĂ ACEASTA
                 totalorders,
@@ -534,21 +462,15 @@ ob_start();
                 goToPage,
                 selectedOrder,
                 showOrderDetails,
-                showOrderDetails8,
-                orderDetails8,
-                showOrderDetails9,
-                orderDetails9,
                 detaillink,
-                orderItems9,
-                fetchOrderItems9
+                marks
             };
         }
     });   
     
     
     app.component('order7-detail', Order7Detail);
-    app.component('Order8Detail', Order8Detail);
-    app.component('order9-detail', Order9Detail);
+
     app.mount('#app');
 </script>
 

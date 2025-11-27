@@ -5,9 +5,10 @@ const Order7Detail = {
             type: Object,
             default: null
         },
-        detaillink: {
-            type: String
+        marks: {
+            type: Array
         }
+
 
     },
     template: `
@@ -37,20 +38,25 @@ const Order7Detail = {
                             <strong>Status: </strong>
                                 <span> {{ order.status }} </span> <br>
                         </div>
-
-                        <button type="button" clas="btn btn-secondary" @click="fetchOrderItems"> FetchOrderItems </button>
+                       
                         <table>
-                            <tr>
-                                <th>Denumire produs</th>
-                                <th>Pret</th>
-                                <th>Cantitate</th>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th>Denumire produs</th>
+                                    <th>Pret</th>
+                                    <th>Cantitate</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
                             
-                            <tr v-for="orderItem in orderItems" :key="orderItem.id">
-                                <td> {{orderItem.product_name}} </td>
-                                <td> {{orderItem.product_price_db}} </td>
-                                <td> {{orderItem.qty}} </td>
-                            </tr>
+                                <tr v-for="orderItem in marks" :key="orderItem.id">
+                                    <td> {{orderItem.product_name}} </td>
+                                    <td> {{orderItem.product_price_db}} </td>
+                                    <td> {{orderItem.qty}} </td>
+                                </tr>
+
+                            </tbody>
                         </table>
 
                     </div>
@@ -67,28 +73,7 @@ const Order7Detail = {
     `,
 
     setup(props) {
-       
-        const {ref, onMounted} = Vue;
-
-        orderItems = ref([]);
-
-        const fetchOrderItems = () => { 
-
-            //structura pentru axios - sa nu uiti niciodata
-            console.log("Orice")
-            axios.get(props.detaillink).then(response => {
-                //console.log(response.data)
-                orderItems.value = response.data[0]        
-            })
-                
-        }
-
-        return {
-            fetchOrderItems,
-            orderItems
-        }
-        
-    
+         
     }
        
     

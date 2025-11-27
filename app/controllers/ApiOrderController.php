@@ -169,7 +169,7 @@ class ApiOrderController
         $orderItemModel = new OrderItem();
         $orderItems = $orderItemModel->findByOrder($orderId);
 
-        echo json_encode([$orderItems]);    
+        echo json_encode($orderItems);    
     }
 
     public function orderDetail8()
