@@ -78,6 +78,8 @@ urmatoarele sedinte in 20 si 28 August
 
 
 
+
+
 tema 20.08.2025
 
 in products daca dam click pe un produs sa dispara tabelul si sa apara detaliile produsului. Si sa afisam un butuon inapoi. Totul prin vuejs fara refresh.
@@ -150,6 +152,13 @@ Tema 13.11.2025
 Detalii comanda
 
 Sa se afiseze in detalii comanda ceea ce vrem sa vedem ca si administrator.
+
+
+Tema 18.11.2025
+
+acel fetchOrder trebuie sa ajunga in parinte.
+
+sa se apeleze fetchOrderItem din parinte (orders/index.php) nu din copil/componenta (Order7Detail)
 
 
 

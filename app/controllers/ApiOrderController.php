@@ -171,4 +171,79 @@ class ApiOrderController
 
         echo json_encode([$orderItems]);    
     }
+
+    public function orderDetail8()
+    {
+        header('Content-Type: application/json');
+
+        $orderId = $_GET['order_id'];
+        $orderItemModel = new OrderItem();
+        $orderItems = $orderItemModel->findByOrder($orderId);
+
+        echo json_encode([$orderItems]);    
+    }
+
+    public function orderDetail9()
+    {
+        header('Content-Type: application/json');
+
+        $orderId = $_GET['order_id'];
+        $orderItemModel = new OrderItem();
+        $orderItems = $orderItemModel->findByOrder($orderId);
+
+        echo json_encode([$orderItems]);    
+    }
+
+    public function getOrderItems() {
+
+        header('Content-Type: application/json');
+
+        try {
+            // Verifică dacă order_id este prezent
+            if (!isset($_GET['order_id'])) {
+                http_response_code(400);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Order ID lipsește'
+                ]);
+                return;
+            }
+            
+            $orderId = (int)$_GET['order_id'];
+            
+            // Încarcă modelul OrderDetail
+            require_once __DIR__ . '/../models/OrderDetail.php';
+            $orderDetailModel = new OrderDetail();
+            
+            // Obține produsele comenzii
+            $orderItems = $orderDetailModel->getOrderDetailsByOrderId($orderId);
+            
+            if ($orderItems === false) {
+                http_response_code(500);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Eroare la încărcarea produselor'
+                ]);
+                return;
+            }
+            
+            // Returnează datele
+            http_response_code(200);
+            echo json_encode([
+                'success' => true,
+                'items' => $orderItems,
+                'count' => count($orderItems)
+            ]);
+            
+        } catch (Exception $e) {
+            error_log('Eroare getOrderItems: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Eroare server: ' . $e->getMessage()
+            ]);
+        }
+
+
+    }
 }
