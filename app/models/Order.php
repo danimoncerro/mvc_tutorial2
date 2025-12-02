@@ -124,11 +124,11 @@ class Order
                 ";
 
         if (!is_null($status)){
-            $sql.= " WHERE o.status=:status";
+            $sql.= " AND orders.status=:status";
             
         }
 
-        $sql.= " ORDER BY o.$order_column $order_direction";
+        $sql.= " ORDER BY orders.$order_column $order_direction";
         $stmt = $this->db->prepare($sql);
 
         if (!is_null($status)){

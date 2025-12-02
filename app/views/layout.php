@@ -42,17 +42,18 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="<?= BASE_URL ?>">Home</a>
-        <?php if (isset($_SESSION['user'])): ?>
-            <a class="nav-link" href="<?= BASE_URL ?>products">Products</a> 
-            <a class="nav-link ms-3" href="<?= BASE_URL ?>categories">Categories</a> 
-            <a class="nav-link ms-3" href="<?= BASE_URL ?>users">Users</a>
-            <a class="nav-link ms-3" href="<?= BASE_URL ?>cart">Cart</a>
+        <?php if (isset($_SESSION['user'])): ?>           
 
-            <?php if ($_SESSION['user']['role'] == 'client'): ?>
-
+            <?php if ($_SESSION['user']['role'] == 'admin'): ?>
+              <a class="nav-link" href="<?= BASE_URL ?>products">Products</a> 
+              <a class="nav-link ms-3" href="<?= BASE_URL ?>categories">Categories</a> 
+              <a class="nav-link ms-3" href="<?= BASE_URL ?>users">Users</a>
+              <a class="nav-link ms-3" href="<?= BASE_URL ?>orders">All orders</a>
+              
+            <?php else: ?>
+              <a class="nav-link ms-3" href="<?= BASE_URL ?>cart">Cart</a>
               <a class="nav-link ms-3" href="<?= BASE_URL ?>orders">My orders</a>
-              <?php else: ?>
-                  <a class="nav-link ms-3" href="<?= BASE_URL ?>orders">All orders</a> 
+                  
             <?php endif ?>
             <span class="ms-3"><?= htmlspecialchars($_SESSION['user']['email']) ?></span>
             <a href="<?= BASE_URL ?>auth/logout" class="btn btn-danger btn-sm ms-3">Logout</a>
@@ -60,7 +61,6 @@
             <a href="<?= BASE_URL ?>auth/login" class="btn btn-primary btn-sm">Login</a>
         <?php endif; ?>
         
-
     </nav>
 
     <div class="container mt-4">

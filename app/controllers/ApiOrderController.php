@@ -172,28 +172,6 @@ class ApiOrderController
         echo json_encode($orderItems);    
     }
 
-    public function orderDetail8()
-    {
-        header('Content-Type: application/json');
-
-        $orderId = $_GET['order_id'];
-        $orderItemModel = new OrderItem();
-        $orderItems = $orderItemModel->findByOrder($orderId);
-
-        echo json_encode([$orderItems]);    
-    }
-
-    public function orderDetail9()
-    {
-        header('Content-Type: application/json');
-
-        $orderId = $_GET['order_id'];
-        $orderItemModel = new OrderItem();
-        $orderItems = $orderItemModel->findByOrder($orderId);
-
-        echo json_encode([$orderItems]);    
-    }
-
     public function getOrderItems() {
 
         header('Content-Type: application/json');

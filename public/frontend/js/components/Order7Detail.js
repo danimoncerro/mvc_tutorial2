@@ -9,13 +9,8 @@ const Order7Detail = {
             type: Array
         }
 
-
     },
-    template: `
-
-    
-
-       
+    template: `   
 
         <!-- Modal pentru afisare detalii comanda -->
         <div class="modal fade" id="order7DetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
