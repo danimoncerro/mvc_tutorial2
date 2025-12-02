@@ -113,6 +113,7 @@ class Order
     public function myOrders(
         $user_id, 
         $status,
+        $page = 1,
         $order_column = 'id',
         $order_direction = 'desc'
         )
@@ -122,6 +123,7 @@ class Order
                 LEFT JOIN users ON orders.user_id = users.id
                 WHERE users.id = :user_id
                 ";
+        
 
         if (!is_null($status)){
             $sql.= " AND orders.status=:status";
@@ -130,7 +132,7 @@ class Order
 
         $sql.= " ORDER BY orders.$order_column $order_direction";
         $stmt = $this->db->prepare($sql);
-
+    
         if (!is_null($status)){
             $stmt->execute([
                 'user_id' => $user_id,
@@ -139,6 +141,7 @@ class Order
         }
 
         else {
+            
             $stmt->execute([
                 'user_id' => $user_id
             ]);
@@ -150,17 +153,14 @@ class Order
 
     public function myOrdersTotalOrders($user_id, $status)
     {
-        $sql = "SELECT orders.*, users.email AS user_email
+        $sql = "SELECT COUNT(*) as total
                 FROM orders
-                LEFT JOIN users ON orders.user_id = users.id
-                WHERE users.id = :user_id
+                WHERE orders.user_id = :user_id
                 ";
 
         if (!is_null($status)){
             $sql.= " AND orders.status=:status";
         }
-
-        $sql.= " ORDER BY orders.total_order ASC";
 
 
         $stmt = $this->db->prepare($sql);
@@ -179,7 +179,9 @@ class Order
         }
        
         
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return (int)$result['total'];
     }
 
     public function create($data)

@@ -67,7 +67,9 @@ class ApiOrderController
         
         $user_id = $_GET['user_id'];
         $usermodel = new User();
+        
         $user = $usermodel->find($user_id);
+        
         $status = $_GET['status'] ?? null;
         $page = $_GET['page'] ?? 2;
         $order_column = $_GET['order_column'] ?? 'id';
@@ -93,7 +95,7 @@ class ApiOrderController
                 $totalOrders = $orderModel->countAll($status);
                 
             }
-
+         
             $totalPages = ($totalOrders > 0 && $perPage > 0) ? (int)ceil($totalOrders / $perPage) : 1;
             
             echo json_encode([
