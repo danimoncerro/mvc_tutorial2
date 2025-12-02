@@ -50,7 +50,7 @@ $router->post('api/users/store', 'management/ApiUserController@store');
 $router->post('api/users/delete', 'management/ApiUserController@delete');
 $router->post('api/users/edit', 'management/ApiUserController@edit');
 $router->get('api/users/search', 'management/ApiUserController@search');
-$router->get('api/products', 'management/ApiProductController@index');
+$router->get('api/products', 'ApiProductController@index');
 $router->post('api/products/store', 'management/ApiProductController@store');
 $router->post('api/products/delete', 'management/ApiProductController@delete');
 $router->post('api/products/edit', 'management/ApiProductController@edit');
@@ -67,5 +67,6 @@ $router->get('api/orderdetail', 'ApiOrderController@orderDetail');
 $router->get('api/orderdetail8', 'ApiOrderController@orderDetail8');
 $router->get('api/orderdetail9', 'ApiOrderController@orderDetail9');
 $router->get('api/order-items', 'ApiOrderController@getOrderItems');
+
 
 return $router;
