@@ -160,6 +160,11 @@ acel fetchOrder trebuie sa ajunga in parinte.
 
 sa se apeleze fetchOrderItem din parinte (orders/index.php) nu din copil/componenta (Order7Detail)
 
+tema 
+
+paginarea pentru user cu rol de client pentru My Orders
+Vizualizare users, detalii categorii, detalii produse
+
 
 
 
