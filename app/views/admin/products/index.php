@@ -7,6 +7,7 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/DeleteProduct.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/EditProduct.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/SearchProduct.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/ProductDetail.js"></script>
 
 <style>
 .editing-price {
@@ -89,6 +90,9 @@ ob_start();
         </div>
     </div>
 
+    <product-detail :product="selectedProduct">
+    </product-detail>
+
     <table v-if="showTableData" class="table table-striped table-hover table-bordered">
         <thead class="table-light">
             <tr>
@@ -148,6 +152,17 @@ ob_start();
                         @click="editProduct(product)" title="Editează produsul">
                         <i class="bi bi-pencil"></i>
                         Editează
+                    </button>
+
+                    <button 
+                        @click="showProductDetails(product)" 
+                        class="btn btn-warning btn-sm me-2" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#productDetail" 
+                        title="Detalii produs"
+                    >
+                        <i class="bi bi-pencil"></i>
+                        Detalii produs
                     </button>
                     
                     <delete-product :deletelink="'<?= BASE_URL ?>api/products/delete?id=' + product.id" @show-products="showProducts"></delete-product>
@@ -215,7 +230,8 @@ ob_start();
            'add-product': AddProduct,
            'delete-product': DeleteProduct,
            'edit-product': EditProduct,
-           'search-product': SearchProduct
+           'search-product': SearchProduct,
+           'product-detail': ProductDetail,
         },
 
         setup() {
@@ -262,6 +278,12 @@ ob_start();
                     console.error('API Error:', error);
                 });
             };
+
+            const showProductDetails = (product) => {
+
+                selectedProduct.value = product;
+
+            }
 
             const searchProducts = (searchTerm) => {
                 if (searchTerm.length > 2) {
@@ -398,7 +420,8 @@ ob_start();
                 editProduct,
                 startEditPrice,      // ✅ Definită
                 savePrice,           // ✅ Definită
-                cancelEditPrice      // ✅ Adăugată
+                cancelEditPrice,
+                showProductDetails,    // ✅ Adăugată
             };
         }
     });                     

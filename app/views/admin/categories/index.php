@@ -8,6 +8,7 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/DeleteCategory.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/EditCategory.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/SearchCategory.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/CategoryDetail.js"></script>
 
 <div id="app" class="container">
 
@@ -16,6 +17,9 @@ ob_start();
 
 <!--  Componenta de cautare  -->
     <search-category @search-categories="searchCategories"></search-category>
+
+    <category-detail :category="selectedCategory">
+    </category-detail>
     
 
     
@@ -51,6 +55,16 @@ ob_start();
                         <i class="bi bi-pencil"></i>
                         Editează
                     </button>
+                    <button 
+                        @click="showCategoryDetails(category)" 
+                        class="btn btn-warning btn-sm me-2" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#categoryDetail" 
+                        title="Detalii categorie"
+                    >
+                        <i class="bi bi-pencil"></i>
+                        Detalii categorie
+                    </button>
 
                     <delete-category :deletelink="'<?= BASE_URL ?>api/categories/delete?id=' + category.id" @show-categories="showCategories"></delete-category>
                 </td>
@@ -78,7 +92,9 @@ ob_start();
             'add-category': AddCategory,
             'delete-category': DeleteCategory,
             'edit-category': EditCategory,
-            'search-category': SearchCategory
+            'search-category': SearchCategory,
+            'category-detail': CategoryDetail,
+
         },
         setup() {
             
@@ -122,6 +138,12 @@ ob_start();
                 .catch(error => {
                     console.error('API Error:', error);
                 });
+            }
+
+            const showCategoryDetails = (category) => {
+
+                selectedCategory.value = category;
+
             }
 
 
@@ -169,7 +191,9 @@ ob_start();
                 showTable,
                 increments,
                 editingCategory,  // Adaugă această linie
-                searchCategories
+                searchCategories,
+                showCategoryDetails
+
             };
         }
     });                     

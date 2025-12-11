@@ -7,6 +7,7 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/DeleteUser.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/EditUser.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/SearchUser.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/UserDetail.js"></script>
 
 
 <div id="app" class="container">
@@ -22,7 +23,8 @@ ob_start();
         @show-users="showUsers">
     </search-user>
 
-    
+    <user-detail :user="selectedUser">
+    </user-detail>
 
     <table class="table table-striped table-hover table-bordered">
         <thead class="table-light">
@@ -58,6 +60,17 @@ ob_start();
                         Editează
                     </button>
 
+                    <button 
+                        @click="showUserDetails(user)" 
+                        class="btn btn-warning btn-sm me-2" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#userDetail" 
+                        title="Detalii utilizator"
+                    >
+                        <i class="bi bi-pencil"></i>
+                        Detalii utilizator
+                    </button>
+
                     <delete-user :deletelink="'<?= BASE_URL ?>api/users/delete?id=' + user.id" @show-users="showUsers"></delete-user>
                     <!--
                     <button class="btn btn-danger btn-sm" @click="deleteUser(user.id)" title="Șterge utilizatorul">
@@ -79,6 +92,8 @@ ob_start();
 
     </edit-user>
 
+
+
 </div>
 
                     
@@ -92,7 +107,8 @@ ob_start();
             'add-user': AddUser,
             'delete-user': DeleteUser,
             'edit-user': EditUser,
-            'search-user': SearchUser
+            'search-user': SearchUser,
+            'user-detail': UserDetail,
         },
         setup() {
            
@@ -104,6 +120,7 @@ ob_start();
                 id: null,
                 email: ''
             });
+            const selectedUser = ref(null);
 
             const showUsers = () => {
                 axios.get('<?= BASE_URL ?>api/users', {
@@ -122,6 +139,12 @@ ob_start();
                 .catch(error => {
                     console.error('API Error:', error);
                 });
+            }
+
+            const showUserDetails = (user) => {
+
+                selectedUser.value = user;
+
             }
 
             
@@ -179,7 +202,9 @@ ob_start();
                 editingUser,
                 editUser,
                 search,
-                searchUsers
+                searchUsers,
+                selectedUser,
+                showUserDetails,
 
             };
         }
