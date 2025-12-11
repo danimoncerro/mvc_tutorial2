@@ -216,6 +216,96 @@ ob_start();
             </div>
         </div>
     </div>
+
+    <!-- Paginare -->
+
+
+    <nav aria-label="Paginare comenzi">
+        <ul class="pagination">
+            <li class="page-item" style="cursor: pointer" :class="{disabled: currentPage ===1 }">
+                <a class="page-link" @click="goToPage(currentPage - 1)" tabindex="-1">Previous</a>
+            </li>
+            <!-- avem in total 6 pagini -->
+            <!-- tratam prima pagina -->
+            <li class="page-item active" style="cursor: pointer" v-if="currentPage < 2">
+                <a class="page-link" @click="goToPage(currentPage)">
+                    {{ currentPage }}
+                </a>
+            </li>
+            
+            <li class="page-item" style="cursor: pointer" v-if="currentPage < 2">
+                <a class="page-link" @click="goToPage(currentPage + 1)">
+                    {{ currentPage + 1}}
+                </a>
+            </li>
+
+            <li class="page-item" style="cursor: pointer" v-if="currentPage < 2">
+                <a class="page-link" @click="goToPage(currentPage + 2)">
+                    {{ currentPage + 2 }}
+                </a>
+            </li>
+
+            <!-- tratam pagina > 1 -->
+            <li class="page-item" style="cursor: pointer" v-if="currentPage>1 && currentPage<totalPages">
+                <a class="page-link" @click="goToPage(currentPage - 1)">
+                    {{ currentPage - 1}}
+                </a>
+            </li>
+            <li class="page-item active"  style="cursor: pointer"  v-if="currentPage>1 && currentPage<totalPages">
+                <a class="page-link" @click="goToPage(currentPage)">
+                    {{ currentPage}}
+                </a>
+            </li>
+            <li class="page-item" style="cursor: pointer"  v-if="currentPage>1 && currentPage<totalPages">
+                <a class="page-link" @click="goToPage(currentPage + 1)">
+                    {{ currentPage + 1 }}
+                </a>
+            </li>
+
+            <!-- tratam utlima pagina -->
+            <li class="page-item" style="cursor: pointer" v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage - 2)">
+                    {{ currentPage - 2}}
+                </a>
+            </li>
+            <li class="page-item"  style="cursor: pointer"  v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage - 1)">
+                    {{ currentPage - 1}}
+                </a>
+            </li>
+            <li class="page-item active" style="cursor: pointer"  v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage)">
+                    {{ currentPage }}
+                </a>
+            </li>
+             
+            <li class="page-item" style="cursor: pointer" :class="{disabled: currentPage === totalPages }">
+                <a class="page-link"  @click="goToPage(currentPage + 1)">Next</a>
+            </li>
+        </ul>
+
+        <div class="mb-3">
+            <h5>Orders/page</h5>
+            <div class="row g-3">
+            
+                <div class="col-md-3">
+                    <select v-model="filters.page" class="form-select" @change="showProducts(1)">
+                        <option value="">5 products</option>
+                        <option v-for="page in perPages" :key="page" :value="page">
+                            {{ page }} products
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="text-muted mt-2">
+            Pagina {{ currentPage }} din {{ totalPages }} (Total: {{ totalproducts }} produse)
+        </div>
+
+    </nav>
+
 </div>
 
 <!-- Aici incepe Vue.js -->
@@ -243,12 +333,16 @@ ob_start();
             const selectedProduct = ref(null);
             const editingPriceId = ref(null);
             const editingPrice = ref(0);
+            const perPages = ref([10, 15, 20]);
+            const currentPage = ref(1);
+            const totalPages = ref(1);
             const product = reactive({
                 id:'',
             });
             const categories = ref([]);
-            const filters = reactive({
-                search: ''
+            const filters = ref({
+                search: '',
+                page: ''
             });
             const dinamictext = ref('');
             const dinamictext2 = ref('');
@@ -261,23 +355,43 @@ ob_start();
             });
 
 
-            const showProducts = () => {
+            const showProducts = (page) => {
+
+                const params = {
+            
+                    page: page
+                };
+
+                if (filters.value.page) {
+                    params.per_page = filters.value.page;
+                }
+
                 axios.get('<?= BASE_URL ?>api/products', {
-                    params: {
-                        per_page: 20,
-                        page: 1,
-                        sort: 'id',
-                        order: 'desc'
-                    }
+                    params: params
+                 
                 })
                 .then(response => {
                     products.value = response.data.products;
                     totalproducts.value = response.data.total_products;
+                    totalPages.value = response.data.total_pages || 1;
                 })
                 .catch(error => {
                     console.error('API Error:', error);
                 });
             };
+
+            const goToPage = (page) => {
+                console.log('Going to page:', page);
+                
+                if (page < 1 || page > totalPages.value) {
+                    console.log('Invalid page:', page);
+                    return;  // Previne navigarea la pagini invalide
+                }
+                
+                currentPage.value = page;
+                console.log('Current Page din .then (response:', currentPage.value);
+                showProducts(page);
+            }
 
             const showProductDetails = (product) => {
 
@@ -422,6 +536,11 @@ ob_start();
                 savePrice,           // ✅ Definită
                 cancelEditPrice,
                 showProductDetails,    // ✅ Adăugată
+                perPages,
+                currentPage,
+                totalPages,
+                goToPage
+
             };
         }
     });                     
