@@ -44,8 +44,22 @@ ob_start();
                 </tr>
             </tbody>
         </table>
+
+        <h2>Selecteaza adresa de livrare</h2>
+        <select>
+            <option value="">Selecteaza adresa</option>
+            <option v-for="address in addresses" :key="address.id">
+                {{address.address}}, {{address.city}}, {{address.county}}
+            </option>
+
+        </select>
+
         <button class="btn btn-success mb-3" @click="createOrder" >Plasează comanda</button><br>
-        <button class="btn btn-success mb-3" @click="shipping" >Date de livrare</button>
+
+        <br><br><br><hr><a href="/shipping">Gestioneaza adresa de livrare</a>
+
+
+
         <div class="text-end">
             <h4>Total: {{ totalCart }} RON</h4>
         </div>
@@ -70,6 +84,15 @@ ob_start();
             const cart = ref([]);
             const editingQtyId = ref(null);
             const editingQty = ref(1);
+            const addresses = ref([]);
+
+
+            const getAddresses = () => {
+                axios.get('<?= BASE_URL ?>api/shipping?user_id=1')
+                    .then(response => {
+                        addresses.value = response.data
+                    })
+            };
 
             const getCart = () => {
                 axios.get('<?= BASE_URL ?>api/cart').then(response => {
@@ -165,9 +188,10 @@ ob_start();
                 return total.toFixed(2);
             });
 
-
-
-            onMounted(getCart);
+            onMounted(() => {
+                getCart();
+                getAddresses();
+            });
 
             return {
                 cart,
@@ -179,7 +203,8 @@ ob_start();
                 saveQty,
                 cancelEditQty,
                 totalcartitems,
-                createOrder  
+                createOrder,
+                addresses
                 
             };
         }
