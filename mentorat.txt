@@ -170,6 +170,9 @@ Vizualizare users, detalii categorii, detalii produse
 Sa adaugam o adresa de livrare.
 Sa adaugam o adresa de facturare.
 
+de pregatit tabela pentru adresa de facturare (cu creare si listare din postman) ca si la livrare.
+Daca poti incearca sa faci un formular ca sa adaugi din pagina direct in baza de date.
+
 
 
 

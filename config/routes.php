@@ -38,6 +38,13 @@ $router->get('vuecategories', 'CategoryController@vueindex');
 $router->get('cart', 'CartController@viewCart');
 $router->get('cart/add', 'CartController@addToCart');
 $router->get('cart/remove', 'CartController@removeFromCart');
+$router->get('shipping', 'ShippingController@index');
+$router->post('api/shipping/store', 'ApiShippingController@store'); 
+$router->get('api/shipping', 'ApiShippingController@index');
+$router->get('billing', 'billingController@index');
+$router->post('api/billing/store', 'ApiBillingController@store'); 
+$router->get('api/billing', 'ApiBillingController@index');
+
 
 $router->get('api/categories', 'management/ApiCategoryController@index');
 $router->post('api/categories/store', 'management/ApiCategoryController@store');
@@ -50,8 +57,8 @@ $router->post('api/users/store', 'management/ApiUserController@store');
 $router->post('api/users/delete', 'management/ApiUserController@delete');
 $router->post('api/users/edit', 'management/ApiUserController@edit');
 $router->get('api/users/search', 'management/ApiUserController@search');
-$router->get('api/products', 'ApiProductController@index');
-$router->post('api/products/store', 'management/ApiProductController@store');
+$router->get('api/products', 'ApiProductController@index'); //link-ul pentru listare produs
+$router->post('api/products/store', 'management/ApiProductController@store'); //link-ul pentru creare produs
 $router->post('api/products/delete', 'management/ApiProductController@delete');
 $router->post('api/products/edit', 'management/ApiProductController@edit');
 $router->post('api/products/update-price', 'management/ApiProductController@updatePrice');

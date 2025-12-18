@@ -44,7 +44,8 @@ ob_start();
                 </tr>
             </tbody>
         </table>
-        <button class="btn btn-success mb-3" @click="createOrder">Plasează comanda</button>
+        <button class="btn btn-success mb-3" @click="createOrder" >Plasează comanda</button><br>
+        <button class="btn btn-success mb-3" @click="shipping" >Date de livrare</button>
         <div class="text-end">
             <h4>Total: {{ totalCart }} RON</h4>
         </div>
@@ -139,6 +140,7 @@ ob_start();
                         if (res.data.success) {
                             alert('Comanda a fost plasată cu succes! Număr comandă: ' + res.data.order_id);
                             cart.value = [];
+
                         } else {
                             alert('Eroare la plasarea comenzii: ' + (res.data.message || ''));
                         }
