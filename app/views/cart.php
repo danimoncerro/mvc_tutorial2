@@ -45,16 +45,26 @@ ob_start();
             </tbody>
         </table>
 
-        <h2>Selecteaza adresa de livrare</h2>
+        <h2>Selecteaza adresa de livrare si cea de facturare</h2>
         <select>
-            <option value="">Selecteaza adresa</option>
+            <option value="">Selecteaza adresa de livrare</option>
             <option v-for="address in addresses" :key="address.id">
                 {{address.address}}, {{address.city}}, {{address.county}}
             </option>
-
+        </select>
+        <br>
+        <select>
+            <option value="">Selecteaza adresa de facturare</option>
+            <option v-for="address in billingAddresses" :key="address.id">
+                {{address.address}}, {{address.zip_code}}, {{address.city}}, {{address.county}}
+            </option>
         </select>
 
+
+
         <button class="btn btn-success mb-3" @click="createOrder" >Plasează comanda</button><br>
+
+     
 
         <br><br><br><hr><a href="/shipping">Gestioneaza adresa de livrare</a>
         <br><a href="/billing">Gestioneaza adresa de facturare</a>
@@ -86,14 +96,33 @@ ob_start();
             const editingQtyId = ref(null);
             const editingQty = ref(1);
             const addresses = ref([]);
+            const billingAddresses = ref([]);
+            const currentUserId = <?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>;
 
 
             const getAddresses = () => {
-                axios.get('<?= BASE_URL ?>api/shipping?user_id=1')
+
+                const params = {
+                    user_id: currentUserId,
+                };
+
+                axios.get('<?= BASE_URL ?>api/shipping?user_id')
                     .then(response => {
                         addresses.value = response.data
                     })
             };
+
+            const getBillingAddresses = () => {
+
+                const params = {
+                    user_id: currentUserId,
+                };
+
+                axios.get('<?= BASE_URL ?>api/billing?user_id')
+                    .then(response => {
+                        billingAddresses.value = response.data
+                    })
+            }
 
             const getCart = () => {
                 axios.get('<?= BASE_URL ?>api/cart').then(response => {
@@ -192,6 +221,7 @@ ob_start();
             onMounted(() => {
                 getCart();
                 getAddresses();
+                getBillingAddresses();
             });
 
             return {
@@ -205,7 +235,8 @@ ob_start();
                 cancelEditQty,
                 totalcartitems,
                 createOrder,
-                addresses
+                addresses,
+                billingAddresses,
                 
             };
         }
