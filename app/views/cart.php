@@ -57,6 +57,7 @@ ob_start();
         <button class="btn btn-success mb-3" @click="createOrder" >Plasează comanda</button><br>
 
         <br><br><br><hr><a href="/shipping">Gestioneaza adresa de livrare</a>
+        <br><a href="/billing">Gestioneaza adresa de facturare</a>
 
 
 

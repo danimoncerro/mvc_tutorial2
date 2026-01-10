@@ -173,6 +173,12 @@ Sa adaugam o adresa de facturare.
 de pregatit tabela pentru adresa de facturare (cu creare si listare din postman) ca si la livrare.
 Daca poti incearca sa faci un formular ca sa adaugi din pagina direct in baza de date.
 
+Tema pentru vacanta:
+
+1. De facut formularul si pentru adresa de facturare;
+2. De rezolvat sa se salveze id-ul userului logat (acum este hardcodat cu user=1);
+3. Editare si stergere atat pentru adresa de livrare cat si pentru adresa de facturare (editarea este optionala);
+4. Direct pe pagina de cart adauga adresa de facturare intr-un modal / la fel si pentru adresa de livrare;
 
 
 
