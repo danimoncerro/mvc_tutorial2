@@ -33,6 +33,7 @@ ob_start();
                 <th>Adresa</th>
                 <th>Oras</th>
                 <th>Judet</th>
+                <th>Actiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -41,6 +42,9 @@ ob_start();
                 <td>{{address.address}}</td>
                 <td>{{address.city}}</td>
                 <td>{{address.county}}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" @click="removeFromShipping(address.id)">Șterge</button>
+                </td>
             </tr>
     </table>
 
@@ -54,17 +58,24 @@ ob_start();
     const app = createApp({
         setup() {
             const title = "shipping address";
+            const currentUserId = <?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>;
             const address = reactive({
                 address:'',
                 city:'',
                 county:'',
-                user_id: 1
+                user_id: currentUserId
 
             }) 
 
+            console.log(currentUserId)
             const addresses = ref([])
             const getAddresses = () => {
-                axios.get('<?= BASE_URL ?>api/shipping?user_id=1')
+                const params = {
+                    user_id: currentUserId,
+                };
+                console.log(currentUserId)
+                
+                axios.get('<?= BASE_URL ?>api/shipping?user_id=' + currentUserId)
                     .then(response => {
                         addresses.value = response.data
                     })
@@ -81,6 +92,16 @@ ob_start();
                     })
             }
 
+            const removeFromShipping = (addressId) => {
+                if (!addressId) return;
+                axios.post('<?= BASE_URL ?>api/shipping/delete', { address_id: addressId })
+                    .then(res => {
+                        if (res.data.success) getAddresses();
+                        else alert('Eroare la ștergere: ' + (res.data.message || ''));
+                    })
+                    .catch(() => alert('Eroare la ștergerea adresei !'));
+            };
+
             onMounted(() => {
                 getAddresses();
             });
@@ -91,7 +112,8 @@ ob_start();
                 address,
                 saveAddress,
                 getAddresses,
-                addresses
+                addresses,
+                removeFromShipping,
             }
         }
 
