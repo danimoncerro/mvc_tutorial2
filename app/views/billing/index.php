@@ -37,6 +37,7 @@ ob_start();
                 <th>Codul Zip</th>
                 <th>Oras</th>
                 <th>Judet</th>
+                <th>Actiuni</th>
             </tr>
         </thead>
         <tbody>
@@ -46,6 +47,9 @@ ob_start();
                 <td>{{address.zip_code}}</td>
                 <td>{{address.city}}</td>
                 <td>{{address.county}}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" @click="removeFromBilling(address.id)">Șterge</button>
+                </td>
             </tr>
     </table>
 
@@ -58,18 +62,23 @@ ob_start();
     const app = createApp({
         setup() {
             const title = "Billing address";
+            const currentUserId = <?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>;
             const address = reactive({
                 address:'',
                 zip_code:'',
                 city:'',
                 county:'',
-                user_id: 1
+                user_id: currentUserId
 
             }) 
 
             const addresses = ref([])
             const getAddresses = () => {
-                axios.get('<?= BASE_URL ?>api/billing?user_id=1')
+                const params = {
+                    user_id: currentUserId,
+                };
+                console.log(currentUserId)
+                axios.get('<?= BASE_URL ?>api/billing?user_id=' + currentUserId)
                     .then(response => {
                         addresses.value = response.data
                     })
@@ -87,6 +96,16 @@ ob_start();
                     })
             }
 
+            const removeFromBilling = (addressId) => {
+                if (!addressId) return;
+                axios.post('<?= BASE_URL ?>api/billing/delete', { address_id: addressId })
+                    .then(res => {
+                        if (res.data.success) getAddresses();
+                        else alert('Eroare la ștergere: ' + (res.data.message || ''));
+                    })
+                    .catch(() => alert('Eroare la ștergerea adresei !'));
+            };
+
             onMounted(() => {
                 getAddresses();
             });
@@ -97,7 +116,8 @@ ob_start();
                 address,
                 saveBillingAddress,
                 getAddresses,
-                addresses
+                addresses,
+                removeFromBilling
             }
         }
 

@@ -47,4 +47,30 @@ class ApiBillingController
 
     }
 
+    public function delete()
+    {
+        header('Content-Type: application/json');
+
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $addressId = $data['address_id'] ?? null;
+
+            if (!$addressId) {
+                echo json_encode(['success' => false, 'message' => 'ID-ul adresei este obligatoriu!']);
+                return;
+            }
+
+            $billingModel = new Billing();
+            $result = $billingModel->delete($addressId);
+
+            if ($result) {
+                echo json_encode(['success' => true, 'message' => 'Adresa de facturare a fost ștearsă cu succes.']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Adresa de facturare nu a fost găsită sau nu a putut fi ștearsă!']);
+            }
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => 'Eroare: ' . $e->getMessage()]);
+        }
+    }
+
 }
