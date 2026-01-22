@@ -32,6 +32,10 @@ const Order7Detail = {
                                 <span> {{ order.created_at }} </span> <br>
                             <strong>Status: </strong>
                                 <span> {{ order.status }} </span> <br>
+                            <strong>Adresa livrare: </strong>
+                                <span> {{ order.shipping_address }} </span> <br>
+                            <strong>Adresa facturare: </strong>
+                                <span> {{ order.billing_address }} </span> <br>
                         </div>
                        
                         <table>
