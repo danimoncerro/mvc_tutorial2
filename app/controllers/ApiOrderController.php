@@ -34,6 +34,10 @@ class ApiOrderController
                 'user_id' => $_SESSION['user']['id' ] ?? null, // Poate fi null pentru utilizatori neautentificați
                 'total_order'   => $total,
                 'status'  => 'pending',
+
+
+                'shipping_address' => '',
+                'billing_address' => '',
             ]);
 
             // Creează itemii comenzii
