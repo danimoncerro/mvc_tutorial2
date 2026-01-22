@@ -9,6 +9,7 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/SearchUser.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/UserDetail.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/ShippingAddressDetail.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/BillingAddressDetail.js"></script>
 
 
 
@@ -30,6 +31,8 @@ ob_start();
 
     <shipping-addresses  :shipping="shippingAddressDetail">
     </shipping-addresses>
+
+    <billing-addresses :billing="billingAddressDetail"></billing-addresses>
 
    
 
@@ -91,6 +94,17 @@ ob_start();
                         Detalii adresa livrare
                     </button>
 
+                    <button 
+                        @click="showBillingAddress(user)"
+                        class="btn btn-warning btn-sm me-2" 
+                        data-bs-toggle="modal"
+                        data-bs-target="#billingAddressModal"
+                        title="Detalii adresa facturare"
+                    >
+                        <i class="bi bi-pencil"></i>
+                        Detalii adresa facturare
+                    </button>
+
                     <delete-user :deletelink="'<?= BASE_URL ?>api/users/delete?id=' + user.id" @show-users="showUsers"></delete-user>
                     <!--
                     <button class="btn btn-danger btn-sm" @click="deleteUser(user.id)" title="Șterge utilizatorul">
@@ -130,6 +144,7 @@ ob_start();
             'search-user': SearchUser,
             'user-detail': UserDetail,
             'shipping-addresses': ShippingAddressDetail,
+            'billing-addresses': BillingAddressDetail,
             
         },
         setup() {
@@ -144,6 +159,7 @@ ob_start();
             });
             const selectedUser = ref(null);
             const shippingAddressDetail = ref(null);
+            const billingAddressDetail = ref(null);
 
             const currentUserId = <?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>;
 
@@ -184,6 +200,21 @@ ob_start();
                     .catch(error => {
                         console.error('Error fetching shipping address:', error);
                         shippingAddressDetail.value = [];
+                    });
+            }
+
+            const showBillingAddress = (user) => {
+
+                axios.get('<?= BASE_URL ?>api/billing?user_id=' + user.id)
+                    .then(response => {
+                        console.log('Billing address response:', response.data);
+                        // Păstrăm toate adresele returnate de API
+                        billingAddressDetail.value = response.data;
+                        console.log('billingAddressDetail.value:', billingAddressDetail.value);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching shipping address:', error);
+                        billingAddressDetail.value = [];
                     });
             }
 
@@ -247,6 +278,8 @@ ob_start();
                 showUserDetails,
                 shippingAddressDetail,
                 showShippingAddress,
+                showBillingAddress,
+                billingAddressDetail,
             };
         }
     });                     
