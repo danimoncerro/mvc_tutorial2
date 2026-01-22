@@ -8,6 +8,8 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/EditUser.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/SearchUser.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/UserDetail.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/ShippingAddressDetail.js"></script>
+
 
 
 <div id="app" class="container">
@@ -25,6 +27,13 @@ ob_start();
 
     <user-detail :user="selectedUser">
     </user-detail>
+
+    <shipping-addresses  :shipping="shippingAddressDetail">
+    </shipping-addresses>
+
+   
+
+
 
     <table class="table table-striped table-hover table-bordered">
         <thead class="table-light">
@@ -71,6 +80,17 @@ ob_start();
                         Detalii utilizator
                     </button>
 
+                    <button 
+                        @click="showShippingAddress(user)"
+                        class="btn btn-warning btn-sm me-2" 
+                        data-bs-toggle="modal"
+                        data-bs-target="#shippingAddressModal"
+                        title="Detalii adresa livrare"
+                    >
+                        <i class="bi bi-pencil"></i>
+                        Detalii adresa livrare
+                    </button>
+
                     <delete-user :deletelink="'<?= BASE_URL ?>api/users/delete?id=' + user.id" @show-users="showUsers"></delete-user>
                     <!--
                     <button class="btn btn-danger btn-sm" @click="deleteUser(user.id)" title="Șterge utilizatorul">
@@ -109,6 +129,8 @@ ob_start();
             'edit-user': EditUser,
             'search-user': SearchUser,
             'user-detail': UserDetail,
+            'shipping-addresses': ShippingAddressDetail,
+            
         },
         setup() {
            
@@ -121,6 +143,9 @@ ob_start();
                 email: ''
             });
             const selectedUser = ref(null);
+            const shippingAddressDetail = ref(null);
+
+            const currentUserId = <?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>;
 
             const showUsers = () => {
                 axios.get('<?= BASE_URL ?>api/users', {
@@ -145,6 +170,21 @@ ob_start();
 
                 selectedUser.value = user;
 
+            }
+
+            const showShippingAddress = (user) => {
+
+                axios.get('<?= BASE_URL ?>api/shipping?user_id=' + user.id)
+                    .then(response => {
+                        console.log('Shipping address response:', response.data);
+                        // Păstrăm toate adresele returnate de API
+                        shippingAddressDetail.value = response.data;
+                        console.log('shippingAddressDetail.value:', shippingAddressDetail.value);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching shipping address:', error);
+                        shippingAddressDetail.value = [];
+                    });
             }
 
             
@@ -205,7 +245,8 @@ ob_start();
                 searchUsers,
                 selectedUser,
                 showUserDetails,
-
+                shippingAddressDetail,
+                showShippingAddress,
             };
         }
     });                     

@@ -63,7 +63,7 @@ ob_start();
                 address:'',
                 city:'',
                 county:'',
-                user_id: currentUserId
+                user_id: currentUserId,
 
             }) 
 
@@ -75,9 +75,10 @@ ob_start();
                 };
                 console.log(currentUserId)
                 
-                axios.get('<?= BASE_URL ?>api/shipping?user_id=' + currentUserId)
+                axios.get('<?= BASE_URL ?>api/shipping?user_id=' + user.id)
                     .then(response => {
                         addresses.value = response.data
+                        
                     })
             }
 

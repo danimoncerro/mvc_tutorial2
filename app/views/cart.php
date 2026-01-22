@@ -106,9 +106,10 @@ ob_start();
                     user_id: currentUserId,
                 };
 
-                axios.get('<?= BASE_URL ?>api/shipping?user_id')
+                axios.get('<?= BASE_URL ?>api/shipping?user_id=' + currentUserId)
                     .then(response => {
                         addresses.value = response.data
+                        console.log('Shipping address:', addresses.value);
                     })
             };
 
@@ -121,6 +122,7 @@ ob_start();
                 axios.get('<?= BASE_URL ?>api/billing?user_id')
                     .then(response => {
                         billingAddresses.value = response.data
+                        console.log('Shipping address:', billingAddresses.value);
                     })
             }
 
