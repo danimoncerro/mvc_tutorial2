@@ -27,11 +27,11 @@ class Order
         $sql = "SELECT o.*, u.email as user_email
             FROM orders o
             LEFT JOIN users u ON u.id = o.user_id
-            WHERE 1=1";
+            WHERE 1=1 ";
                 //"AND o.id IN (2, 4, 8, 9)";
 
         if (!is_null($status)){
-            $sql.= " AND o.status=:status";
+            $sql.= " AND o.status=:status ";
         }
         $limit = $perPage;
         $offset = ($page - 1) * $perPage;
@@ -39,7 +39,7 @@ class Order
         $sql .= " LIMIT $limit OFFSET $offset";   
   
             
-        $stmt = $this->db->query($sql);
+       // $stmt = $this->db->query($sql);
         $stmt = $this->db->prepare($sql);
 
         if (!is_null($status)){
