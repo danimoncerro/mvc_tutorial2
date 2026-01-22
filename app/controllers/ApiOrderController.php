@@ -99,7 +99,7 @@ class ApiOrderController
             else {
                 //$totalPages = ($totalOrders > 0 && $perPage > 0) ? (int)ceil($totalOrders / $perPage) : 1;
                 $orders = $orderModel->all($status, $page, $order_column, $order_direction, $perPage);
-                $totalOrders = $orderModel->countAll($status);
+                $totalOrders = $orderModel->countAll();
                 
             }
          
@@ -107,7 +107,7 @@ class ApiOrderController
             
             echo json_encode([
                 'orders' => $orders,
-                'total_orders' => count($orders),
+                'total_orders' => $totalOrders,
                 'current_page' => $currentPage,
                 'per_page' => $perPage,
                 'total_pages' => $totalPages
