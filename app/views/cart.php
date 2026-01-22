@@ -46,21 +46,22 @@ ob_start();
         </table>
 
         <h2>Selecteaza adresa de livrare si cea de facturare</h2>
-        <select>
+        <select v-model="selectedShippingAddress">
             <option value="">Selecteaza adresa de livrare</option>
             <option v-for="address in addresses" :key="address.id">
                 {{address.address}}, {{address.city}}, {{address.county}}
             </option>
         </select>
         <br>
-        <select>
+        <select v-model="selectedBillingAddress">
             <option value="">Selecteaza adresa de facturare</option>
             <option v-for="address in billingAddresses" :key="address.id">
                 {{address.address}}, {{address.zip_code}}, {{address.city}}, {{address.county}}
             </option>
         </select>
 
-
+        <p> Shipping: {{selectedShippingAddress}} </p>
+        <p> Billing: {{selectedBillingAddress}} </p>
 
         <button class="btn btn-success mb-3" @click="createOrder" >Plasează comanda</button><br>
 
@@ -98,6 +99,8 @@ ob_start();
             const addresses = ref([]);
             const billingAddresses = ref([]);
             const currentUserId = <?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>;
+            const selectedShippingAddress = ref('');
+            const selectedBillingAddress = ref('');
 
 
             const getAddresses = () => {
@@ -190,7 +193,10 @@ ob_start();
                     alert('Coșul este gol!');
                     return;
                 }
-                axios.post('<?= BASE_URL ?>api/order/create')
+                axios.post('<?= BASE_URL ?>api/order/create', {
+                    shippingAddress: selectedShippingAddress.value,
+                    billingAddress: selectedBillingAddress.value
+                })
                     .then(res => {
                         if (res.data.success) {
                             alert('Comanda a fost plasată cu succes! Număr comandă: ' + res.data.order_id);
@@ -239,6 +245,8 @@ ob_start();
                 createOrder,
                 addresses,
                 billingAddresses,
+                selectedShippingAddress,
+                selectedBillingAddress,
                 
             };
         }

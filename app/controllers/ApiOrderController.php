@@ -18,6 +18,8 @@ class ApiOrderController
                 return;
             }
 
+            $data = json_decode(file_get_contents('php://input'), true);
+
             $orderModel = new Order();
             $orderItemModel = new OrderItem();
 
@@ -36,8 +38,9 @@ class ApiOrderController
                 'status'  => 'pending',
 
 
-                'shipping_address' => '',
-                'billing_address' => '',
+                'shipping_address' => $data['shippingAddress'],
+                'billing_address' => $data['billingAddress'],
+
             ]);
 
             // Creează itemii comenzii
