@@ -38,8 +38,6 @@ class Order
         $sql .= " ORDER BY o.$order_column $order_direction";
         $sql .= " LIMIT $limit OFFSET $offset";   
   
-            
-       // $stmt = $this->db->query($sql);
         $stmt = $this->db->prepare($sql);
 
         if (!is_null($status)){
@@ -47,14 +45,9 @@ class Order
                 'status'=>$status
             ]);
         }
-
-
-
         else {
             $stmt->execute();
         }
-
-       
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -84,8 +77,6 @@ class Order
         else {
             $stmt->execute();
         }
-
-       
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

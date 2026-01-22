@@ -155,7 +155,8 @@ ob_start();
             
             const editingUser = reactive({
                 id: null,
-                email: ''
+                email: '',
+                role: ''
             });
             const selectedUser = ref(null);
             const shippingAddressDetail = ref(null);
@@ -241,6 +242,7 @@ ob_start();
                 // Populează editingUser cu datele utilizatorului selectat
                 editingUser.id = u.id;
                 editingUser.email = u.email;
+                editingUser.role = u.role;
 
                 // Deschide modalul de editare
                 //const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
