@@ -126,6 +126,94 @@ ob_start();
 
     </edit-user>
 
+    <!-- Paginare -->
+
+
+    <nav aria-label="Paginare users">
+        <ul class="pagination">
+            <li class="page-item" style="cursor: pointer" :class="{disabled: currentPage ===1 }">
+                <a class="page-link" @click="goToPage(currentPage - 1)" tabindex="-1">Previous</a>
+            </li>
+            <!-- tratam prima pagina -->
+            <li class="page-item active" style="cursor: pointer" v-if="currentPage < 2">
+                <a class="page-link" @click="goToPage(currentPage)">
+                    {{ currentPage }}
+                </a>
+            </li>
+            
+            <li class="page-item" style="cursor: pointer" v-if="currentPage < 2">
+                <a class="page-link" @click="goToPage(currentPage + 1)">
+                    {{ currentPage + 1}}
+                </a>
+            </li>
+
+            <li class="page-item" style="cursor: pointer" v-if="currentPage < 2">
+                <a class="page-link" @click="goToPage(currentPage + 2)">
+                    {{ currentPage + 2 }}
+                </a>
+            </li>
+
+            <!-- tratam pagina > 1 -->
+            <li class="page-item" style="cursor: pointer" v-if="currentPage>1 && currentPage<totalPages">
+                <a class="page-link" @click="goToPage(currentPage - 1)">
+                    {{ currentPage - 1}}
+                </a>
+            </li>
+            <li class="page-item active"  style="cursor: pointer"  v-if="currentPage>1 && currentPage<totalPages">
+                <a class="page-link" @click="goToPage(currentPage)">
+                    {{ currentPage}}
+                </a>
+            </li>
+            <li class="page-item" style="cursor: pointer"  v-if="currentPage>1 && currentPage<totalPages">
+                <a class="page-link" @click="goToPage(currentPage + 1)">
+                    {{ currentPage + 1 }}
+                </a>
+            </li>
+
+            <!-- tratam utlima pagina -->
+            <li class="page-item" style="cursor: pointer" v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage - 2)">
+                    {{ currentPage - 2}}
+                </a>
+            </li>
+            <li class="page-item"  style="cursor: pointer"  v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage - 1)">
+                    {{ currentPage - 1}}
+                </a>
+            </li>
+            <li class="page-item active" style="cursor: pointer"  v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage)">
+                    {{ currentPage }}
+                </a>
+            </li>
+             
+            <li class="page-item" style="cursor: pointer" :class="{disabled: currentPage === totalPages }">
+                <a class="page-link"  @click="goToPage(currentPage + 1)">Next</a>
+            </li>
+        </ul>
+
+        <div class="mb-3">
+            <h5>Users/page</h5>
+            <div class="row g-3">
+            
+                <div class="col-md-3">
+                    <select v-model="filters.per_page" class="form-select" @change="showUsers(1)">
+                        <option value="5">5 users</option>
+                        <option v-for="page in perPages" :key="page" :value="page">
+                            {{ page }} users
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="text-muted mt-2">
+            Pagina {{ currentPage }} din {{ totalPages }} (Total: {{ totalusers }} users)
+        </div>
+
+    </nav>
+
 
 
 </div>
@@ -164,11 +252,19 @@ ob_start();
 
             const currentUserId = <?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>;
 
-            const showUsers = () => {
+            const perPages = ref([10, 15, 20]);
+            const currentPage = ref(1);
+            const totalPages = ref(1);
+            const filters = reactive({
+                search: '',
+                per_page: 5
+            });
+
+            const showUsers = (page) => {
                 axios.get('<?= BASE_URL ?>api/users', {
                     params: {
-                        per_page: 20,
-                        page: 1,
+                        per_page: filters.per_page,
+                        page: page,
                         sort: 'id',
                         order: 'desc',
                         role: '',                  }
@@ -176,6 +272,7 @@ ob_start();
                 .then(response => {
                     users.value = response.data.users;
                     totalusers.value = response.data.total_users;
+                    totalPages.value = response.data.total_pages;
 
                 })
                 .catch(error => {
@@ -187,6 +284,20 @@ ob_start();
 
                 selectedUser.value = user;
 
+            }
+
+            const goToPage = (page) => {
+                console.log('Going to page:', page);
+                
+                if (page < 1 || page > totalPages.value) {
+                    console.log('TotalPages = ', totalPages.value)
+                    console.log('Invalid page:', page);
+                    return;  // Previne navigarea la pagini invalide
+                }
+                
+                currentPage.value = page;
+                console.log('Current Page din .then (response:', currentPage.value);
+                showUsers(page);
             }
 
             const showShippingAddress = (user) => {
@@ -282,6 +393,11 @@ ob_start();
                 showShippingAddress,
                 showBillingAddress,
                 billingAddressDetail,
+                 perPages,
+                currentPage,
+                totalPages,
+                goToPage,
+                filters
             };
         }
     });                     
