@@ -12,7 +12,7 @@ ob_start();
 
 <div id="app" class="container">
 
-    <show-category-title :categories="categories"></show-category-title>
+    <show-category-title :total="totalcategories"></show-category-title> {{totalcategories}}
     <add-category :savelink="'<?= BASE_URL ?>api/categories/store'" @show-categories="showCategories"></add-category>
 
 <!--  Componenta de cautare  -->
@@ -232,7 +232,7 @@ ob_start();
                 axios.get('<?= BASE_URL ?>api/categories', {
                     params: {
                         per_page: filters.per_page,
-                        page: 1,
+                        page: page,
                         sort: 'id',
                         order: 'desc'
                     }
