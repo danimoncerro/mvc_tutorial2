@@ -289,7 +289,7 @@ ob_start();
             <div class="row g-3">
             
                 <div class="col-md-3">
-                    <select v-model="filters.page" class="form-select" @change="showProducts(1)">
+                    <select v-model="filters.per_page" class="form-select" @change="showProducts(1)">
                         <option value="5">5 products</option>
                         <option v-for="page in perPages" :key="page" :value="page">
                             {{ page }} products
@@ -340,9 +340,9 @@ ob_start();
                 id:'',
             });
             const categories = ref([]);
-            const filters = ref({
+            const filters = reactive({
                 search: '',
-                page: 5
+                per_page: 5
             });
             const dinamictext = ref('');
             const dinamictext2 = ref('');
@@ -361,7 +361,7 @@ ob_start();
                 axios.get('<?= BASE_URL ?>api/products', {
                     params: {
                         page: page,
-                        per_page: filters.value.page
+                        per_page: filters.per_page
                     }
                  
                 })

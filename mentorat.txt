@@ -180,5 +180,8 @@ Tema pentru vacanta:
 3. Editare si stergere atat pentru adresa de livrare cat si pentru adresa de facturare (editarea este optionala);
 4. Direct pe pagina de cart adauga adresa de facturare intr-un modal / la fel si pentru adresa de livrare;
 
+Tema 27.01.2026
+
+Creeaza o componenta pentru Titlul paginii Produse cu numarul total de produse la fel ca si la categorii.
 
 

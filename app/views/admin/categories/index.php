@@ -208,26 +208,17 @@ ob_start();
             
             
             const searchCategories = (search) => {
-            axios.get('<?= BASE_URL ?>api/categories/search?search=' + search)
-            .then(response => {
-                categories.value = response.data.categories;
-                totalcategories.value = response.data.total_categories;
-            })
-            .catch(error => {
-                console.error('API Error:', error);
-            });
+                axios.get('<?= BASE_URL ?>api/categories/search?search=' + search)
+                .then(response => {
+                    categories.value = response.data.categories;
+                    totalcategories.value = response.data.total_categories;
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
+                });
             }
 
             const showCategories = (page) => {
-
-                const params = {
-            
-                    page: page
-                };
-
-                //if (filters.page) {
-                //    params.per_page = filters.page;
-                //}
 
                 axios.get('<?= BASE_URL ?>api/categories', {
                     params: {
@@ -241,7 +232,6 @@ ob_start();
                     categories.value = response.data.categories;
                     totalcategories.value = response.data.total_categories;
                     totalPages.value = response.data.total_pages;
-                    console.log('Total Pages din showCategories', totalPages.value );
                 })
                 .catch(error => {
                     console.error('API Error:', error);
