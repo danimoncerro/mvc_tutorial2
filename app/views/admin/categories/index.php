@@ -151,7 +151,7 @@ ob_start();
             
                 <div class="col-md-3">
                     <select v-model="filters.per_page" class="form-select" @change="showCategories(1)">
-                        <option value="">5 categories</option>
+                        <option value="5">5 categories</option>
                         <option v-for="page in perPages" :key="page" :value="page">
                             {{ page }} categories
                         </option>

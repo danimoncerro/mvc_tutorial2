@@ -290,7 +290,7 @@ ob_start();
             
                 <div class="col-md-3">
                     <select v-model="filters.page" class="form-select" @change="showProducts(1)">
-                        <option value="">5 products</option>
+                        <option value="5">5 products</option>
                         <option v-for="page in perPages" :key="page" :value="page">
                             {{ page }} products
                         </option>
@@ -342,7 +342,7 @@ ob_start();
             const categories = ref([]);
             const filters = ref({
                 search: '',
-                page: ''
+                page: 5
             });
             const dinamictext = ref('');
             const dinamictext2 = ref('');
@@ -357,17 +357,12 @@ ob_start();
 
             const showProducts = (page) => {
 
-                const params = {
-            
-                    page: page
-                };
-
-                if (filters.value.page) {
-                    params.per_page = filters.value.page;
-                }
-
+                
                 axios.get('<?= BASE_URL ?>api/products', {
-                    params: params
+                    params: {
+                        page: page,
+                        per_page: filters.value.page
+                    }
                  
                 })
                 .then(response => {
