@@ -79,6 +79,95 @@ ob_start();
         @show-categories="showCategories">
     </edit-category>
 
+    <!-- Paginare -->
+
+
+    <nav aria-label="Paginare comenzi">
+        <ul class="pagination">
+            <li class="page-item" style="cursor: pointer" :class="{disabled: currentPage ===1 }">
+                <a class="page-link" @click="goToPage(currentPage - 1)" tabindex="-1">Previous</a>
+            </li>
+            <!-- tratam prima pagina -->
+            <li class="page-item active" style="cursor: pointer" v-if="currentPage < 2">
+                <a class="page-link" @click="goToPage(currentPage)">
+                    {{ currentPage }}
+                </a>
+            </li>
+            
+            <li class="page-item" style="cursor: pointer" v-if="currentPage < 2">
+                <a class="page-link" @click="goToPage(currentPage + 1)">
+                    {{ currentPage + 1}}
+                </a>
+            </li>
+
+            <li class="page-item" style="cursor: pointer" v-if="currentPage < 2">
+                <a class="page-link" @click="goToPage(currentPage + 2)">
+                    {{ currentPage + 2 }}
+                </a>
+            </li>
+
+            <!-- tratam pagina > 1 -->
+            <li class="page-item" style="cursor: pointer" v-if="currentPage>1 && currentPage<totalPages">
+                <a class="page-link" @click="goToPage(currentPage - 1)">
+                    {{ currentPage - 1}}
+                </a>
+            </li>
+            <li class="page-item active"  style="cursor: pointer"  v-if="currentPage>1 && currentPage<totalPages">
+                <a class="page-link" @click="goToPage(currentPage)">
+                    {{ currentPage}}
+                </a>
+            </li>
+            <li class="page-item" style="cursor: pointer"  v-if="currentPage>1 && currentPage<totalPages">
+                <a class="page-link" @click="goToPage(currentPage + 1)">
+                    {{ currentPage + 1 }}
+                </a>
+            </li>
+
+            <!-- tratam utlima pagina -->
+            <li class="page-item" style="cursor: pointer" v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage - 2)">
+                    {{ currentPage - 2}}
+                </a>
+            </li>
+            <li class="page-item"  style="cursor: pointer"  v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage - 1)">
+                    {{ currentPage - 1}}
+                </a>
+            </li>
+            <li class="page-item active" style="cursor: pointer"  v-if="currentPage === totalPages">
+                <a class="page-link" @click="goToPage(currentPage)">
+                    {{ currentPage }}
+                </a>
+            </li>
+             
+            <li class="page-item" style="cursor: pointer" :class="{disabled: currentPage === totalPages }">
+                <a class="page-link"  @click="goToPage(currentPage + 1)">Next</a>
+            </li>
+        </ul>
+
+        <div class="mb-3">
+            <h5>Categories/page</h5>
+            <div class="row g-3">
+            
+                <div class="col-md-3">
+                    <select v-model="filters.per_page" class="form-select" @change="showCategories(1)">
+                        <option value="">5 categories</option>
+                        <option v-for="page in perPages" :key="page" :value="page">
+                            {{ page }} categories
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="text-muted mt-2">
+            Pagina {{ currentPage }} din {{ totalPages }} (Total: {{ totalcategories }} categories)
+        </div>
+
+    </nav>
+
+
 </div>
 
 
@@ -104,6 +193,13 @@ ob_start();
             const selectedCategory = ref(null);
             const hoveredCategoryName = ref('');
             const incrementsnumber = ref(0);
+            const perPages = ref([10, 15, 20]);
+            const currentPage = ref(1);
+            const totalPages = ref(1);
+            const filters = reactive({
+                search: '',
+                per_page: 5
+            });
             const editingCategory = reactive({
                 id: '',
                 name: '',
@@ -122,10 +218,20 @@ ob_start();
             });
             }
 
-            const showCategories = () => {
+            const showCategories = (page) => {
+
+                const params = {
+            
+                    page: page
+                };
+
+                //if (filters.page) {
+                //    params.per_page = filters.page;
+                //}
+
                 axios.get('<?= BASE_URL ?>api/categories', {
                     params: {
-                        per_page: 20,
+                        per_page: filters.per_page,
                         page: 1,
                         sort: 'id',
                         order: 'desc'
@@ -134,6 +240,8 @@ ob_start();
                 .then(response => {
                     categories.value = response.data.categories;
                     totalcategories.value = response.data.total_categories;
+                    totalPages.value = response.data.total_pages;
+                    console.log('Total Pages din showCategories', totalPages.value );
                 })
                 .catch(error => {
                     console.error('API Error:', error);
@@ -162,7 +270,19 @@ ob_start();
             }
 
             
-
+            const goToPage = (page) => {
+                console.log('Going to page:', page);
+                
+                if (page < 1 || page > totalPages.value) {
+                    console.log('TotalPages = ', totalPages.value)
+                    console.log('Invalid page:', page);
+                    return;  // Previne navigarea la pagini invalide
+                }
+                
+                currentPage.value = page;
+                console.log('Current Page din .then (response:', currentPage.value);
+                showCategories(page);
+            }
             
 
             const editCategory = (category) => {
@@ -192,7 +312,12 @@ ob_start();
                 increments,
                 editingCategory,  // Adaugă această linie
                 searchCategories,
-                showCategoryDetails
+                showCategoryDetails,
+                perPages,
+                currentPage,
+                totalPages,
+                goToPage,
+                filters
 
             };
         }
