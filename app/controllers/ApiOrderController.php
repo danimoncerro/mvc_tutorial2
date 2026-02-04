@@ -93,7 +93,7 @@ class ApiOrderController
         try {
             $orderModel = new Order();
             if ($user['role'] == 'client'){
-                $orders = $orderModel->myOrders($user_id, $status, $page, $order_column, $order_direction);  
+                $orders = $orderModel->myOrders($user_id, $status, $page, $order_column, $order_direction, $perPage);  
                 $totalOrders = $orderModel->myOrdersTotalOrders($user_id, $status);
             }
             else {

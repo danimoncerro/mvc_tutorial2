@@ -106,7 +106,8 @@ class Order
         $status,
         $page = 1,
         $order_column = 'id',
-        $order_direction = 'desc'
+        $order_direction = 'desc',
+        $per_page = 5,
         )
     {
         $sql = "SELECT orders.*, users.email AS user_email
@@ -121,7 +122,11 @@ class Order
             
         }
 
+        $limit = $per_page;
+        $offset = ($page - 1) * $per_page;
+
         $sql.= " ORDER BY orders.$order_column $order_direction";
+        $sql.= " LIMIT $offset, $limit";
         $stmt = $this->db->prepare($sql);
     
         if (!is_null($status)){

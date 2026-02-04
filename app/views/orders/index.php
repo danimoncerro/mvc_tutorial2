@@ -209,7 +209,6 @@ ob_start();
             
                 <div class="col-md-3">
                     <select v-model="filters.page" class="form-select" @change="showOrders(1)">
-                        <option value="">5 orders</option>
                         <option v-for="page in perPages" :key="page" :value="page">
                             {{ page }} orders
                         </option>
@@ -237,7 +236,7 @@ ob_start();
             const orders = ref([]);
             const totalorders = ref(0);
             const allStatuses = ref(['pending', 'delivered', 'canceled']);
-            const perPages = ref([10, 15, 20]);
+            const perPages = ref([5, 7, 10, 15, 20]);
             const currentPage = ref(1);
             const totalPages = ref(1);
             const filters = ref({
