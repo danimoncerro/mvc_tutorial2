@@ -3,6 +3,7 @@ $title = 'Products List';
 ob_start();
 ?>
 
+<script src="<?= BASE_URL ?>frontend/js/components/ShowProductTitle.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/AddProduct.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/DeleteProduct.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/EditProduct.js"></script>
@@ -35,9 +36,10 @@ ob_start();
 
     
 
-    <h1>Products 
+    <!--<h1>Products 
         <span class="badge bg-secondary" v-if="products.length">{{ totalproducts }}</span>
-    </h1>
+    </h1> -->
+    <show-product-title :total="totalproducts"></show-product-title> {{totalproducts}}
     <h2>{{dinamictext}}</h2>
     <h1>{{dinamictext2}}</h1>
    
@@ -317,6 +319,7 @@ ob_start();
     const app = createApp({
 
         components: {
+           'show-product-title': ShowProductTitle,
            'add-product': AddProduct,
            'delete-product': DeleteProduct,
            'edit-product': EditProduct,

@@ -141,20 +141,20 @@ ob_start();
                 </a>
             </li>
             
-            <li class="page-item" style="cursor: pointer" v-if="currentPage < 2">
+            <li class="page-item" style="cursor: pointer" v-if="currentPage < 2 && totalPages>1">
                 <a class="page-link" @click="goToPage(currentPage + 1)">
                     {{ currentPage + 1}}
                 </a>
             </li>
 
-            <li class="page-item" style="cursor: pointer" v-if="currentPage < 2">
+            <li class="page-item" style="cursor: pointer" v-if="currentPage < 2 && totalPages>2">
                 <a class="page-link" @click="goToPage(currentPage + 2)">
                     {{ currentPage + 2 }}
                 </a>
             </li>
 
             <!-- tratam pagina > 1 -->
-            <li class="page-item" style="cursor: pointer" v-if="currentPage>1 && currentPage<totalPages">
+            <li class="page-item" style="cursor: pointer" v-if="currentPage>1 && currentPage<totalPages && totalPages>1">
                 <a class="page-link" @click="goToPage(currentPage - 1)">
                     {{ currentPage - 1}}
                 </a>
@@ -164,19 +164,19 @@ ob_start();
                     {{ currentPage}}
                 </a>
             </li>
-            <li class="page-item" style="cursor: pointer"  v-if="currentPage>1 && currentPage<totalPages">
+            <li class="page-item" style="cursor: pointer"  v-if="currentPage>1 && currentPage<totalPages && totalPages>1">
                 <a class="page-link" @click="goToPage(currentPage + 1)">
                     {{ currentPage + 1 }}
                 </a>
             </li>
 
             <!-- tratam utlima pagina -->
-            <li class="page-item" style="cursor: pointer" v-if="currentPage === totalPages">
+            <li class="page-item" style="cursor: pointer" v-if="currentPage === totalPages && totalPages>2" >
                 <a class="page-link" @click="goToPage(currentPage - 2)">
                     {{ currentPage - 2}}
                 </a>
             </li>
-            <li class="page-item"  style="cursor: pointer"  v-if="currentPage === totalPages">
+            <li class="page-item"  style="cursor: pointer"  v-if="currentPage === totalPages && totalPages">
                 <a class="page-link" @click="goToPage(currentPage - 1)">
                     {{ currentPage - 1}}
                 </a>
@@ -252,7 +252,7 @@ ob_start();
 
             const currentUserId = <?= isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 'null' ?>;
 
-            const perPages = ref([10, 15, 20]);
+            const perPages = ref([2, 10, 15, 20]);
             const currentPage = ref(1);
             const totalPages = ref(1);
             const filters = reactive({

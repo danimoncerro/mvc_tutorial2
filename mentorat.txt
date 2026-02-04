@@ -183,5 +183,6 @@ Tema pentru vacanta:
 Tema 27.01.2026
 
 Creeaza o componenta pentru Titlul paginii Produse cu numarul total de produse la fel ca si la categorii.
+De rezolvat/terminat cu paginarea. 
 
 
