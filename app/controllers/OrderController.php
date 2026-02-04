@@ -67,7 +67,7 @@ class OrderController
         $userModel = new User();
         $user = $userModel->find($id);
 
-        $userModel = new Uer();
+        $userModel = new User();
         $user = $userModel->all();
 
         require_once APP_ROOT . '/app/views/orders/edit.php';

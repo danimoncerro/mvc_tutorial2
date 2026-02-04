@@ -49,6 +49,9 @@
               <a class="nav-link ms-3" href="<?= BASE_URL ?>categories">Categories</a> 
               <a class="nav-link ms-3" href="<?= BASE_URL ?>users">Users</a>
               <a class="nav-link ms-3" href="<?= BASE_URL ?>orders">All orders</a>
+
+            <?php elseif ($_SESSION['user']['role'] == 'livrator'): ?>
+              <a class="nav-Link ms-3"  href="<?= BASE_URL ?>orders">All orders</a>
               
             <?php else: ?>
               <a class="nav-link ms-3" href="<?= BASE_URL ?>cart">Cart</a>

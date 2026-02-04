@@ -22,7 +22,7 @@ class AuthController
             $_SESSION['user']['id'] = $user['id'];
             $_SESSION['user']['email'] = $user['email'];
             $_SESSION['user']['role'] = $user['role'];
-            header("Location: " . BASE_URL . "products");
+            header("Location: " . BASE_URL);
             exit;
         } else {
             $error = "Email sau parolă incorecte!";

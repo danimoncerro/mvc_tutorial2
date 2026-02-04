@@ -130,6 +130,14 @@ ob_start();
                         <i class="bi bi-pencil"></i>
                         Detalii comanda
                     </button>
+
+                    <!-- Editeaza comanda -->
+
+                    <a :href="'<?= BASE_URL ?>/orders/edit?id=' + order.id"
+                    class="btn btn-primary">
+                        Editeaza
+                    </a>
+
                 </td>
                 
             </tr>
@@ -291,7 +299,7 @@ ob_start();
                     console.log('Orders:', response.data);
                     orders.value = response.data.orders || [];
                     totalorders.value = response.data.total_orders || 0;
-                    //currentPage.value = response.data.current_page || 3;
+                    currentPage.value = response.data.current_page || 1;
                     totalPages.value = response.data.total_pages || 1;
 
                     
