@@ -190,4 +190,10 @@ Tema 04.02.2026
 Sa se afiseze toate informatiile despre un order. (pentru un livrator)
 Sa se afiseze mai frumos cu bootstrap.
 
+Tema 10.02.2026
+
+Sa se stearga o comanda. Dar se va putea sterge doar daca nu mai contine nici un produs.
+Butonul de stergere sa apara dar daca nu mai exista nici un produs. (smecherie daca tota=0 inseamna ca nu mai exista produse);
+
+
 
