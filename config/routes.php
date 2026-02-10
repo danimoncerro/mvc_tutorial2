@@ -34,7 +34,8 @@ $router->get('auth/login', 'AuthController@login');
 $router->post('auth/authenticate', 'AuthController@authenticate');
 $router->get('auth/logout', 'AuthController@logout');
 $router->get('vuecategories', 'CategoryController@vueindex');
-$router->post('api/orderitems/delete', 'OrderController@deleteOrderItem' );
+$router->post('api/orderitems/delete', 'OrderController@deleteOrderItem');
+$router->get('api/orders/updatetotal', 'OrderController@updateTotal');
 
 $router->get('cart', 'CartController@viewCart');
 $router->get('cart/add', 'CartController@addToCart');

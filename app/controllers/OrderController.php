@@ -99,6 +99,23 @@ class OrderController
         }
     }
 
+    public function updateTotal()
+    {
+        $orderid = $_GET['order_id'];
+        $orderItemModel = new OrderItem();
+        $orderItems = $orderItemModel->findByOrder($orderid);
+
+        $totalOrder = 0;
+        foreach ($orderItems as $item){
+            $subtotal = $item['qty'] * $item['price'];
+            $totalOrder += $subtotal;
+        }
+
+        $orderModel = new Order();
+        $orderModel->updateTotalOrder($orderid, $totalOrder);
+        
+    }
+
     public function delete()
     {
         $id = $_GET['id'] ?? null;

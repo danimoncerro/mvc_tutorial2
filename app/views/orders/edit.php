@@ -59,11 +59,14 @@ ob_start();
                     });
             };
 
-            const deleteProductFromOrder = (id) => {
-                console.log("Suntem in functia deleteProductFromOrder" + id);
-                axios.post('<?= BASE_URL ?>api/orderitems/delete?id=' + id)
+            const deleteProductFromOrder = (localid) => {
+               
+                axios.post('<?= BASE_URL ?>api/orderitems/delete?id=' + localid)
                     .then(response => {
                         console.log("Produs sters din comanda.")
+
+                        axios.get('<?= BASE_URL ?>api/orders/updatetotal?order_id=' + id.value)
+
                         getOrder();
                     })
 
