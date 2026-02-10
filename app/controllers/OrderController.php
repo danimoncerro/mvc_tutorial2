@@ -1,6 +1,7 @@
 <?php
 
 require_once APP_ROOT . '/app/models/Order.php';
+require_once APP_ROOT . '/app/models/OrderItem.php';
 
 class OrderController
 {
@@ -112,7 +113,15 @@ class OrderController
         }
     }
 
+    public function deleteOrderItem()
+    {
+        $id = $_GET['id'] ?? null;
 
+        $orderItemModel = new OrderItem();
+        $orderItemModel->delete($id);
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'success', 'message' => 'Produs șters cu succes din comanda.']);
+    }
     
 
 

@@ -12,19 +12,24 @@ ob_start();
 
     <form action="<?= BASE_URL ?>orders/store" method="POST" class="mx-auto p-4 border rounded shadow-sm bg-white">
 
-        <table>
-            <thead>
+        <table class="table table-striped table-hover table-bordered" >
+            <thead class="table-light">
                 <tr>
                     <th>Nume produs</th>
                     <th>Cantitate</th>
                     <th>Pret</th>
+                    <th>Actiuni</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="product in products" :key="product.id">
-                    <th>{{product.product_name}}</th>
-                    <th>{{product.qty}}</th>
-                    <th>{{product.product_price_db}}</th>
+                    <td>{{product.product_name}}</td>
+                    <td>{{product.qty}}</td>
+                    <td>{{product.product_price_db}}</td>
+                    <td>
+                        <button type="button" @click="deleteProductFromOrder(product.id)">Sterge</button>
+                    </td>
+
                 </tr>
 
             </tbody>
@@ -54,6 +59,16 @@ ob_start();
                     });
             };
 
+            const deleteProductFromOrder = (id) => {
+                console.log("Suntem in functia deleteProductFromOrder" + id);
+                axios.post('<?= BASE_URL ?>api/orderitems/delete?id=' + id)
+                    .then(response => {
+                        console.log("Produs sters din comanda.")
+                        getOrder();
+                    })
+
+            }
+
             onMounted(() => {
                 getOrder();
             });
@@ -63,6 +78,7 @@ ob_start();
                 getOrder,
                 id,
                 products,
+                deleteProductFromOrder
             }
         }
     })
