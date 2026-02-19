@@ -234,6 +234,26 @@ class ApiOrderController
 
     }
 
+    public function updateOrderItem(){
+        $id = $_GET['id'] ?? null;
+        //echo $id;
+        $input = file_get_contents('php://input');
+        $products = json_decode($input, true);
+        //echo '<br>';
+        $orderItemModel = new OrderItem();
+
+
+        foreach ($products as $product) {
+            $orderItemModel->update($product['id'], $product);
+            //echo $product['id'] . '-' . $product['qty'] . '<br>' ;
+        }
+        //$orderModel = new OrderItem();
+       // $orderModel->update($id);
+        //header('Content-Type: application/json');
+        //echo json_encode(['status' => 'success', 'message' => 'Comanda s-a actualizat cu succes.']);
+        
+    }
+
     public function deleteOrder()
     {
         $id = $_GET['id'] ?? null;

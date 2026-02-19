@@ -10,7 +10,7 @@ ob_start();
 
     <h1 class="mb-4">{{title}} {{id}}</h1> 
 
-    <form action="<?= BASE_URL ?>orders/store" method="POST" class="mx-auto p-4 border rounded shadow-sm bg-white">
+   
 
         <table class="table table-striped table-hover table-bordered" >
             <thead class="table-light">
@@ -24,7 +24,9 @@ ob_start();
             <tbody>
                 <tr v-for="product in products" :key="product.id">
                     <td>{{product.product_name}}</td>
-                    <td>{{product.qty}}</td>
+                    <td>
+                        <input type="text" v-model="product.qty">
+                    </td>
                     <td>{{product.product_price_db}}</td>
                     <td>
                         <button type="button" @click="deleteProductFromOrder(product.id)">Sterge</button>
@@ -34,8 +36,8 @@ ob_start();
 
             </tbody>
         </table>
-        <button type="submit" class="btn btn-primary">Actualizeaza comanda</button>
-    </form>
+        <button type="button" class="btn btn-primary" @click="updateOrderItems()">Actualizeaza comanda</button>
+
 
 </div>
 
@@ -72,6 +74,14 @@ ob_start();
 
             }
 
+            const updateOrderItems = () => {
+                axios.post('<?= BASE_URL ?>api/orderitems/update?id=' + id.value, products.value)
+                    .then(response => {
+                        axios.get('<?= BASE_URL ?>api/orders/updatetotal?order_id=' + id.value)
+                        getOrder();
+                    })
+            }
+
             onMounted(() => {
                 getOrder();
             });
@@ -81,7 +91,9 @@ ob_start();
                 getOrder,
                 id,
                 products,
-                deleteProductFromOrder
+                deleteProductFromOrder,
+                updateOrderItems
+                
             }
         }
     })

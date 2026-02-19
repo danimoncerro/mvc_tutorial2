@@ -206,6 +206,7 @@ class Order
         ]);
     }
 
+
     public function updateTotalOrder($id, $totalorder)
     {
         $stmt = $this->db->prepare("UPDATE orders SET total_order = :total_order WHERE id= :id");
