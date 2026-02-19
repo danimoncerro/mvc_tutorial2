@@ -138,6 +138,7 @@ ob_start();
                         Editeaza
                     </a>
 
+                    <button class="btn btn-danger btn-sm" type="button" @click="deleteOrder(order.id)">Sterge</button>                   
                 </td>
                 
             </tr>
@@ -310,6 +311,19 @@ ob_start();
                 });
             }
 
+            const deleteOrder = (orderid) => {
+               
+                axios.post('<?= BASE_URL ?>api/orders/delete?id=' + orderid)
+                    .then(response => {
+                        console.log("Comanda stearsa.")
+
+                        //axios.get('<?= BASE_URL ?>api/orders/updatetotal?order_id=' + orderid)
+
+                        showOrders(1);
+                    })
+
+            }
+
             const goToPage = (page) => {
                 console.log('Going to page:', page);
                 
@@ -470,7 +484,8 @@ ob_start();
                 selectedOrder,
                 showOrderDetails,
                 detaillink,
-                marks
+                marks,
+                deleteOrder
             };
         }
     });   

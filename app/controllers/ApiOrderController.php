@@ -233,4 +233,14 @@ class ApiOrderController
 
 
     }
+
+    public function deleteOrder()
+    {
+        $id = $_GET['id'] ?? null;
+
+        $orderModel = new Order();
+        $orderModel->delete($id);
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'success', 'message' => 'Comanda s-a șters cu succes.']);
+    }
 }

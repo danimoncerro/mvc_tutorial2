@@ -36,6 +36,7 @@ $router->get('auth/logout', 'AuthController@logout');
 $router->get('vuecategories', 'CategoryController@vueindex');
 $router->post('api/orderitems/delete', 'OrderController@deleteOrderItem');
 $router->get('api/orders/updatetotal', 'OrderController@updateTotal');
+$router->post('api/orders/delete', 'ApiOrderController@deleteOrder');
 
 $router->get('cart', 'CartController@viewCart');
 $router->get('cart/add', 'CartController@addToCart');
