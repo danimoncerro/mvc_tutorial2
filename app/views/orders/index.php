@@ -138,7 +138,10 @@ ob_start();
                         Editeaza
                     </a>
 
-                    <button class="btn btn-danger btn-sm" type="button" @click="deleteOrder(order.id)">Sterge</button>                   
+                    <button class="btn btn-danger btn-sm" type="button" 
+                        @click="deleteOrder(order.id)"
+                        v-if="order.total_order==0"
+                        >Sterge</button>                   
                 </td>
                 
             </tr>
