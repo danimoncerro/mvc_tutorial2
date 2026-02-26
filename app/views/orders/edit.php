@@ -10,6 +10,7 @@ ob_start();
 
     <h1 class="mb-4">{{title}} {{id}}</h1>
     <h1 class="mb-4">Total comanda: {{order.total_order}}</h1>
+    <h3 class="mb-4">Status comanda: {{order.status}}</h3>
 
    
 

@@ -197,3 +197,6 @@ Butonul de stergere sa apara dar daca nu mai exista nici un produs. (smecherie d
 
 
 
+Tema 26.02.2026
+
+Sa se adauge discount si la adaugare produs. Sa putem adauga produsul direct cu discount.

@@ -106,6 +106,7 @@ ob_start();
                     Pret
                 </th>
                 <th>Categorie</th>
+                <th>Discount</th>
                 <th>Acțiuni</th>
             </tr>
         </thead>
@@ -149,6 +150,7 @@ ob_start();
                     </div>
                 </td>
                 <td>{{ product.category_name }}</td> 
+                <td>{{ product.discount }}</td>
                 <td>
                     <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editProductModal" 
                         @click="editProduct(product)" title="Editează produsul">
@@ -354,7 +356,8 @@ ob_start();
                 id: '',
                 name: '',
                 price: '',
-                category_id: ''
+                category_id: '',
+                discount: '',
             });
 
 
@@ -426,6 +429,7 @@ ob_start();
                 editingProduct.name = p.name;
                 editingProduct.price = p.price;
                 editingProduct.category_id = p.category_id;
+                editingProduct.discount = p.discount;
 
                 // Deschide modalul de editare
                 //const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
