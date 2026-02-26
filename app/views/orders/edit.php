@@ -8,7 +8,8 @@ ob_start();
 
 <div id="app" class="container">
 
-    <h1 class="mb-4">{{title}} {{id}}</h1> 
+    <h1 class="mb-4">{{title}} {{id}}</h1>
+    <h1 class="mb-4">Total comanda: {{order.total_order}}</h1>
 
    
 
@@ -49,17 +50,21 @@ ob_start();
             const title = ref("Editeaza comanda");
             const id = ref(<?= $_GET['id'] ?>);
             const products = ref([]);
+            const order = ref({});  //acoladele reprezinta un obiect in acest caz
 
             const getOrder = () => {
 
                 axios.get('<?= BASE_URL ?>api/orderdetail?order_id=' + id.value )
                     .then(response => {
-                        products.value = response.data 
+                        products.value = response.data.orderItems;
+                        order.value = response.data.order;
+                    console.log(order.value);
                     })
                     .catch(error => {
                         console.error('API Error:', error);
                     });
             };
+
 
             const deleteProductFromOrder = (localid) => {
                
@@ -92,7 +97,8 @@ ob_start();
                 id,
                 products,
                 deleteProductFromOrder,
-                updateOrderItems
+                updateOrderItems,
+                order,
                 
             }
         }
