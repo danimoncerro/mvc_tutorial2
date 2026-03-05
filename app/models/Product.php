@@ -43,13 +43,16 @@ class Product
     public function update($id, $data)
     {
         $stmt = $this->db->prepare("UPDATE products SET name = :name, 
-                price = :price, category_id = :category_id, discount = :discount WHERE id = :id");
+                price = :price, category_id = :category_id, discount = :discount, 
+                price_discount = :price_discount WHERE id = :id");
+                
         $stmt->execute([
             'name' => $data['name'],
             'price' => $data['price'],
             'category_id' => $data['category_id'],
             'id' => $id,
             'discount' => $data['discount'],
+            'price_discount' => $data['price_discount'],
         ]);
     }
 

@@ -82,6 +82,7 @@ class ApiProductController
         $productModel = new Product();
         $input = file_get_contents('php://input');
         $data = json_decode($input, true);
+        $data['price_discount'] = $data['price'] - ($data['price'] * $data['discount'] / 100);
 
         if ($data) {
             $productModel->update($productid, $data);
