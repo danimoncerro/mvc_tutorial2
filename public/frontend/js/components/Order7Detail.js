@@ -148,7 +148,7 @@ const Order7Detail = {
                                                         <span class="badge bg-secondary">{{ orderItem.qty }}</span>
                                                     </td>
                                                     <td class="text-end">
-                                                        <strong>{{ (orderItem.product_price_db * orderItem.qty).toFixed(2) }} lei</strong>
+                                                        <strong>{{ (orderItem.price * orderItem.qty).toFixed(2) }} lei</strong>
                                                     </td>
                                                 </tr>
                                                 <tr v-if="marks.length === 0">

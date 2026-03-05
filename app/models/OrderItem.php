@@ -30,7 +30,7 @@ class OrderItem
     public function findByOrder($orderId)
     {
         $stmt = $this->db->prepare("
-            SELECT oi.*, p.name AS product_name, p.price AS product_price_db
+            SELECT oi.*, p.name AS product_name
             FROM order_items oi
             LEFT JOIN products p ON p.id = oi.product_id
             WHERE oi.order_id = :order_id

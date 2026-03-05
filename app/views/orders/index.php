@@ -450,7 +450,7 @@ ob_start();
 
                 axios.get('<?= BASE_URL ?>api/orderdetail?order_id=' + order.id )
                     .then(response => {
-                        marks.value = response.data;
+                        marks.value = response.data.orderItems;
                     })
                     .catch(error => {
                         console.error('API Error:', error);
