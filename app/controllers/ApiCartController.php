@@ -20,19 +20,20 @@ class ApiCartController
             
             foreach ($sessionCart as $key => $cartItem) {
                 // Preia datele complete ale produsului din BD
-                $product = $productModel->getById($cartItem['product_id']);
+                $product = $productModel->find($cartItem['product_id']);
                 
                 // DEBUG: Log pentru a vedea ce returnează getById
                 error_log("Product ID: " . $cartItem['product_id']);
                 error_log("Product data: " . print_r($product, true));
-                
+                $price = ($product['price_discount'] > 0) ? $product['price_discount'] : $product['price'];
+
                 if ($product) {
                     $cartWithDetails[] = [
                         'id' => $key,
                         'product_id' => $cartItem['product_id'],
                         'quantity' => $cartItem['quantity'],
                         'product_name' => $product['name'] ?? 'Produs necunoscut',
-                        'product_price' => (float)($product['price'] ?? 0),
+                        'product_price' => $cartItem['price'],
                         'category_name' => $product['category_name'] ?? null
                     ];
                 } else {

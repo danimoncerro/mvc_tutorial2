@@ -24,7 +24,7 @@ ob_start();
                             <small style="color: red;">Discount: {{ product.discount }}%</small>
                         </p>
                         <p class="card-text" v-if="product.discount">
-                            <small style="color: red;">Preț cu discount: {{ (product.price - (product.price * product.discount / 100)).toFixed(2) }} RON</small>
+                            <small style="color: red;">Preț cu discount: {{ product.price_discount.toFixed(2) }} RON</small>
                         </p>
                     </div>
                     <?php

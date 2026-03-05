@@ -14,13 +14,15 @@ class CartController
 
 
         if ($productId) {
-            $product = (new Product())->getById($productId);
-        
+            $product = (new Product())->find($productId);
+            $price = ($product['price_discount'] > 0) ? $product['price_discount'] : $product['price'];
+               
+
             // Adaugă produsul în coș (de exemplu, în sesiune sau bază de date)
             $cart[$productId] = [
                 'quantity' => ($cart[$productId]['quantity'] ?? 0) + $quantity,
                 'product_id' => $productId,
-                'price' => $product['price'] ?? 0
+                'price' => $price,
             ];
             $_SESSION['cart'] = $cart;  
             header('Content-Type: application/json');
@@ -38,8 +40,10 @@ class CartController
 
     public function viewCart()
     {
+        
         // Logica pentru vizualizarea coșului
         require_once APP_ROOT . '/app/views/cart.php';
+        
 
     }
 }
