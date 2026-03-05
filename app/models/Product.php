@@ -28,12 +28,15 @@ class Product
 
     public function create($data)
     {
-        $stmt = $this->db->prepare("INSERT INTO products (name, price, category_id, discount) VALUES (:name, :price, :category_id, :discount)");
+        $stmt = $this->db->prepare(
+            "INSERT INTO products (name, price, category_id, discount, price_discount) 
+             VALUES (:name, :price, :category_id, :discount, :price_discount)");
         $stmt->execute([
             'name' => $data['name'],
             'price' => $data['price'],
             'category_id' => $data['category_id'],
             'discount' => $data['discount'],
+            'price_discount' => $data['price_discount'],
         ]);
     }
 
