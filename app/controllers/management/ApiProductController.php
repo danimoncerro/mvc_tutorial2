@@ -34,24 +34,27 @@ class ApiProductController
                 $name = $_POST['name'] ?? '';
                 $price = $_POST['price'] ?? '';
                 $category_id = $_POST['category_id'] ?? '';
+                $discount = $_POST['discount'] ?? '';
             } else {
                 $name = $data['name'] ?? '';
                 $price = $data['price'] ?? '';
                 $category_id = $data['category_id'] ?? '';
+                $discount = $data['discount'] ?? '';
             }
 
-            if ($name && $price && $category_id) {
+            if ($name && $price && $category_id && $discount) {
                 $productModel = new Product(); // creezi instanță corectă
                 $productModel->create([        // apel corect pentru metodă non-statică
                     'name' => $name,
                     'price' => $price,
-                    'category_id' => $category_id
+                    'category_id' => $category_id,
+                    'discount' => $discount
                 ]);
                 header('Content-Type: application/json');
                 echo json_encode(['status' => 'success', 'message' => 'Produs adăugat cu succes.']);
             } else {
                 header('Content-Type: application/json');
-                echo json_encode(['status' => 'error', 'message' => 'Nume, preț sau categorie lipsă.']);
+                echo json_encode(['status' => 'error', 'message' => 'Nume, pret, categorie sau discount lipsa.']);
             }
         } else {
             header('Content-Type: application/json');

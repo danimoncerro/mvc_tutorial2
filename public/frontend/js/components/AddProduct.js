@@ -30,6 +30,11 @@ const AddProduct = {
                                 <input type="number" class="form-control" id="productPrice" v-model="product.price" step="0.01" min="0" required>
                             </div>
                             <div class="mb-3">
+                                <label for="productDiscount" class="form-label">Discount</label>
+                                <input type="number" class="form-control" id="productDiscount" v-model="product.discount" step="0.01" min="0" required>
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="productCategory" class="form-label">Categorie</label>
                                 <select class="form-select" id="productCategory" v-model="product.category_id" required>
                                     <option value="">Selectează o categorie</option>
@@ -70,12 +75,13 @@ const AddProduct = {
             name: '',
             description: '',
             price: 0,
-            category_id: null
+            category_id: null,
+            discount: 0
         });
 
         const addProduct = () => {
                 // Validare simplă
-                if (!product.name || !product.price || !product.category_id) {
+                if (!product.name || !product.price || !product.category_id || !product.discount) {
                     alert('Te rog completează toate câmpurile!');
                     return;
                 }
@@ -83,7 +89,8 @@ const AddProduct = {
                 axios.post(props.savelink, {
                     name: product.name, 
                     price: product.price,
-                    category_id: product.category_id
+                    category_id: product.category_id,
+                    discount: product.discount
                 })
                 .then(response => {
                     console.log('Product added:', response.data);
@@ -92,6 +99,7 @@ const AddProduct = {
                     product.name = '';
                     product.price = 0;
                     product.category_id = '';
+                    product.discount = 0;
                     
                     // Închide modalul
                     const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));

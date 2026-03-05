@@ -20,6 +20,12 @@ ob_start();
                         <p class="card-text" v-if="product.category_name">
                             <small class="text-muted">Categorie: {{ product.category_name }}</small>
                         </p>
+                        <p class="card-text" v-if="product.discount">
+                            <small style="color: red;">Discount: {{ product.discount }}%</small>
+                        </p>
+                        <p class="card-text" v-if="product.discount">
+                            <small style="color: red;">Preț cu discount: {{ (product.price - (product.price * product.discount / 100)).toFixed(2) }} RON</small>
+                        </p>
                     </div>
                     <?php
                     if ($_SESSION['user']['role'] == 'client'): ?>
