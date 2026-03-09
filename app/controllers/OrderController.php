@@ -65,11 +65,6 @@ class OrderController
 
         require_once APP_ROOT . '/app/models/User.php';
         $id = $_GET['id'];
-        $userModel = new User();
-        $user = $userModel->find($id);
-
-        $userModel = new User();
-        $user = $userModel->all();
 
         require_once APP_ROOT . '/app/views/orders/edit.php';
     }

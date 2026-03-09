@@ -29,7 +29,7 @@ ob_start();
                     <td>
                         <input type="text" v-model="product.qty">
                     </td>
-                    <td>{{product.product_price_db}}</td>
+                    <td>{{product.price}}</td>
                     <td>
                         <button type="button" @click="deleteProductFromOrder(product.id)">Sterge</button>
                     </td>
