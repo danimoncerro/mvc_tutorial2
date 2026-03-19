@@ -17,8 +17,6 @@ ob_start();
     const app = createApp({
         setup() {
             const title = ref('Lista de produse - exercitiu2')
-
-
             return{
                 title
             }

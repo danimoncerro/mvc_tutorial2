@@ -28,7 +28,7 @@ ob_start();
                         </p>
                     </div>
                     <?php
-                    if ($_SESSION['user']['role'] == 'client'): ?>
+                    if (isset($_SESSION['user']) && $_SESSION['user']['role'] == 'client'): ?>
                         <div class="card-footer">
                             <small class="text-muted">
                                 <button class="btn btn-warning btn-sm me-2"  

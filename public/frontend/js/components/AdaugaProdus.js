@@ -92,6 +92,8 @@ const AdaugaProdus = {
 
                     const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
                     modal.hide();
+
+                    emit('arata-produse');
                 }
             )
             

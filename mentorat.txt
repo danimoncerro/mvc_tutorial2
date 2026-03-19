@@ -201,3 +201,7 @@ Tema 26.02.2026
 
 Sa se adauge discount si la adaugare produs. Sa putem adauga produsul direct cu discount.
 Sa se afiseze pentru client si pretul cu discount.
+
+Tema 09.03.2026
+
+De exersat, pentru adaugare utilizatori, adaugare categorii (pagini noi)

@@ -7,9 +7,38 @@ ob_start();
 
 <div id="app">
 
-    <h1> {{ title }} </h1>
+    <h1> {{ title }} - {{total_products}} </h1>
 
-    <adauga-produs :savelink="'<?= BASE_URL ?>api/products/store'" :categories="categories"></adauga-produs>
+    <adauga-produs :savelink="'<?= BASE_URL ?>api/products/store'" :categories="categories" 
+        @arata-produse="showProducts"></adauga-produs>
+
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>
+                    Nume 
+                </th>
+                <th>
+                    Pret
+                </th>
+                <th>Categorie</th>
+                <th>Discount</th>
+                <th>Acțiuni</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="product in products" :key="product.id">
+                <td>{{product.id}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.category_name}}</td>
+                <td>{{product.price_discount}}</td>
+                <td></td>
+        </tbody>
+    </table>
+
+
 
 </div>
 
@@ -23,8 +52,10 @@ ob_start();
         },
 
         setup() {
-            const title = ref('Lista de produse - exercitiu2')
+            const title = ref('Lista de produse')
             const categories = ref([])
+            const products = ref([])
+            const total_products = ref(0)
 
             const showCategories = () => {
                 axios.get('<?= BASE_URL ?>api/categories', {
@@ -43,14 +74,30 @@ ob_start();
                 });
             }
 
+            const showProducts = () => {
+                axios.get('<?= BASE_URL ?>api/products', {
+                    params: {
+                        per_page: 100
+                    }
+                })
+                .then(response => {
+                    products.value = response.data.products;
+                    total_products.value = response.data.total_products;
+                })
+            } 
+
             onMounted(() => {
                 showCategories()
+                showProducts()
             })
 
 
             return{
                 title,
-                categories
+                categories,
+                products,
+                total_products,
+                showProducts
 
             }
         }              
