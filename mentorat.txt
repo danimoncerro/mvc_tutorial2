@@ -205,3 +205,5 @@ Sa se afiseze pentru client si pretul cu discount.
 Tema 09.03.2026
 
 De exersat, pentru adaugare utilizatori, adaugare categorii (pagini noi)
+
+Tema 19.03.2026  sterge produs de continuat, poti sa te joci si cu categoriile sa adaugi sa stergi

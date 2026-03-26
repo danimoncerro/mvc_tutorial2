@@ -12,7 +12,7 @@ ob_start();
 
 <div id="app" class="container">
 
-    <show-category-title :total="totalcategories"></show-category-title> {{totalcategories}}
+    <show-category-title :total="totalcategories"></show-category-title>
     <add-category :savelink="'<?= BASE_URL ?>api/categories/store'" @show-categories="showCategories"></add-category>
 
 <!--  Componenta de cautare  -->
@@ -20,10 +20,6 @@ ob_start();
 
     <category-detail :category="selectedCategory">
     </category-detail>
-    
-
-    
-
 
     <table v-if="showTableData" class="table table-striped table-hover table-bordered">
         <thead class="table-light">
