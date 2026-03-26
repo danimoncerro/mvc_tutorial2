@@ -4,6 +4,7 @@ ob_start();
 ?>
 
 <script src="<?= BASE_URL ?>frontend/js/components/AdaugaProdus.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/StergeProdus.js"></script>
 
 <div id="app">
 
@@ -34,7 +35,7 @@ ob_start();
                 <td>{{product.price}}</td>
                 <td>{{product.category_name}}</td>
                 <td>{{product.price_discount}}</td>
-                <td></td>
+                <td><sterge-produs :deletelink="'<?= BASE_URL ?>api/products/delete?id=' + product.id" @arata-produse="showProducts"></sterge-produs></td>
         </tbody>
     </table>
 
@@ -48,7 +49,8 @@ ob_start();
     const app = createApp({
 
         components: {
-            'adauga-produs': AdaugaProdus
+            'adauga-produs': AdaugaProdus,
+            'sterge-produs': StergeProdus
         },
 
         setup() {
