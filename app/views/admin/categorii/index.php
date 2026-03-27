@@ -6,11 +6,16 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/ArataTitluCategorie.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/StergeCategorie.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/AdaugaCategorie.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/EditeazaCategorie.js"></script>
 
 <div id="app" class="container">
     <arata-titlu-categorie :total="totalcategorii"></arata-titlu-categorie>
-    <adauga-categorie :savelink="'<?= BASE_URL ?>api/categories/store'" @arata-categorii="arataCategorie"></adauga-categorie> 
-
+    <adauga-categorie :savelink="'<?= BASE_URL ?>api/categories/store'" @arata-categorie="arataCategorie"></adauga-categorie> 
+    <editeaza-categorie 
+        :updatelink="'<?= BASE_URL ?>api/categories/edit'"
+        :edit-categorie="editCategorie"
+        @arata-categorie="arataCategorie">
+    </editeaza-categorie>
     
     <table class="table table-striped table-hover table-bordered">
         <thead class="table-light">
@@ -29,7 +34,14 @@ ob_start();
                 <td>{{categorie.id}}</td>
                 <td>{{categorie.name}}</td>
                 <td>
-                    <sterge-categorie :deletelink="'<?= BASE_URL ?>api/categories/delete?id=' + categorie.id" @arata-categorii="arataCategorii">
+                    <button class="btn btn-warning btn-sm me-2"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#editCategoryModal"  
+                    @click="editeazaCategorie(categorie)" title="Editează categoria">
+                        <i class="bi bi-pencil"></i>
+                        Editează
+                    </button> 
+                    <sterge-categorie :deletelink="'<?= BASE_URL ?>api/categories/delete?id=' + categorie.id" @arata-categorii="arataCategorie">
                     </sterge-categorie>
                 </td>
             </tr>
@@ -41,20 +53,35 @@ ob_start();
 
 <!-- Aici incepe Vue.js -->
 <script>
+
+    const User = {
+        first_name: "Daniel",
+        last_name: "Baimareanul"
+    }
+
+    const { last_name } = User;
+
+
     const { createApp, ref, computed, onMounted, reactive, watch } = Vue;
     const app = createApp({
         components: {
             'arata-titlu-categorie': Placinta,
             'sterge-categorie': StergeCategorie,
             'adauga-categorie': AdaugaCategorie,
+            'editeaza-categorie': EditeazaCategorie,
         },
 
         setup () {
 
             const categorii = ref([])
             const totalcategorii = computed(() => categorii.value.length);
+            const editCategorie = reactive({
+                id: '',
+                name: '',
+                description: ''
+            });
 
-            const arataCategorii = () => {
+            const arataCategorie = () =>  {
                 axios.get('<?= BASE_URL ?>api/categories', {
                     params: {
                         per_page: 20,
@@ -71,14 +98,24 @@ ob_start();
                 });
             }
 
+            const editeazaCategorie = (categorie) => {
+                editCategorie.id = categorie.id,
+                editCategorie.name = categorie.name,
+                editCategorie.description = categorie.description || '';
+
+            }
+
+
             onMounted(() => {
-                arataCategorii();
+                arataCategorie();
             });
 
             return {
                 categorii,
                 totalcategorii,
-                arataCategorii
+                arataCategorie,
+                editeazaCategorie,
+                editCategorie
 
             };
         }

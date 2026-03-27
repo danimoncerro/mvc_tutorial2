@@ -207,3 +207,11 @@ Tema 09.03.2026
 De exersat, pentru adaugare utilizatori, adaugare categorii (pagini noi)
 
 Tema 19.03.2026  sterge produs de continuat, poti sa te joci si cu categoriile sa adaugi sa stergi
+
+Tema 26.03.2026 
+1) de terminat editeaza categorii (butonul actualizeaza categoria)
+2) implementeaza editare produsele
+3) implementare crud si pentru utilizatori (tot crudul afisare, adaugare, editare, stergere)
+
+extra:
+implementeaza o componenta cu schimbare parola;
