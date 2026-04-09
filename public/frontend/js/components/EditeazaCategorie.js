@@ -46,8 +46,28 @@ const EditeazaCategorie = {
 
     setup(props, { emit }) {
         const updateCategory = () => {
+            axios.post(props.updatelink + '?id=' + props.editCategorie.id, props.editCategorie)
+            .then(response => {
+                console.log('Category modified:', response.data);
 
+                // Reset the editing category form
+                props.editCategorie.name = '';
+                props.editCategorie.description = '';
+                props.editCategorie.id = '';
+                
+                // Închide modalul - metoda simplificată și sigură
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
+                if (modal) {
+                    modal.hide();
+                }
 
+                // Refresh the category list
+                emit('arata-categorie');
+            })
+            .catch(error => {
+                console.error('Error updating category:', error);
+                alert('Eroare la actualizarea categoriei!');
+            });
         }
 
         return {

@@ -5,6 +5,8 @@ ob_start();
 
 <script src="<?= BASE_URL ?>frontend/js/components/AdaugaProdus.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/StergeProdus.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/EditeazaProdus.js"></script>
+
 
 <div id="app">
 
@@ -12,6 +14,13 @@ ob_start();
 
     <adauga-produs :savelink="'<?= BASE_URL ?>api/products/store'" :categories="categories" 
         @arata-produse="showProducts"></adauga-produs>
+
+    <editeaza-produs
+        :updatelink="'<?= BASE_URL ?>api/products/edit'"
+        :product="editingProduct"
+        :categories="categories"
+        @arata-produse="showProducts">
+    </editeaza-produs>
 
     <table class="table table-striped table-hover table-bordered">
         <thead class="table-light">
@@ -35,7 +44,15 @@ ob_start();
                 <td>{{product.price}}</td>
                 <td>{{product.category_name}}</td>
                 <td>{{product.price_discount}}</td>
-                <td><sterge-produs :deletelink="'<?= BASE_URL ?>api/products/delete?id=' + product.id" @arata-produse="showProducts"></sterge-produs></td>
+                <td><sterge-produs :deletelink="'<?= BASE_URL ?>api/products/delete?id=' 
+                 + product.id" @arata-produse="showProducts"></sterge-produs>
+                   <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editeazaProdusModal" 
+                        @click="editeazaProdus(product)" title="Editează produsul">
+                        <i class="bi bi-pencil"></i>
+                        Editează
+                    </button>
+                </td>
+
         </tbody>
     </table>
 
@@ -50,7 +67,8 @@ ob_start();
 
         components: {
             'adauga-produs': AdaugaProdus,
-            'sterge-produs': StergeProdus
+            'sterge-produs': StergeProdus,
+            'editeaza-produs': EditeazaProdus
         },
 
         setup() {
@@ -58,6 +76,13 @@ ob_start();
             const categories = ref([])
             const products = ref([])
             const total_products = ref(0)
+            const editingProduct = reactive({
+                id: '',
+                name: '',
+                price: '',
+                category_id: '',
+                discount: '',
+            });
 
             const showCategories = () => {
                 axios.get('<?= BASE_URL ?>api/categories', {
@@ -88,6 +113,14 @@ ob_start();
                 })
             } 
 
+            const editeazaProdus = (p) => {
+                editingProduct.id = p.id;
+                editingProduct.name = p.name;
+                editingProduct.price = p.price;
+                editingProduct.category_id = p.category_id;
+                editingProduct.discount = p.discount;
+            }
+
             onMounted(() => {
                 showCategories()
                 showProducts()
@@ -99,7 +132,9 @@ ob_start();
                 categories,
                 products,
                 total_products,
-                showProducts
+                showProducts,
+                editingProduct,
+                editeazaProdus
 
             }
         }              
