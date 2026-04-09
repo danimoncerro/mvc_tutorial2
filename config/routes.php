@@ -40,6 +40,7 @@ $router->get('api/orders/updatetotal', 'OrderController@updateTotal');
 $router->post('api/orders/delete', 'ApiOrderController@deleteOrder');
 $router->get('/produse', 'management/ProduseController@index');
 $router->get('categorii', 'management/CategoriiController@index');
+$router->get('utilizatori', 'management/UtilizatoriController@index');
 
 $router->get('cart', 'CartController@viewCart');
 $router->get('cart/add', 'CartController@addToCart');
