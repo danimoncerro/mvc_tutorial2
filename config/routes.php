@@ -85,6 +85,7 @@ $router->get('api/orderdetail', 'ApiOrderController@orderDetail');
 $router->get('api/orderdetail8', 'ApiOrderController@orderDetail8');
 $router->get('api/orderdetail9', 'ApiOrderController@orderDetail9');
 $router->get('api/order-items', 'ApiOrderController@getOrderItems');
+$router->get('schimbaparola', 'UserController@schimbaParola');
 
 
 return $router;

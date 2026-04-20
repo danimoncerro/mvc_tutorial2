@@ -220,3 +220,9 @@ Tema 09.04.2026
 
 O componenta schimba parola pentru utilizator. (administratorul sa poata schimba parola la un utilizator)
 paginare, editare, sortare, etc. pentru utilizatori.
+
+Data viitoare
+
+Trimitere de email, creare cont, inregistrare, resetare parola, comanda plasata cu succes.
+
+Tema: un dropdown pentru utilizatori in care sa apara schimbare parola, logout.

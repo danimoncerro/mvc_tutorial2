@@ -59,6 +59,7 @@
                   
             <?php endif ?>
             <span class="ms-3"><?= htmlspecialchars($_SESSION['user']['email']) ?></span>
+            <a class="nav-link ms-3" href="">Schimbare parola</a>
             <a href="<?= BASE_URL ?>auth/logout" class="btn btn-danger btn-sm ms-3">Logout</a>
         <?php else: ?>
             <a href="<?= BASE_URL ?>auth/login" class="btn btn-primary btn-sm">Login</a>
