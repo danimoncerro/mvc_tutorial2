@@ -104,7 +104,7 @@ class UserController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'] ?? null;
             $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? null; // poate fi gol
+            
             $role = $_POST['role'] ?? '';
 
             if ($id && $email && $role) {
@@ -115,11 +115,7 @@ class UserController
                     'role' => $role
                 ];
 
-                // Actualizează parola doar dacă a fost introdusă
-                if (!empty($password)) {
-                    $data['password'] = $password;
-                }
-
+                
                 $userModel->update($id, $data);
 
                 header("Location: " . BASE_URL . "users");

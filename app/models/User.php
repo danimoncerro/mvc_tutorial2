@@ -41,10 +41,7 @@ class User
             $fields[] = "email = :email";
             $params[':email'] = $data['email'];
         }
-        if (isset($data['password'])) {
-            $fields[] = "password = :password";
-            $params[':password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        }
+        
         if (isset($data['role'])) {
             $fields[] = "role = :role";
             $params[':role'] = $data['role'];
