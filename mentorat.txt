@@ -215,3 +215,8 @@ Tema 26.03.2026
 
 extra:
 implementeaza o componenta cu schimbare parola;
+
+Tema 09.04.2026
+
+O componenta schimba parola pentru utilizator. (administratorul sa poata schimba parola la un utilizator)
+paginare, editare, sortare, etc. pentru utilizatori.

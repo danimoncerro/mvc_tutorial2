@@ -8,6 +8,7 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/EditeazaProdus.js"></script>
 
 
+
 <div id="app">
 
     <h1> {{ title }} - {{total_products}} </h1>
