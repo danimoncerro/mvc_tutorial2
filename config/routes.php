@@ -66,6 +66,7 @@ $router->get('api/users', 'management/ApiUserController@index');
 $router->post('api/users/store', 'management/ApiUserController@store');
 $router->post('api/users/delete', 'management/ApiUserController@delete');
 $router->post('api/users/edit', 'management/ApiUserController@edit');
+$router->post('api/users/edit-parola', 'management/ApiUserController@editParola');
 $router->get('api/users/search', 'management/ApiUserController@search');
 $router->get('api/products', 'ApiProductController@index'); //link-ul pentru listare produs
 $router->post('api/products/store', 'management/ApiProductController@store'); //link-ul pentru creare produs

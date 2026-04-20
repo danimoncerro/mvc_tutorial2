@@ -142,5 +142,21 @@ class ApiUserController
         }
     }
 
+    public function editParola(){
+        $id = $_GET['id'];
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $password = $data['password'];
+        $userModel = new User();
+        // Actualizează parola doar dacă a fost introdusă
+        if (!empty($password)) {
+            $userModel->updateParola($id, $password);
+            echo "Parola a fost actualizata cu succes!";
+        } else {
+            echo "Este obligatoriu de completat campul parola";
+        }
+
+    }
+
 
 }

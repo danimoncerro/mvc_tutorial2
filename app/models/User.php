@@ -56,6 +56,19 @@ class User
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
     }
+
+    public function updateParola($id, $parola)
+    {
+        $parolahash = password_hash($parola, PASSWORD_DEFAULT);
+        $params = [
+            ':id' => $id,
+            ':password' => $parolahash
+        ];
+
+        $sql = "UPDATE users SET password = :password where id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+    }
     
 // cauta utilizatorul dupa id
     public function find($id)

@@ -23,7 +23,7 @@ ob_start();
     </editeaza-utilizator>
 
     <editeaza-parola
-        :updatelink="'<?= BASE_URL ?>api/users/edit'"
+        :updatelink="'<?= BASE_URL ?>api/users/edit-parola'"
         :utilizator="editareParola"
         @afiseaza-utilizatori="afiseazaUtilizatori">
     </editeaza-parola>
