@@ -33,6 +33,8 @@ $router->post('orders/delete', 'OrderController@delete');
 $router->get('auth/login', 'AuthController@login');
 $router->post('auth/authenticate', 'AuthController@authenticate');
 $router->get('auth/logout', 'AuthController@logout');
+$router->get('mail/test', 'MailController@index');
+$router->post('mail/send', 'MailController@send');
 $router->get('vuecategories', 'CategoryController@vueindex');
 $router->post('api/orderitems/delete', 'OrderController@deleteOrderItem');
 $router->post('api/orderitems/update', 'ApiOrdercontroller@updateOrderItem');
