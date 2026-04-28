@@ -88,6 +88,8 @@ $router->get('api/orderdetail8', 'ApiOrderController@orderDetail8');
 $router->get('api/orderdetail9', 'ApiOrderController@orderDetail9');
 $router->get('api/order-items', 'ApiOrderController@getOrderItems');
 $router->get('schimbaparola', 'UserController@schimbaParola');
+$router->get('resetareparola', 'ResetPasswordController@index');
+$router->post('resetareparola', 'ResetPasswordController@resetpass');
 
 
 return $router;

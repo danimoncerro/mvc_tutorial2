@@ -20,6 +20,7 @@ ob_start();
         <input type="password" name="password" class="form-control" required>
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
+    <a href="/resetareparola">Resetare parola</a>
 </form>
 
 <?php
