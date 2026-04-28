@@ -58,9 +58,16 @@
               <a class="nav-link ms-3" href="<?= BASE_URL ?>orders">My orders</a>
                   
             <?php endif ?>
-            <span class="ms-3"><?= htmlspecialchars($_SESSION['user']['email']) ?></span>
-            <a class="nav-link ms-3" href="">Schimbare parola</a>
-            <a href="<?= BASE_URL ?>auth/logout" class="btn btn-danger btn-sm ms-3">Logout</a>
+            <div class="dropdown ms-3">
+              <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                <?= htmlspecialchars($_SESSION['user']['email']) ?>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                <li><a class="dropdown-item" href="<?= BASE_URL ?>schimbaparola">Schimbare parola</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="<?= BASE_URL ?>auth/logout">Logout</a></li>
+              </ul>
+            </div>
         <?php else: ?>
             <a href="<?= BASE_URL ?>auth/login" class="btn btn-primary btn-sm">Login</a>
         <?php endif; ?>
