@@ -226,3 +226,10 @@ Data viitoare
 Trimitere de email, creare cont, inregistrare, resetare parola, comanda plasata cu succes.
 
 Tema: un dropdown pentru utilizatori in care sa apara schimbare parola, logout.
+
+Tema obligatorie 28.04.2026
+Sa se trimita email cu parola noua doar daca exista adresa de email in baza noastra de date.
+
+ar trebui sa caut un utilizator dupa adresa de email (asta in userModel).
+
+Ar trebui sa punem un if inainte de linia 24 in ResetPasswordcontroller.php.

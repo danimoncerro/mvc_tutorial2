@@ -20,11 +20,32 @@ class ResetPasswordController
         $password = random_int(100000, 999999);
         $email = $_POST['email'];
         
-        //salvam parola noua
+        //verificam daca userul cu adresa de email introdusa, exista in baza de date
+
+        $useremailModel = new User();
+        $userExists = $useremailModel->findByEmail($email);
+
+        if ($userExists===false)
+        {
+            header('Location: ' . BASE_URL . 'auth/login');
+            return;
+        }
+
+        //salvam parola noua1
         $userModel = new User();
         $userModel->resetPassword($email, $password);
 
         //trimitem email cu parola noua
+        $this->trimiteParolaNoua($email, $password);
+
+        header('Location: ' . BASE_URL . 'auth/login');
+        exit;
+
+
+    }
+
+    protected function trimiteParolaNoua($email, $password)
+    {
         $to = $email;
         $subject = 'Resetare parola';
         $message = 'Salut! Noua ta parola este ' .$password;
@@ -56,11 +77,9 @@ class ResetPasswordController
             $mailer->isHTML(false);
 
             $mailer->send();
-            echo 'Email trimis cu succes catre ' . htmlspecialchars($to);
         } catch (Exception $e) {
-            echo 'Eroare la trimitere: ' . $mailer->ErrorInfo;
+            error_log('Eroare la trimitere email reset parola: ' . $mailer->ErrorInfo);
         }
-
 
     }
 }

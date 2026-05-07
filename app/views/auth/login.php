@@ -21,6 +21,9 @@ ob_start();
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
     <a href="/resetareparola">Resetare parola</a>
+    <div class="form-text mt-3">
+        Ai uitat parola? Foloseste linkul <strong>Resetare parola</strong>. Daca adresa de email exista in baza noastra de date, vei primi o parola noua pe email.
+    </div>
 </form>
 
 <?php
