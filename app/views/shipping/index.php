@@ -8,7 +8,7 @@ ob_start();
 
     <h1>{{title}}</h1>
 
-    <form @submit.prevent="addBillingAdress()">
+    <form @submit.prevent="saveAdress()">
         <div class="mb-3">
             <label for="" class="form-label">Adresa</label>
             <input type="text" class="form-control" v-model="address.address" required>
@@ -69,13 +69,14 @@ ob_start();
 
             console.log(currentUserId)
             const addresses = ref([])
+
             const getAddresses = () => {
                 const params = {
                     user_id: currentUserId,
                 };
                 console.log(currentUserId)
                 
-                axios.get('<?= BASE_URL ?>api/shipping?user_id=' + user.id)
+                axios.get('<?= BASE_URL ?>api/shipping?user_id=' + currentUserId)
                     .then(response => {
                         addresses.value = response.data
                         

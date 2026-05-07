@@ -28,7 +28,7 @@ class ResetPasswordController
         if ($userExists===false)
         {
             header('Location: ' . BASE_URL . 'auth/login');
-            return;
+            exit;
         }
 
         //salvam parola noua1
@@ -38,7 +38,7 @@ class ResetPasswordController
         //trimitem email cu parola noua
         $this->trimiteParolaNoua($email, $password);
 
-        header('Location: ' . BASE_URL . 'auth/login');
+        //header('Location: ' . BASE_URL . 'auth/login');
         exit;
 
 
