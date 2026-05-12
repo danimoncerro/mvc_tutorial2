@@ -91,5 +91,7 @@ $router->get('schimbaparola', 'UserController@schimbaParola');
 $router->get('resetareparola', 'ResetPasswordController@index');
 $router->post('resetareparola', 'ResetPasswordController@resetpass');
 
+$router->get('/pdf/test', 'PdfController@test');
+
 
 return $router;
