@@ -199,14 +199,16 @@ ob_start();
                 })
                     .then(res => {
                         if (res.data.success) {
-                            alert('Comanda a fost plasată cu succes! Număr comandă: ' + res.data.order_id);
+                            //alert('Comanda a fost plasată cu succes! Număr comandă: ' + res.data.order_id);
                             cart.value = [];
 
                         } else {
-                            alert('Eroare la plasarea comenzii: ' + (res.data.message || ''));
+                            //alert('Eroare la plasarea comenzii: ' + (res.data.message || ''));
                         }
                     })
-                    .catch(() => alert('Eroare la plasarea comenzii!'));
+                    .catch(() => {
+                        //alert('Eroare la plasarea comenzii!')
+            });
             };
 
             const totalcartitems = computed( () =>

@@ -3,6 +3,8 @@ require_once APP_ROOT . '/config/database.php';
 require_once APP_ROOT . '/app/models/OrderItem.php';
 require_once APP_ROOT . '/app/models/Order.php';
 require_once APP_ROOT . '/app/models/User.php';
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class ApiOrderController
 {
@@ -30,14 +32,12 @@ class ApiOrderController
                 $price = $cartItem['price'] ?? 0;
                 $total += $price * $cartItem['quantity'];
             }
-
+            $userId = $_SESSION['user']['id' ] ?? null;
             // Creează comanda
             $orderId = $orderModel->create([
-                'user_id' => $_SESSION['user']['id' ] ?? null, // Poate fi null pentru utilizatori neautentificați
+                'user_id' => $userId, // Poate fi null pentru utilizatori neautentificați
                 'total_order'   => $total,
                 'status'  => 'pending',
-
-
                 'shipping_address' => $data['shippingAddress'],
                 'billing_address' => $data['billingAddress'],
 
@@ -56,16 +56,59 @@ class ApiOrderController
                     'price'      => $price,
                 ]);
             }
-
+            
             // Golește coșul după creare comandă
             unset($_SESSION['cart']);
+            $userModel = new User();
+            $user = $userModel->find($userId);
+            $this->trimiteEmailComandaNoua($orderId, $user['email']);
 
             echo json_encode(['success' => true, 'order_id' => $orderId]);
+
 
         } catch (Exception $e) {
             error_log("Order API Error: " . $e->getMessage());
             echo json_encode(['error' => 'Eroare: ' . $e->getMessage()]);
         }
+    }
+
+    protected function trimiteEmailComandaNoua($orderId, $email)
+    {
+        $to = $email;
+        $subject = 'Comanda' . $orderId . ' a fost plasata cu succes';
+        $message = 'Salut! Comanda ta cu numarul' . $orderId . 'a fost plasata cu succes!';
+
+        $mailHost = getenv('MAIL_HOST') ?: 'smtp.gmail.com';
+        $mailPort = (int) (getenv('MAIL_PORT') ?: 587);
+        $mailUsername = getenv('MAIL_USERNAME') ?: '';
+        $mailPassword = getenv('MAIL_PASSWORD') ?: '';
+        $mailEncryption = getenv('MAIL_ENCRYPTION') ?: PHPMailer::ENCRYPTION_STARTTLS;
+        $mailFromAddress = getenv('MAIL_FROM_ADDRESS') ?: $mailUsername;
+        $mailFromName = getenv('MAIL_FROM_NAME') ?: 'MVC Tutorial';
+
+        $mailer = new PHPMailer(true);
+
+        try {
+            $mailer->CharSet = 'UTF-8';
+            $mailer->isSMTP();
+            $mailer->Host = $mailHost;
+            $mailer->SMTPAuth = true;
+            $mailer->Username = $mailUsername;
+            $mailer->Password = $mailPassword;
+            $mailer->SMTPSecure = $mailEncryption;
+            $mailer->Port = $mailPort;
+
+            $mailer->setFrom($mailFromAddress, $mailFromName);
+            $mailer->addAddress($to);
+            $mailer->Subject = $subject;
+            $mailer->Body = $message;
+            $mailer->isHTML(false);
+
+            $mailer->send();
+        } catch (Exception $e) {
+            error_log('Eroare la trimitere email plasare comanda: ' . $mailer->ErrorInfo);
+        }
+
     }
 
     public function index()
