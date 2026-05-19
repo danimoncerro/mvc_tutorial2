@@ -239,16 +239,8 @@ Generare factura in format pdf.
 Un utilizator sa poata sa-si modifice/schimbe singur propria parola. (va fi nevoie de parola veche si de o parola noua)
 
 
-$html = '
-            <h1>Test pdf!</h1>
-            <table border="1">
-                <tr>
-                    <th>x</th>
-                    <th>y</th>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>3</td>
-                </tr>
-            </table>
-        ';
+Afisare in pdf:
+- status comanda;
+- pretul total;
+- asresa de livrare;
+- adresa de facturare;

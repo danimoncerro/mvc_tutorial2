@@ -92,6 +92,7 @@ $router->get('resetareparola', 'ResetPasswordController@index');
 $router->post('resetareparola', 'ResetPasswordController@resetpass');
 
 $router->get('/pdf/test', 'PdfController@test');
+$router->get('orders/download-invoice', 'DownloadInvoiceController@index');
 
 
 return $router;

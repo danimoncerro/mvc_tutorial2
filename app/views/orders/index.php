@@ -134,8 +134,13 @@ ob_start();
                     <!-- Editeaza comanda -->
 
                     <a :href="'<?= BASE_URL ?>/orders/edit?id=' + order.id"
-                    class="btn btn-primary">
+                    class="btn btn-primary mx-2">
                         Editeaza
+                    </a>
+
+                    <a :href="'<?= BASE_URL ?>orders/download-invoice?id=' + order.id"
+                    class="btn btn-primary mx-2">
+                        Descarca factura
                     </a>
 
                     <button class="btn btn-danger btn-sm" type="button" 
