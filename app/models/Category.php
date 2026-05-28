@@ -77,7 +77,19 @@ class Category
     public function getAllSortedPaginated($sort = 'id', $order = 'asc', $limit = 5, $offset = 0)
     {
        
-        $sql = "SELECT * FROM categories ORDER BY $sort $order LIMIT :offset, :limit ";
+       // $sql = "SELECT * FROM categories ORDER BY $sort $order LIMIT :offset, :limit ";
+        $sql = "SELECT 
+            c.*, 
+            count(p.id) as nr_product 
+            from categories c 
+            left join products p 
+            on p.category_id = c.id 
+            group by c.id
+            ORDER BY $sort $order 
+            LIMIT :offset, :limit;";
+
+
+
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
