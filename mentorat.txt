@@ -249,3 +249,6 @@ Afisare in pdf:
 SELECT COUNT(*), category_id FROM `products` group by category_id;
 
 select c.*, count(p.id) as nr_product from categories c left join products p on p.category_id = c.id group by c.id;
+
+
+Tema sa afisam categoriile langa produse in partea stanga.

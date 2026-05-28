@@ -82,7 +82,8 @@ ob_start();
                         per_page: 20,
                         page: 1,
                         sort: 'id',
-                        order: 'desc'
+                        order: 'desc',
+                        category_id: 2,
                     }
                 })
                 .then(response => {
