@@ -58,7 +58,7 @@ $router->get('api/billing', 'ApiBillingController@index');
 $router->post('api/billing/delete',  'ApiBillingController@delete');
 
 
-$router->get('api/categories', 'management/ApiCategoryController@index');
+$router->get('api/categories', 'ApiCategoryController@index');
 $router->post('api/categories/store', 'management/ApiCategoryController@store');
 $router->post('api/categories/edit', 'management/ApiCategoryController@edit');
 $router->post('api/categories/delete', 'management/ApiCategoryController@delete');

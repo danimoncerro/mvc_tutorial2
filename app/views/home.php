@@ -8,6 +8,8 @@ ob_start();
 
     <h1>{{ message }}</h1>
     <div>
+        <h1 v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</h1>
+    <div>
         <!-- Afișare produse pe 3 coloane -->
         <div class="row" v-if="products.length > 0">
             <div class="col-md-4 mb-4" v-for="product in products" :key="product.id">
@@ -71,6 +73,7 @@ ob_start();
             const message = ref('Hello, Vue.js in Home Page!');
             const products = ref({});
             const totalproducts = ref(0);
+            const categories = ref([]);
 
 
             const showProducts = () => {
@@ -91,6 +94,23 @@ ob_start();
                 });
             };
 
+            const showCategories = () => {
+                axios.get('<?= BASE_URL ?>api/categories', {
+                    params: {
+                        per_page: 20,
+                        page: 1,
+                        sort: 'name',
+                        order: 'asc'
+                    }
+                })
+                .then(response => {
+                    categories.value = response.data.categories;
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
+                });
+            }
+
             const addToCart = (product) => {
                 axios.get('<?= BASE_URL ?>cart/add', {
                     params: {
@@ -109,13 +129,15 @@ ob_start();
 
             onMounted(() => {
                 showProducts();
+                showCategories();
             });
 
             return {
                 message,
                 products,
                 totalproducts,
-                addToCart
+                addToCart,
+                categories,
             };
         }
     });
