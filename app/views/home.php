@@ -6,9 +6,11 @@ ob_start();
 
 <div id="app" class="container">
 
-    <h1>{{ message }}</h1>
+    <h1>{{ message }} {{ selectedCategory }}</h1>
     <div>
-        <h4 v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }} ({{category.nr_product}})</h4>
+        <h4 v-for="category in categories" :key="category.id" :value="category.id" @click="setCategory(category.id)">
+            {{ category.name }} ({{category.nr_product}})
+        </h4>
     <div>
         <!-- Afișare produse pe 3 coloane -->
         <div class="row" v-if="products.length > 0">
@@ -74,6 +76,7 @@ ob_start();
             const products = ref({});
             const totalproducts = ref(0);
             const categories = ref([]);
+            const selectedCategory = ref(0);
 
 
             const showProducts = () => {
@@ -83,7 +86,7 @@ ob_start();
                         page: 1,
                         sort: 'id',
                         order: 'desc',
-                        category_id: 2,
+                        category_id: selectedCategory.value,
                     }
                 })
                 .then(response => {
@@ -94,6 +97,11 @@ ob_start();
                     console.error('API Error:', error);
                 });
             };
+
+            const setCategory = (cid) => {
+                selectedCategory.value = cid;
+                showProducts();
+            }
 
             const showCategories = () => {
                 axios.get('<?= BASE_URL ?>api/categories', {
@@ -139,6 +147,8 @@ ob_start();
                 totalproducts,
                 addToCart,
                 categories,
+                selectedCategory,
+                setCategory
             };
         }
     });
