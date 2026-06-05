@@ -1,5 +1,5 @@
 <?php
-$title = 'Home Page2026';
+$title = 'Home Page';
 ob_start();
 ?>
 
