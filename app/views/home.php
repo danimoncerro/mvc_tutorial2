@@ -8,7 +8,7 @@ ob_start();
 
     <h1>{{ message }}</h1>
     <div>
-        <h1 v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }} ({{category.nr_product}})</h1>
+        <h4 v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }} ({{category.nr_product}})</h4>
     <div>
         <!-- Afișare produse pe 3 coloane -->
         <div class="row" v-if="products.length > 0">
