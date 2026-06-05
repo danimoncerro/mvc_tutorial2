@@ -6,11 +6,16 @@ ob_start();
 
 <div id="app" class="container">
 
-    <h1>{{ message }} {{ selectedCategory }}</h1>
+    <h1>{{ message }}</h1>
     <div>
-        <h4 v-for="category in categories" :key="category.id" :value="category.id" @click="setCategory(category.id)">
-            {{ category.name }} ({{category.nr_product}})
-        </h4>
+        <div v-for="category in categories" :key="category.id" :value="category.id" 
+    
+            @click="setCategory(category.id)">
+                <h4 v-if="category.nr_product>0">
+                    {{ category.name }}
+                    ({{category.nr_product}})
+                </h4>
+        </div>
     <div>
         <!-- Afișare produse pe 3 coloane -->
         <div class="row" v-if="products.length > 0">
