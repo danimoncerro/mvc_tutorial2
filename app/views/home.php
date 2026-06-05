@@ -113,8 +113,8 @@ ob_start();
                     params: {
                         per_page: 20,
                         page: 1,
-                        sort: 'name',
-                        order: 'asc'
+                        sort: 'nr_product',
+                        order: 'desc'
                     }
                 })
                 .then(response => {
