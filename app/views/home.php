@@ -89,8 +89,8 @@ ob_start();
                     params: {
                         per_page: 20,
                         page: 1,
-                        sort: 'id',
-                        order: 'desc',
+                        sort: 'price',
+                        order: 'asc',
                         category_id: selectedCategory.value,
                     }
                 })
