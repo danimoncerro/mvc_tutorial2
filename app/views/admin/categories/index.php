@@ -28,6 +28,9 @@ ob_start();
                 <th>
                     Nume 
                 </th>
+                <th>
+                    Nr. produse
+                </th>
                 <th>Acțiuni</th>
             </tr>
         </thead>
@@ -42,6 +45,9 @@ ob_start();
                     style="cursor: pointer;"
                 >
                     {{ category.name }}
+                </td>
+                <td>
+                    {{ category.nr_product}}
                 </td>
                 <td>
                     <button class="btn btn-warning btn-sm me-2"

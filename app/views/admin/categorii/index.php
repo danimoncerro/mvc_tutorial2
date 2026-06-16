@@ -22,7 +22,10 @@ ob_start();
             <tr>
                 <th>ID</th>
                 <th>
-                    Nume 
+                    Nume1 
+                </th>
+                <th>
+                    Nr produse
                 </th>
                 <th>
                     Actiuni
@@ -33,6 +36,7 @@ ob_start();
             <tr v-for="categorie in categorii" :key="categorie.id">
                 <td>{{categorie.id}}</td>
                 <td>{{categorie.name}}</td>
+                <td>test</td>
                 <td>
                     <button class="btn btn-warning btn-sm me-2"
                     data-bs-toggle="modal" 

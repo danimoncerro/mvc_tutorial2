@@ -258,5 +258,7 @@ Tema sa afisam categoriile langa produse in partea stanga.
 1) Reparam pret cu discount;
 2) Adaugam un filtru dupa pret cu pret minim si pret maxim 
 Tema sa facem puntul 2 sa arate frumos.
+3) Slider in bootstrap cu pret minim si maxim (for fun)
+
 
 
