@@ -5,57 +5,83 @@ ob_start();
 
 
 <div id="app" class="container">
-    <h1> {{title}} - total products ({{totalproducts}})</h1>
-    <h4 @click="setCategory(0)">
-        Toate categoriile
-    </h4>
-    <div v-for="category in categories" :key="category.id"
-        
-        @click="setCategory(category.id)"
-    >
-        {{category.name}} ({{category.nr_product}})
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <h1 class="mb-0">{{ title }}</h1>
+                <span class="badge bg-primary fs-6">Total produse: {{ totalproducts }}</span>
+            </div>
+        </div>
     </div>
 
+    <div class="row g-4">
+        <div class="col-lg-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Categorii</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <button
+                        type="button"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                        :class="{ active: selectedCategory === 0 }"
+                        @click="setCategory(0)"
+                    >
+                        <span>Toate categoriile</span>
+                    </button>
 
-    <!-- Afișare produse pe 3 coloane -->
-        <div class="row" v-if="products.length > 0">
-            <div class="col-md-4 mb-4" v-for="product in products" :key="product.id">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">
-                            <strong>Preț:</strong> {{ product.price }} RON
-                        </p>
-                        <p class="card-text" v-if="product.category_name">
-                            <small class="text-muted">Categorie: {{ product.category_name }}</small>
-                        </p>
-                        <p class="card-text" v-if="product.discount">
-                            <small style="color: red;">Discount: {{ product.discount }}%</small>
-                        </p>
-                        <p class="card-text" v-if="product.discount">
-                            <small style="color: red;">Preț cu discount: {{ product.price_discount.toFixed(2) }} RON</small>
-                        </p>
-                    </div>
-                    <?php
-                    if (isset($_SESSION['user']) && $_SESSION['user']['role'] == 'client'): ?>
-                        <div class="card-footer">
-                            <small class="text-muted">
-                                <button class="btn btn-warning btn-sm me-2"  
-                                @click="addToCart(product)" title="Adaugă în coș">
-                                    <i class="bi bi-cart-plus"></i>
-                                    Adaugă în coș
-                                </button>
-                            </small>
-                        </div>
-                    <?php endif ?>
+                    <button
+                        type="button"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                        v-for="category in categories"
+                        :key="category.id"
+                        :class="{ active: selectedCategory === Number(category.id) }"
+                        @click="setCategory(category.id)"
+                    >
+                        <span>{{ category.name }}</span>
+                        <span class="badge bg-secondary rounded-pill">{{ category.nr_product }}</span>
+                    </button>
                 </div>
             </div>
         </div>
-        
-        <!-- Mesaj dacă nu există produse -->
-        <div v-else class="text-center">
-            <p class="text-muted">Nu există produse disponibile.</p>
+
+        <div class="col-lg-9">
+            <div class="row" v-if="products.length > 0">
+                <div class="col-md-6 col-xl-4 mb-4" v-for="product in products" :key="product.id">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text mb-2">
+                                <strong>Preț:</strong> {{ product.price }} RON
+                            </p>
+                            <p class="card-text mb-2" v-if="product.category_name">
+                                <small class="text-muted">Categorie: {{ product.category_name }}</small>
+                            </p>
+                            <p class="card-text mb-1 text-danger" v-if="product.discount">
+                                <small>Discount: {{ product.discount }}%</small>
+                            </p>
+                            <p class="card-text text-danger" v-if="product.discount">
+                                <small>Preț cu discount: {{ product.price_discount.toFixed(2) }} RON</small>
+                            </p>
+                        </div>
+                        <?php
+                        if (isset($_SESSION['user']) && $_SESSION['user']['role'] == 'client'): ?>
+                            <div class="card-footer bg-white border-0 pt-0">
+                                <button class="btn btn-warning btn-sm" @click="addToCart(product)" title="Adaugă în coș">
+                                    <i class="bi bi-cart-plus"></i>
+                                    Adaugă în coș
+                                </button>
+                            </div>
+                        <?php endif ?>
+                    </div>
+                </div>
+            </div>
+
+            <div v-else class="text-center py-5 bg-light rounded-3">
+                <p class="text-muted mb-0">Nu există produse disponibile pentru categoria selectată.</p>
+            </div>
         </div>
+    </div>
 
 </div>
 
@@ -114,9 +140,24 @@ ob_start();
             }
 
             const setCategory = (categoryid) => {
-                        selectedCategory.value = categoryid;
+                        selectedCategory.value = Number(categoryid);
                         showProducts();
 
+            }
+
+            const addToCart = (product) => {
+                axios.get('<?= BASE_URL ?>cart/add', {
+                    params: {
+                        product_id: product.id,
+                        quantity: 1
+                    }
+                })
+                .then(() => {
+                    alert(`Produsul "${product.name}" a fost adaugat in cos!`);
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
+                });
             }
 
 
@@ -131,7 +172,8 @@ ob_start();
                 products,
                 setCategory,
                 selectedCategory,
-                categories
+                categories,
+                addToCart
             }
         }
     })
