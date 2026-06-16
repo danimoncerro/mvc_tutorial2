@@ -5,19 +5,22 @@ ob_start();
 
 
 <div id="app" class="container">
-    <h1> {{title}} - total products ({{totalproducts}})</h1>
-    <h4 @click="setCategory(0)">
-        Toate categoriile
-    </h4>
-    <div v-for="category in categories" :key="category.id"
-        
-        @click="setCategory(category.id)"
-    >
-        {{category.name}} ({{category.nr_product}})
-    </div>
 
-
-    <!-- Afișare produse pe 3 coloane -->
+    <h1>{{ message }}</h1>
+    <div>
+        <h4 @click="setCategory(0)">
+            Toate categoriile
+        </h4>    
+        <div v-for="category in categories" :key="category.id" :value="category.id" 
+    
+            @click="setCategory(category.id)">
+                <h4 v-if="category.nr_product>0">
+                    {{ category.name }}
+                    ({{category.nr_product}})
+                </h4>
+        </div>
+    <div>
+        <!-- Afișare produse pe 3 coloane -->
         <div class="row" v-if="products.length > 0">
             <div class="col-md-4 mb-4" v-for="product in products" :key="product.id">
                 <div class="card h-100">
@@ -56,6 +59,16 @@ ob_start();
         <div v-else class="text-center">
             <p class="text-muted">Nu există produse disponibile.</p>
         </div>
+        
+        <!-- Total produse -->
+        <div class="row mt-4" v-if="totalproducts > 0">
+            <div class="col-12">
+                <p class="text-center">
+                    <span class="badge bg-primary">Total produse: {{ totalproducts }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -67,23 +80,22 @@ ob_start();
 
     const app = createApp({
         setup() {
-            const title = ref("Home page");
-
-            const products = ref([]);
+            const message = ref('Hello, Vue.js in Home Page!');
+            const products = ref({});
             const totalproducts = ref(0);
             const categories = ref([]);
             const selectedCategory = ref(0);
 
+
             const showProducts = () => {
                 axios.get('<?= BASE_URL ?>api/products', {
                     params: {
-                        per_page: 30,
+                        per_page: 20,
                         page: 1,
                         sort: 'price',
                         order: 'asc',
-                        category_id: selectedCategory.value
+                        category_id: selectedCategory.value,
                     }
-                
                 })
                 .then(response => {
                     products.value = response.data.products;
@@ -92,7 +104,11 @@ ob_start();
                 .catch(error => {
                     console.error('API Error:', error);
                 });
+            };
 
+            const setCategory = (cid) => {
+                selectedCategory.value = cid;
+                showProducts();
             }
 
             const showCategories = () => {
@@ -100,9 +116,8 @@ ob_start();
                     params: {
                         per_page: 20,
                         page: 1,
-                        sort: 'name',
-                        order: 'asc'
-
+                        sort: 'nr_product',
+                        order: 'desc'
                     }
                 })
                 .then(response => {
@@ -113,28 +128,40 @@ ob_start();
                 });
             }
 
-            const setCategory = (categoryid) => {
-                        selectedCategory.value = categoryid;
-                        showProducts();
-
-            }
+            const addToCart = (product) => {
+                axios.get('<?= BASE_URL ?>cart/add', {
+                    params: {
+                        product_id: product.id,
+                        quantity: 1
+                    }
+                })
+                .then(response => {
+                    alert(`Produsul "${product.name}" a fost adăugat în coș!`);
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
+                });
+            };
 
 
             onMounted(() => {
                 showProducts();
                 showCategories();
-            })
+            });
 
             return {
-                title,
-                totalproducts,
+                message,
                 products,
-                setCategory,
+                totalproducts,
+                addToCart,
+                categories,
                 selectedCategory,
-                categories
-            }
+                setCategory
+            };
         }
-    })
+    });
+
+    
 
     app.mount('#app');
 </script>
