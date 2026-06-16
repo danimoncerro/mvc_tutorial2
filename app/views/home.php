@@ -61,7 +61,7 @@ ob_start();
                                 <small>Discount: {{ product.discount }}%</small>
                             </p>
                             <p class="card-text text-danger" v-if="product.discount">
-                                <small>Preț cu discount: {{ product.price_discount.toFixed(2) }} RON</small>
+                                <small>Preț cu discount: {{ product.price_discount }} RON</small>
                             </p>
                         </div>
                         <?php

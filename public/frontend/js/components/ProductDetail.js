@@ -27,6 +27,8 @@ const ProductDetail = {
                                 <span> {{ product.name }} </span> <br>
                             <strong>Product price: </strong>
                                 <span> {{ product.price }} lei </span> <br>
+                            <strong>Product price_discount: </strong>
+                                <span> {{ product.price_discount }} lei </span> <br>
                         </div>
 
                     </div>
