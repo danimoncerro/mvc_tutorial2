@@ -18,6 +18,15 @@ ob_start();
         <div class="col-lg-3">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-light">
+                    <h5 class="mb-0">Pret</h5>
+                </div>
+                <div> 
+                <input type="number" v-model="min_price">
+                -
+                <input type="number" v-model="max_price">
+
+                </div>
+                <div class="card-header bg-light">
                     <h5 class="mb-0">Categorii</h5>
                 </div>
                 <div class="list-group list-group-flush">
@@ -89,7 +98,7 @@ ob_start();
 <!-- Aici incepe Vue.js -->
 
 <script>
-    const { createApp, ref, onMounted } = Vue;
+    const { createApp, ref, onMounted, watch } = Vue;
 
     const app = createApp({
         setup() {
@@ -99,6 +108,8 @@ ob_start();
             const totalproducts = ref(0);
             const categories = ref([]);
             const selectedCategory = ref(0);
+            const min_price = ref(5);
+            const max_price = ref(10);
 
             const showProducts = () => {
                 axios.get('<?= BASE_URL ?>api/products', {
@@ -107,7 +118,9 @@ ob_start();
                         page: 1,
                         sort: 'price',
                         order: 'asc',
-                        category_id: selectedCategory.value
+                        category_id: selectedCategory.value,
+                        min_price: min_price.value,
+                        max_price: max_price.value
                     }
                 
                 })
@@ -160,6 +173,14 @@ ob_start();
                 });
             }
 
+            
+            watch(min_price, () => {
+                showProducts();
+            })   
+            
+            watch(max_price, () => {
+                showProducts();
+            })
 
             onMounted(() => {
                 showProducts();
@@ -173,7 +194,9 @@ ob_start();
                 setCategory,
                 selectedCategory,
                 categories,
-                addToCart
+                addToCart,
+                min_price,
+                max_price
             }
         }
     })
