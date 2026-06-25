@@ -261,4 +261,6 @@ Tema sa facem puntul 2 sa arate frumos.
 3) Slider in bootstrap cu pret minim si maxim (for fun)
 
 
+parola livrator1: 498168
+
 

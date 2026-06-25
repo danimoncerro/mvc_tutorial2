@@ -15,3 +15,61 @@ h1 {
     background-color: #28a745;
     border-color: #28a745;
 }
+
+.price-filter {
+    background: linear-gradient(180deg, #ffffff 0%, #f5f7fb 100%);
+}
+
+.price-filter .input-group-text {
+    background-color: #eef2f8;
+    border-color: #d8dee9;
+    color: #4a5568;
+    font-weight: 600;
+}
+
+.price-filter .form-control {
+    border-color: #d8dee9;
+}
+
+.price-filter .form-control:focus {
+    border-color: #4c7cf3;
+    box-shadow: 0 0 0 0.18rem rgba(76, 124, 243, 0.2);
+}
+
+.price-filter-summary {
+    font-size: 0.86rem;
+    color: #5b6470;
+}
+
+.dual-range-slider {
+    padding: 0.7rem 0.8rem;
+    border: 1px solid #dbe3f0;
+    border-radius: 0.75rem;
+    background: #ffffff;
+}
+
+.dual-range-slider .form-range {
+    height: 1.2rem;
+}
+
+.dual-range-slider .form-range::-webkit-slider-runnable-track {
+    background: linear-gradient(90deg, #cfe0ff 0%, #8db3ff 100%);
+    border-radius: 999px;
+    height: 0.35rem;
+}
+
+.dual-range-slider .form-range::-webkit-slider-thumb {
+    margin-top: -0.32rem;
+    background: #1f6feb;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 0 1px rgba(31, 111, 235, 0.25);
+}
+
+.price-slider-limits small {
+    color: #687385;
+}
+
+.price-validation-message {
+    font-size: 0.82rem;
+    color: #b54708;
+}

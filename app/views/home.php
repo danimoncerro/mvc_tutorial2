@@ -20,11 +20,69 @@ ob_start();
                 <div class="card-header bg-light">
                     <h5 class="mb-0">Pret</h5>
                 </div>
-                <div> 
-                <input type="number" v-model="min_price">
-                -
-                <input type="number" v-model="max_price">
+                <div class="price-filter px-3 py-3 border-bottom">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-6">
+                            <label class="form-label small text-muted mb-1">Minim</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">RON</span>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    v-model.number="min_price"
+                                    :min="priceMinLimit"
+                                    :max="priceMaxLimit"
+                                    step="1"
+                                    placeholder="0"
+                                >
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small text-muted mb-1">Maxim</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">RON</span>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    v-model.number="max_price"
+                                    :min="priceMinLimit"
+                                    :max="priceMaxLimit"
+                                    step="1"
+                                    placeholder="0"
+                                >
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="dual-range-slider mt-3">
+                        <label class="form-label small text-muted mb-1">Slider minim</label>
+                        <input
+                            type="range"
+                            class="form-range"
+                            v-model.number="min_price"
+                            :min="priceMinLimit"
+                            :max="priceMaxLimit"
+                            step="1"
+                        >
+                        <label class="form-label small text-muted mb-1 mt-2">Slider maxim</label>
+                        <input
+                            type="range"
+                            class="form-range"
+                            v-model.number="max_price"
+                            :min="priceMinLimit"
+                            :max="priceMaxLimit"
+                            step="1"
+                        >
+                        <div class="d-flex justify-content-between mt-1 price-slider-limits">
+                            <small>{{ priceMinLimit }} RON</small>
+                            <small>{{ priceMaxLimit }} RON</small>
+                        </div>
+                    </div>
+
+                    <p v-if="priceValidationMessage" class="price-validation-message mt-2 mb-0">{{ priceValidationMessage }}</p>
+                    <div class="price-filter-summary mt-2">
+                        Interval selectat: <strong>{{ min_price }}</strong> - <strong>{{ max_price }}</strong> RON
+                    </div>
                 </div>
                 <div class="card-header bg-light">
                     <h5 class="mb-0">Categorii</h5>
@@ -98,7 +156,7 @@ ob_start();
 <!-- Aici incepe Vue.js -->
 
 <script>
-    const { createApp, ref, onMounted, watch } = Vue;
+    const { createApp, ref, onMounted, onBeforeUnmount, watch } = Vue;
 
     const app = createApp({
         setup() {
@@ -108,8 +166,13 @@ ob_start();
             const totalproducts = ref(0);
             const categories = ref([]);
             const selectedCategory = ref(0);
+            const priceMinLimit = ref(0);
+            const priceMaxLimit = ref(1000);
             const min_price = ref(5);
             const max_price = ref(10);
+            const priceValidationMessage = ref('');
+            let priceDebounceTimer = null;
+            let isAdjustingPrice = false;
 
             const showProducts = () => {
                 axios.get('<?= BASE_URL ?>api/products', {
@@ -173,18 +236,88 @@ ob_start();
                 });
             }
 
-            
+            const scheduleProductsRefresh = () => {
+                if (priceDebounceTimer) {
+                    clearTimeout(priceDebounceTimer);
+                }
+
+                priceDebounceTimer = setTimeout(() => {
+                    showProducts();
+                }, 350);
+            }
+
+            const normalizePriceValue = (value, fallbackValue) => {
+                const numericValue = Number(value);
+
+                if (Number.isNaN(numericValue)) {
+                    return fallbackValue;
+                }
+
+                if (numericValue < priceMinLimit.value) {
+                    return priceMinLimit.value;
+                }
+
+                if (numericValue > priceMaxLimit.value) {
+                    return priceMaxLimit.value;
+                }
+
+                return numericValue;
+            }
+
+            const applyPriceValidation = (source) => {
+                const initialMin = min_price.value;
+                const initialMax = max_price.value;
+
+                min_price.value = normalizePriceValue(min_price.value, priceMinLimit.value);
+                max_price.value = normalizePriceValue(max_price.value, priceMaxLimit.value);
+
+                if (min_price.value > max_price.value) {
+                    if (source === 'min') {
+                        max_price.value = min_price.value;
+                    } else {
+                        min_price.value = max_price.value;
+                    }
+
+                    priceValidationMessage.value = 'Intervalul a fost ajustat automat pentru ca minimul sa nu depaseasca maximul.';
+                } else if (initialMin !== min_price.value || initialMax !== max_price.value) {
+                    priceValidationMessage.value = `Valorile trebuie sa fie intre ${priceMinLimit.value} si ${priceMaxLimit.value} RON.`;
+                } else {
+                    priceValidationMessage.value = '';
+                }
+            }
+
             watch(min_price, () => {
-                showProducts();
-            })   
-            
+                if (isAdjustingPrice) {
+                    return;
+                }
+
+                isAdjustingPrice = true;
+                applyPriceValidation('min');
+                isAdjustingPrice = false;
+                scheduleProductsRefresh();
+            })
+
             watch(max_price, () => {
-                showProducts();
+                if (isAdjustingPrice) {
+                    return;
+                }
+
+                isAdjustingPrice = true;
+                applyPriceValidation('max');
+                isAdjustingPrice = false;
+                scheduleProductsRefresh();
             })
 
             onMounted(() => {
+                applyPriceValidation('max');
                 showProducts();
                 showCategories();
+            })
+
+            onBeforeUnmount(() => {
+                if (priceDebounceTimer) {
+                    clearTimeout(priceDebounceTimer);
+                }
             })
 
             return {
@@ -196,7 +329,10 @@ ob_start();
                 categories,
                 addToCart,
                 min_price,
-                max_price
+                max_price,
+                priceMinLimit,
+                priceMaxLimit,
+                priceValidationMessage
             }
         }
     })
