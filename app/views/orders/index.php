@@ -30,6 +30,24 @@ ob_start();
         
 
     </div>
+        
+
+    <div class="mb-3">
+        
+        <h5>Filtrare clienti<h5>
+        
+        <div class="row g-3">
+            <div class="col-md-3">
+                <select v-model="filters.client" class="form-select">
+                    <option value="">Toti clientii</option>
+                    <option v-for="client in clientsFilters" :key="client.id" :value="client.id">
+                        {{ client.email }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+    </div>
 
     <order7-detail :order="selectedOrder" 
                    :marks="marks">
@@ -258,6 +276,7 @@ ob_start();
             const totalPages = ref(1);
             const filters = ref({
                 status: '',
+                client: '',
                 page: ''
             });
             const editingStatus = ref('');
@@ -268,6 +287,7 @@ ob_start();
             const selectedOrder = ref(null); 
             const detaillink = ref('');
             const marks = ref([]);
+            const clientsFilters = ref([]);
 
             const showOrders = (page) => {
                 
@@ -317,6 +337,15 @@ ob_start();
                 .catch(error => {
                     console.error('API Error:', error);
                 });
+            }
+
+            const getClients = () => {
+                axios.get('<?= BASE_URL ?>api/users', {
+
+                })
+                .then(response => {
+                    clientsFilters.value=response.data.users;
+                })
             }
 
             const deleteOrder = (orderid) => {
@@ -467,6 +496,7 @@ ob_start();
 
             onMounted(() => {
                 showOrders(1);
+                getClients();
             });
 
             return{
@@ -493,7 +523,8 @@ ob_start();
                 showOrderDetails,
                 detaillink,
                 marks,
-                deleteOrder
+                deleteOrder,
+                clientsFilters,
             };
         }
     });   

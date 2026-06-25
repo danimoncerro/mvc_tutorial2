@@ -13,7 +13,7 @@ class ApiUserController
             exit;
         }
 
-        if ($_SESSION['user']['role'] !== 'admin') {
+        if ($_SESSION['user']['role'] !== 'admin' && ($_SESSION['user']['role']) !== 'livrator') {
             header("Location: " . BASE_URL);
             exit;
         }
