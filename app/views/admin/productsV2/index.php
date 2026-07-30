@@ -24,9 +24,21 @@ ob_start();
 </style>
 
 <div id="app" class="container">
+
    
     <table class="products-v2-table table table-striped table-hover table-bordered">
         <thead class="table-light">
+            <select v-model="selectedCategory" @change="showProducts">
+                <option value="">Toate categoriile</option>
+                <option v-for="category in categories" :key="category.id" :value="category.id">
+                    {{category.name}}
+                </option> 
+            </select>
+            <h1>
+                {{selectedCategory}}
+            </h1>
+
+
             <tr>
                 <th>ID</th>
                 <th>
@@ -71,22 +83,39 @@ ob_start();
         setup() {
             const title = ref('Lista de produse - v2')
             const products = ref([])
+            const categories = ref([])
+            const selectedCategory = ref('')
             
             const showProducts = () => {
                          
-                axios.get('<?= BASE_URL ?>api/v2/products')
+                axios.get('<?= BASE_URL ?>api/v2/products', {
+                    params: {
+                        category_id: selectedCategory.value
+                    }
+                } )
                     .then(response => {
                         products.value = response.data
                     })
             }
 
+            const getCategories = () => {
+                axios.get('<?= BASE_URL ?>api/v2/categories')
+                .then(response => {
+                    categories.value = response.data
+                })
+            }
+
             onMounted(() => {
                 showProducts()
+                getCategories()
             })
 
             return{
                 title,
                 products,
+                categories,
+                selectedCategory,
+                showProducts
              
             }
         }              

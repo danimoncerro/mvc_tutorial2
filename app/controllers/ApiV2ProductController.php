@@ -10,8 +10,20 @@ class ApiV2ProductController
     {
        
         header('Content-Type: application/json; charset=utf-8');
-        $productModel = new Product();  // pas 9 - 13
-        $products = $productModel->all();
+        $category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : null;
+        
+        $productModel = new Product();
+        $products = $productModel->getPaginatedFilteredSearchedSorted(
+            50, 
+            0,
+            $category_id, 
+            '',
+            'id',
+            'asc', 
+            0,
+            99999
+        );
+
         //var_dump($products);
         echo json_encode($products);  // pas 14 
 
