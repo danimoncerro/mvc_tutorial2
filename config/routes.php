@@ -33,6 +33,12 @@ $router->post('orders/delete', 'OrderController@delete');
 $router->get('auth/login', 'AuthController@login');
 $router->post('auth/authenticate', 'AuthController@authenticate');
 $router->get('auth/logout', 'AuthController@logout');
+
+// Demo educational page + endpoints for learning API basics
+$router->get('demo-api', 'DemoApiController@index');
+$router->get('api/demo/message', 'ApiDemoController@message');
+$router->post('api/demo/echo', 'ApiDemoController@echo');
+
 $router->get('mail/test', 'MailController@index');
 $router->post('mail/send', 'MailController@send');
 $router->get('vuecategories', 'CategoryController@vueindex');
@@ -90,6 +96,13 @@ $router->get('api/order-items', 'ApiOrderController@getOrderItems');
 $router->get('schimbaparola', 'UserController@schimbaParola');
 $router->get('resetareparola', 'ResetPasswordController@index');
 $router->post('resetareparola', 'ResetPasswordController@resetpass');
+$router->get('api/v2/products', 'ApiV2ProductController@index');
+$router->get('api/v2/categories', 'ApiV2CategoryController@index');
+$router->get('api/v2/users', 'ApiV2UsersController@index');
+$router->get('v2/products', 'V2ProductController@index');
+$router->get('v2/categories', 'V2CategoriesController@index');
+$router->get('v2/users', 'V2UsersController@index');
+
 
 $router->get('test1', 'Test1Controller@index'); 
 $router->get('test2', 'Test2Controller@index');
