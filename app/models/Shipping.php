@@ -11,13 +11,29 @@ class Shipping
         $this->db = Database::connect();
     }
 
-    public function all($user_id = 0)
+    public function all($user_id = null, $city=null)
     {
-        $sql = "SELECT *FROM shipping_address WHERE user_id = :user_id";
+        $sql = "SELECT * FROM shipping_address WHERE 1 ";
+        if ($user_id) {
+            $sql .= " AND user_id = :user_id ";
+        }
+
+        if ($city) {
+            $sql .= " AND city = :city ";
+        }
+
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
-            'user_id'=>$user_id,
-        ]);
+
+        if ($user_id) {
+            $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        }
+
+        if ($city) {
+            $stmt->bindValue(':city', $city, PDO::PARAM_STR);
+        }
+
+
+        $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -27,7 +43,7 @@ class Shipping
         $sql = "SELECT DISTINCT(city) FROM `shipping_address` ORDER by city ASC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
     public function create(array $data, $user_id = 0)

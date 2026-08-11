@@ -25,21 +25,20 @@ ob_start();
 
 
 <div id="app" class="container">
-    <h1>{{shipping}}</h1>
-    <h2>Pauza</h2>
-    <h1>{{shipping.city}}</h1>
 
     <table class="shipping-v2-table table table-striped table-hover table-bordered">
         <thead class="table-light">
+            
+            <h1>
+                {{cities}}
+            </h1>
+
             <select v-model="selectedCity" @change="showShippingAddress">
                 <option value="">Toate localitatile</option>
-                <option v-for="item in shipping" :key="shipping.id" :value="city">
-                    {{ item.city }} - {{ item.address}}
+                <option v-for="city in cities" :key="city" :value="city">
+                    {{city}}
                 </option>
             </select>
-            <h1>
-                {{selectedShipping}}
-            </h1>
 
 
             <tr>
@@ -56,18 +55,19 @@ ob_start();
             </tr>
         </thead>
         <tbody>
-            <tr v-for="product in products" :key="product.id">
+            <tr v-for="item in shipping" :key="shipping.id">
                 <td>
-                   
+                   {{item.id}}
                 </td>
                 <td>
+                    {{item.address}}
                 </td>
                 
                 <td>
-                    
+                    {{item.city}}
                 </td> 
                 <td>
-                    
+                    {{item.county}}
                 </td>
                 
             </tr>
@@ -84,7 +84,7 @@ ob_start();
     const app = createApp({
         setup(){
             const shipping = ref([])
-            const selectedShipping = ref('')
+            const selectedCity = ref('')
             const cities = ref([])
 
             const showShippingAddress = () => {
@@ -94,15 +94,24 @@ ob_start();
                     })
             }
 
-            const getCity
+            const getCities = () => {
+                axios.get('<?=BASE_URL ?>api/v2/shipping_address/cities')
+                    .then(response => {
+                        cities.value = response.data
+                    })
+            }
 
             onMounted(() => {
                 showShippingAddress()
+                getCities()
             })
 
             return {
                 shipping,
-                showShippingAddress
+                showShippingAddress,
+                getCities,
+                cities,
+                selectedCity
             }
         }
     })

@@ -10,8 +10,10 @@ class ApiV2ShippingAddressController
     {
         header('Content-Type: application/json;charset=utf-8');
 
+        $city = $_GET['city'] ?? '';
+
         $shippingModel = new Shipping();
-        $shipping_address = $shippingModel->all();
+        $shipping_address = $shippingModel->all(0, $city);
         echo json_encode($shipping_address);
     }
 
