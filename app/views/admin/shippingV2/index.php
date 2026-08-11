@@ -85,6 +85,7 @@ ob_start();
         setup(){
             const shipping = ref([])
             const selectedShipping = ref('')
+            const cities = ref([])
 
             const showShippingAddress = () => {
                 axios.get('<?=BASE_URL ?>api/v2/shipping_address')
@@ -92,6 +93,8 @@ ob_start();
                         shipping.value = response.data
                     })
             }
+
+            const getCity
 
             onMounted(() => {
                 showShippingAddress()

@@ -15,4 +15,13 @@ class ApiV2ShippingAddressController
         echo json_encode($shipping_address);
     }
 
+    public function cities()
+    {
+        header('Content-Type: application/json;charset=utf-8');
+
+        $shippingModel = new Shipping();
+        $shipping_cities = $shippingModel->getCities();
+        echo json_encode($shipping_cities);
+    }
+
 }

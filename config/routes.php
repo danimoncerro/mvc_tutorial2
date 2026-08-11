@@ -102,6 +102,7 @@ $router->get('api/v2/users', 'ApiV2UsersController@index');
 $router->get('api/v2/users/roles', 'ApiV2UsersController@roles');
 $router->get('api/v2/orders', 'ApiV2OrdersController@index');
 $router->get('api/v2/shipping_address', 'ApiV2ShippingAddressController@index');
+$router->get('api/v2/shipping_address/cities', 'ApiV2ShippingAddressController@cities');
 $router->get('v2/products', 'V2ProductController@index');
 $router->get('v2/categories', 'V2CategoriesController@index');
 $router->get('v2/users', 'V2UsersController@index');

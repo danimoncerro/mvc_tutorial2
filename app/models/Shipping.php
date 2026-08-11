@@ -22,6 +22,14 @@ class Shipping
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getCities()
+    {
+        $sql = "SELECT DISTINCT(city) FROM `shipping_address` ORDER by city ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function create(array $data, $user_id = 0)
     {
         $sql = "INSERT INTO shipping_address (user_id, address, city, county ) 
