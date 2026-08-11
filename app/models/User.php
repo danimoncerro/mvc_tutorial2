@@ -108,10 +108,17 @@ class User
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getPaginated($limit, $offset)
+    public function getPaginated($limit, $offset, $role = '')
     {
-        $sql = "SELECT * FROM users LIMIT :limit OFFSET :offset";
+        $sql = "SELECT * FROM users";
+        if ($role) {
+            $sql .= " WHERE role = :role";
+        }
+        $sql .= " LIMIT :limit OFFSET :offset";
         $stmt = $this->db->prepare($sql);
+        if ($role) {
+            $stmt->bindValue(':role', $role, PDO::PARAM_STR);
+        }
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
         $stmt->execute();

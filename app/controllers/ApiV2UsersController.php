@@ -8,9 +8,22 @@ class ApiV2UsersController {
     {
         header('Content-Type: application/json; charset=utf-8');
 
+        $role = $_GET['role'] ?? '';
+
         $userModel = new User();
-        $users = $userModel->all();
+        $limit = (int) $userModel->countFiltered($role);
+        $users = $userModel->getPaginated($limit, 0, $role);
         echo json_encode($users);
+    }
+
+    public function roles()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $role = isset($_GET['role']); 
+
+        $userModel = new User();
+        $roles = $userModel->getAllRoles();
+        echo json_encode($roles);
     }
 
 }

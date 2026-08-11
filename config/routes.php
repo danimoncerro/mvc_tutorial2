@@ -99,11 +99,14 @@ $router->post('resetareparola', 'ResetPasswordController@resetpass');
 $router->get('api/v2/products', 'ApiV2ProductController@index');
 $router->get('api/v2/categories', 'ApiV2CategoryController@index');
 $router->get('api/v2/users', 'ApiV2UsersController@index');
+$router->get('api/v2/users/roles', 'ApiV2UsersController@roles');
 $router->get('api/v2/orders', 'ApiV2OrdersController@index');
+$router->get('api/v2/shipping_address', 'ApiV2ShippingAddressController@index');
 $router->get('v2/products', 'V2ProductController@index');
 $router->get('v2/categories', 'V2CategoriesController@index');
 $router->get('v2/users', 'V2UsersController@index');
 $router->get('v2/orders', 'V2OrdersController@index');
+$router->get('v2/shipping_address', 'V2ShippingController@index');
 
 
 

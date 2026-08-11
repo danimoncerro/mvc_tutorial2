@@ -27,6 +27,15 @@ ob_start();
    
     <table class="users-v2-table table table-striped table-hover table-bordered">
         <thead class="table-light">
+
+            <select v-model="selectedRole" @change="showUsers">
+                <option value="">Toate rolurile</option>
+                <option v-for="role in roles" :key="role" :value="role">
+                    {{ role }}
+                </option>
+                
+            </select>
+
             <tr>
                 <th>ID</th>
                 <th>
@@ -62,22 +71,40 @@ ob_start();
         setup() {
             const title = ref('Lista de utilizatori - V2')
             const users = ref([])
+            const roles = ref([])
+            const selectedRole = ref('')
 
             const showUsers = () => {
 
-                axios.get('<?= BASE_URL ?>api/v2/users')
+                axios.get('<?= BASE_URL ?>api/v2/users', {
+                    params: {
+                        role: selectedRole.value 
+                    }
+                })
                     .then(response => {
                         users.value = response.data
                     })
             }
 
+            const getRoles =() => {
+                axios.get('<?= BASE_URL ?>api/v2/users/roles')
+                    .then(response => {
+                        roles.value = response.data
+                    })
+            }
+
             onMounted(() => {
                 showUsers()
+                getRoles()
             })
 
             return{
                 title,
-                users
+                users,
+                roles,
+                selectedRole,
+                showUsers,
+                getRoles
             }
         }              
 

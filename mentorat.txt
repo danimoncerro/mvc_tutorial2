@@ -276,4 +276,11 @@ tema
 2) sa faci acelasi lucru cu v2Categories si v2Users.
 
 
+Tema
+
+o filtrare dupa orice coloana la alegere
+
+de exemplu la user dupa roluri
+
+
 
