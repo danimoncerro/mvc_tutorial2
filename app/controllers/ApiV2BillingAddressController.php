@@ -17,5 +17,15 @@ class ApiV2BillingAddressController
 
     }
 
+     public function cities()
+    {
+        header('Content-Type: application/json;charset=utf-8');
+        $billingModel = new Billing();
+        $billing_cities = $billingModel->getCities();
+
+        echo json_encode($billing_cities);
+
+    }
+
 
 }

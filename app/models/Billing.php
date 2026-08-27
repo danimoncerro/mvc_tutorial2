@@ -29,6 +29,14 @@ class Billing
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getCities()
+    {
+        $sql = "SELECT DISTINCT(city) FROM billing_address ORDER by city asc;";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
     public function create(array $data, $user_id = 0)
     {
         $sql = "INSERT INTO billing_address (user_id, address, zip_code, city, county ) 
