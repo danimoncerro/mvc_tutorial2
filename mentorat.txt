@@ -283,4 +283,13 @@ o filtrare dupa orice coloana la alegere
 de exemplu la user dupa roluri
 
 
+Tema 
+
+de terminat filtrarea cu cities pentru shipping showShippingAddress
+de facut filtrea pentru categorie dupa produse (poti incepe o pagina noua sa nu o strici pe cea veche)
+
+
+
+
+
 
