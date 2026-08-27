@@ -287,6 +287,8 @@ Tema
 
 de terminat filtrarea cu cities pentru shipping showShippingAddress
 de facut filtrea pentru categorie dupa produse (poti incepe o pagina noua sa nu o strici pe cea veche)
+de facut o filtrare cu cities pentru billing address.
+
 
 
 

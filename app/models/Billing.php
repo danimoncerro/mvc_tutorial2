@@ -11,13 +11,20 @@ class Billing
         $this->db = Database::connect();
     }
 
-    public function all($user_id = 0)
+    public function all($user_id = null)
     {
-        $sql = "SELECT *FROM billing_address WHERE user_id = :user_id";
+        $sql = "SELECT *FROM billing_address WHERE 1 ";
+        if ($user_id) {
+            $sql .= " AND user_id = :user_id ";
+        }
+
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([
-            'user_id'=>$user_id,
-        ]);
+
+        if ($user_id) {
+            $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
