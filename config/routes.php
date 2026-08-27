@@ -108,6 +108,7 @@ $router->get('v2/categories', 'V2CategoriesController@index');
 $router->get('v2/users', 'V2UsersController@index');
 $router->get('v2/orders', 'V2OrdersController@index');
 $router->get('v2/shipping_address', 'V2ShippingController@index');
+$router->get('v3/categories', 'V3CategoriesController@index');
 
 
 
