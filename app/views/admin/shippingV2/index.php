@@ -88,7 +88,11 @@ ob_start();
             const cities = ref([])
 
             const showShippingAddress = () => {
-                axios.get('<?=BASE_URL ?>api/v2/shipping_address')
+                axios.get('<?=BASE_URL ?>api/v2/shipping_address', {
+                    params: {
+                        city: selectedCity.value
+                    }
+                })
                     .then(response => {
                         shipping.value = response.data
                     })
