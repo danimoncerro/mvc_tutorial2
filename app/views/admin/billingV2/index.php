@@ -37,7 +37,6 @@ ob_start();
 
     <table class="billing-v2-table table table-striped table-hover table-bordered">
         <thead class="table-light">
-            <h1>{{selectedCity}}<h1>
             <select v-model="selectedCity" @change="showBillingAddress">
                 <option value="">Toate localitatile</option>
                 <option v-for="city in cities" :key="city" :value="city">
