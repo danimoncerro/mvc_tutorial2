@@ -9,9 +9,10 @@ class ApiV2BillingAddressController
     {
         header('Content-Type: application/json;charset=utf-8');
 
+        $city = $_GET['city'] ?? '';
 
         $billingModel = new Billing();
-        $billingAddresses = $billingModel->all();
+        $billingAddresses = $billingModel->all(null, $city);
 
         echo json_encode($billingAddresses);
 

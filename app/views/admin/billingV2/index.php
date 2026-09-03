@@ -7,7 +7,7 @@ ob_start();
 <p>Hello World!</p>
 
 <style>
-.shipping-v2-table thead th {
+.biling-v2-table thead th {
     background: linear-gradient(180deg, #d9ecff 0%, #b8dcff 100%);
     color: #212529;
     font-weight: 700;
@@ -17,11 +17,11 @@ ob_start();
     box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.75);
 }
 
-.shipping-v2-table thead th:first-child {
+.billing-v2-table thead th:first-child {
     border-top-left-radius: 0.4rem;
 }
 
-.shipping-v2-table thead th:last-child {
+.billing-v2-table thead th:last-child {
     border-top-right-radius: 0.4rem;
 }
 </style>
@@ -33,15 +33,17 @@ ob_start();
                 
     </h1>
 
-    <select v-model="selectedCity" @change="showShippingAddress">
-        <option value="">Toate localitatile</option>
-        <option v-for="city in cities" :key="city" :value="city">
-            {{city}}
-        </option>
-    </select>
+    
 
-    <table class="shipping-v2-table table table-striped table-hover table-bordered">
+    <table class="billing-v2-table table table-striped table-hover table-bordered">
         <thead class="table-light">
+            <h1>{{selectedCity}}<h1>
+            <select v-model="selectedCity" @change="showBillingAddress">
+                <option value="">Toate localitatile</option>
+                <option v-for="city in cities" :key="city" :value="city">
+                {{city}}
+                </option>
+            </select>
             <tr>
                 <th>ID</th>
                 <th>
@@ -86,20 +88,38 @@ ob_start();
         setup() {
 
             const billing = ref([])
+            const cities = ref([])
+            const selectedCity = ref('')
 
             const showBillingAddress = () => {
-                axios.get('<?=BASE_URL ?>api/v2/billing_address')
+                axios.get('<?=BASE_URL ?>api/v2/billing_address', {
+                    params: {
+                        city: selectedCity.value
+                    }
+                })
                     .then(response => {
                         billing.value = response.data
                     })
             }
 
+            const getCities = () => {
+                axios.get('<?=BASE_URL ?>api/v2/billing_address/cities')
+                    .then(response => {
+                        cities.value = response.data
+                    })
+            }
+
             onMounted(() =>{
-                showBillingAddress()
+                showBillingAddress(),
+                getCities()
             })
 
             return{
-                billing
+                billing,
+                cities,
+                selectedCity,
+                showBillingAddress,
+                getCities
             }
 
 
