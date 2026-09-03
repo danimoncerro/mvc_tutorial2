@@ -292,6 +292,15 @@ de facut o filtrare cu cities pentru billing address.
 de terminat filtrarea oraselor in billing
 
 
+Tema 03.09.2026
+
+Sa afisam numarul de rezultate in dropdown-ul de filtrare
+billing, shipping, orders-filtrare comenzi, orders - filtrare clienti,
+
+Sa facem un export si import de categorii.
+
+Sa aranjam frumos butonul pentru export categorii
+
 
 
 

@@ -10,7 +10,8 @@ ob_start();
 
 <div id="app" class="container">
     <arata-titlu-categorie :total="totalcategorii"></arata-titlu-categorie>
-    <adauga-categorie :savelink="'<?= BASE_URL ?>api/categories/store'" @arata-categorie="arataCategorie"></adauga-categorie> 
+    <adauga-categorie :savelink="'<?= BASE_URL ?>api/categories/store'" @arata-categorie="arataCategorie"></adauga-categorie>
+    <p>Test<p>
     <editeaza-categorie 
         :updatelink="'<?= BASE_URL ?>api/categories/edit'"
         :edit-categorie="editCategorie"

@@ -14,7 +14,7 @@ ob_start();
 
     <show-category-title :total="totalcategories"></show-category-title>
     <add-category :savelink="'<?= BASE_URL ?>api/categories/store'" @show-categories="showCategories"></add-category>
-
+    <a href="/export/categories" class="btn btn-primary">Exporta categoriile</a>
 <!--  Componenta de cautare  -->
     <search-category @search-categories="searchCategories"></search-category>
 
