@@ -19,6 +19,7 @@ ob_start();
     </h1>
 
     <add-user :savelink="'<?= BASE_URL ?>api/users/store'" @show-users="showUsers"></add-user>
+    <a href="export/users/" class="btn btn-primary">Exporta utilizatorii</a>
 
     <!--  Componenta de cautare  -->
     <search-user 

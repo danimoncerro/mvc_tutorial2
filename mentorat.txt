@@ -301,6 +301,8 @@ Sa facem un export si import de categorii.
 
 Sa aranjam frumos butonul pentru export categorii
 
+Sa facem un export de users, produse, comenzi
+
 
 
 

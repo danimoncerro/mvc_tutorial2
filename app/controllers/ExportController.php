@@ -1,6 +1,6 @@
 <?php
 require_once APP_ROOT . '/app/models/Category.php';
-
+require_once APP_ROOT . '/app/models/User.php';
 
 class ExportController
 {
@@ -17,7 +17,6 @@ class ExportController
 
         // Open output stream
         $output = fopen("php://output", "w");
-
         fputcsv($output, ['Id', 'Category name', 'Nr. product']);
 
         foreach ($categories as $category) {
@@ -28,9 +27,51 @@ class ExportController
             ]);
         }
     
+        fclose($output);
 
+    }
+
+
+    public function users()
+    {
+        $userModel = new User();
+        $users = $userModel->all();
+        // CSV filename
+        $filename = "users_" . date("Y-m-d") . ".csv";
+
+        // Tell browser to download CSV
+        header("Content-Type: text/csv; charset=utf-8");
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+
+        // Open output stream
+        $output = fopen("php://output", "w");
+
+        fputcsv($output, [
+            'id',
+            'email',
+            'role'
+        ] );
+
+        foreach($users as $user) {
+            fputcsv($output,[
+                $user['id'],
+                $user['email'],
+                $user['role']
+
+
+            ]);
+
+        }
+
+        
 
         fclose($output);
+
+
+
+
+
+
 
     }
 }
