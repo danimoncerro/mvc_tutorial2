@@ -22,9 +22,14 @@ class ApiV2BillingAddressController
     {
         header('Content-Type: application/json;charset=utf-8');
         $billingModel = new Billing();
-        $billing_cities = $billingModel->getCities();
+        $billingCities = $billingModel->getCities();
 
-        echo json_encode($billing_cities);
+        $billingTotal = $billingModel = $billingModel->countAll();
+    
+        echo json_encode([
+            'cities' => $billingCities,
+            'total' => $billingTotal
+        ]);
 
     }
 

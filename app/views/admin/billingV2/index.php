@@ -38,7 +38,7 @@ ob_start();
     <table class="billing-v2-table table table-striped table-hover table-bordered">
         <thead class="table-light">
             <select v-model="selectedCity" @change="showBillingAddress">
-                <option value="">Toate localitatile</option>
+                <option value="">Toate localitatile ({{totalCities}})</option>
                 <option v-for="city in cities" :key="city" :value="city">
                     {{city.city}} ({{city.nr_address}})
                 </option>
@@ -89,6 +89,7 @@ ob_start();
             const billing = ref([])
             const cities = ref([])
             const selectedCity = ref('')
+            const totalCities = ref(0)
 
             const showBillingAddress = () => {
                 axios.get('<?=BASE_URL ?>api/v2/billing_address', {
@@ -104,7 +105,8 @@ ob_start();
             const getCities = () => {
                 axios.get('<?=BASE_URL ?>api/v2/billing_address/cities')
                     .then(response => {
-                        cities.value = response.data
+                        cities.value = response.data.cities
+                        totalCities.value = response.data.total
                     })
             }
 
@@ -118,7 +120,8 @@ ob_start();
                 cities,
                 selectedCity,
                 showBillingAddress,
-                getCities
+                getCities,
+                totalCities
             }
 
 
