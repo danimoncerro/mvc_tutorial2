@@ -24,7 +24,7 @@ class ApiV2BillingAddressController
         $billingModel = new Billing();
         $billingCities = $billingModel->getCities();
 
-        $billingTotal = $billingModel = $billingModel->countAll();
+        $billingTotal = $billingModel->countAll();
     
         echo json_encode([
             'cities' => $billingCities,

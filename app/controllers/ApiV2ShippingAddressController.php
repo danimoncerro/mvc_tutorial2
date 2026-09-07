@@ -22,8 +22,13 @@ class ApiV2ShippingAddressController
         header('Content-Type: application/json;charset=utf-8');
 
         $shippingModel = new Shipping();
-        $shipping_cities = $shippingModel->getCities();
-        echo json_encode($shipping_cities);
+        $shippingCities = $shippingModel->getCities();
+        $shippingTotal = $shippingModel->countAll();
+        echo json_encode([
+            'cities' => $shippingCities,
+            'total' => $shippingTotal
+        ]);
+
     }
 
 }

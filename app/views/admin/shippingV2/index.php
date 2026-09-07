@@ -34,7 +34,7 @@ ob_start();
             </h1>
 
             <select v-model="selectedCity" @change="showShippingAddress">
-                <option value="">Toate localitatile</option>
+                <option value="">Toate localitatile ({{totalCities}})</option>
                 <option v-for="city in cities" :key="city" :value="city">
                     {{city.city}} ({{city.nr_address}}) 
                 </option>
@@ -86,6 +86,7 @@ ob_start();
             const shipping = ref([])
             const selectedCity = ref('')
             const cities = ref([])
+            const totalCities = ref(0)
 
             const showShippingAddress = () => {
                 axios.get('<?=BASE_URL ?>api/v2/shipping_address', {
@@ -101,7 +102,8 @@ ob_start();
             const getCities = () => {
                 axios.get('<?=BASE_URL ?>api/v2/shipping_address/cities')
                     .then(response => {
-                        cities.value = response.data
+                        cities.value = response.data.cities
+                        totalCities.value = response.data.total
                     })
             }
 
@@ -115,7 +117,8 @@ ob_start();
                 showShippingAddress,
                 getCities,
                 cities,
-                selectedCity
+                selectedCity,
+                totalCities
             }
         }
     })

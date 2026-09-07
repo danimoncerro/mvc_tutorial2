@@ -50,6 +50,16 @@ class Shipping
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function countAll()
+    {
+        $sql = "SELECT
+                    COUNT(*) as total
+                FROM shipping_address";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
     public function create(array $data, $user_id = 0)
     {
         $sql = "INSERT INTO shipping_address (user_id, address, city, county ) 
