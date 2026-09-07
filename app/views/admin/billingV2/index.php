@@ -40,7 +40,7 @@ ob_start();
             <select v-model="selectedCity" @change="showBillingAddress">
                 <option value="">Toate localitatile</option>
                 <option v-for="city in cities" :key="city" :value="city">
-                {{city}}
+                    {{city.city}} ({{city.nr_address}})
                 </option>
             </select>
             <tr>
@@ -93,7 +93,7 @@ ob_start();
             const showBillingAddress = () => {
                 axios.get('<?=BASE_URL ?>api/v2/billing_address', {
                     params: {
-                        city: selectedCity.value
+                        city: selectedCity.value.city
                     }
                 })
                     .then(response => {

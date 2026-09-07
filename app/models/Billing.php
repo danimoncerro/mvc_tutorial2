@@ -39,10 +39,15 @@ class Billing
 
     public function getCities()
     {
-        $sql = "SELECT DISTINCT(city) FROM billing_address ORDER by city asc;";
+        $sql = "SELECT
+                    city,
+                    COUNT(id) AS nr_address
+                FROM billing_address
+                GROUP BY city 
+                ORDER by city asc";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function create(array $data, $user_id = 0)
