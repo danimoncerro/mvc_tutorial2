@@ -40,10 +40,14 @@ class Shipping
 
     public function getCities()
     {
-        $sql = "SELECT DISTINCT(city) FROM `shipping_address` ORDER by city ASC";
+        $sql = "SELECT city,
+                   COUNT(id) AS nr_address
+            FROM shipping_address
+            GROUP BY city
+            ORDER BY city ASC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function create(array $data, $user_id = 0)
