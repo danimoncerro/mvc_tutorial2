@@ -114,6 +114,7 @@ $router->get('v2/billing_address', 'v2BillingController@index');
 $router->get('v3/categories', 'V3CategoriesController@index');
 $router->get('export/categories', 'ExportController@categories');
 $router->get('export/users', 'ExportController@users');
+$router->get('export/products', 'ExportController@products');
 
 
 

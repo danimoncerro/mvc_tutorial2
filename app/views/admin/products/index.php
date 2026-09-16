@@ -34,7 +34,6 @@ ob_start();
 
 <div id="app" class="container">
 
-    
 
     <!--<h1>Products 
         <span class="badge bg-secondary" v-if="products.length">{{ totalproducts }}</span>
@@ -53,6 +52,10 @@ ob_start();
         <button class="btn btn-secondary" @click="increments()">{{incrementsnumber}}</button>
     </div>
     <add-product :savelink="'<?= BASE_URL ?>api/products/store'" :categories="categories" @show-products="showProducts"></add-product>
+    <a href="/export/products" 
+        class="btn btn-primary">
+        Exporta produsele
+    </a>
 
     
 
