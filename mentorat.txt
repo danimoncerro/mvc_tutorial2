@@ -304,6 +304,10 @@ Sa aranjam frumos butonul pentru export categorii
 Sa facem un export de users, produse, comenzi
 
 Import de categorii.
+Pas1 upload de fisier fara vuejs
+Pas2 import de categorii
+pas3 upload prin vuejs
+
 
 
 

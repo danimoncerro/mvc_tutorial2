@@ -33,6 +33,9 @@ ob_start();
                     Nume 
                 </th>
                 <th>
+                    Descriere
+                </th>
+                <th>
                     Nr. produse
                 </th>
                 <th>Acțiuni</th>
@@ -49,6 +52,9 @@ ob_start();
                     style="cursor: pointer;"
                 >
                     {{ category.name }}
+                </td>
+                <td>
+                    {{ category.description }}
                 </td>
                 <td>
                     {{ category.nr_product}}

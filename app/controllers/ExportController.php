@@ -19,12 +19,13 @@ class ExportController
 
         // Open output stream
         $output = fopen("php://output", "w");
-        fputcsv($output, ['Id', 'Category name', 'Nr. product']);
+        fputcsv($output, ['Id', 'Category name', 'Category description', 'Nr. product']);
 
         foreach ($categories as $category) {
             fputcsv($output, [
                 $category['id'],
                 $category['name'],
+                $category['description'],
                 $category['nr_product']
             ]);
         }
