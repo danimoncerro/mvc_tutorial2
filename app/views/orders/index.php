@@ -13,6 +13,12 @@ ob_start();
         <span class="badge bg-secondary" v-if="orders.length">{{ totalorders }}</span>
     </h1>
 
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <a href="/export/orders" class="btn btn-success position-relative" style="top: -7px;">
+                <i class="bi bi-download"></i> Exporta comenzile
+        </a>
+    </div>
+
     <div class="mb-3">
         <h5>Filtrare comenzi</h5>
         <div class="row g-3">

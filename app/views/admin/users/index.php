@@ -17,10 +17,12 @@ ob_start();
     <h1>Users 
         <span class="badge bg-secondary" v-if="users.length">{{ totalusers }}</span>
     </h1>
-
-    <add-user :savelink="'<?= BASE_URL ?>api/users/store'" @show-users="showUsers"></add-user>
-    <a href="export/users/" class="btn btn-primary">Exporta utilizatorii</a>
-
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <add-user :savelink="'<?= BASE_URL ?>api/users/store'" @show-users="showUsers"></add-user>
+        <a href="/export/users" class="btn btn-success position-relative" style="top: -7px;">
+                <i class="bi bi-download"></i> Exporta utilizatorii
+        </a>
+    </div>
     <!--  Componenta de cautare  -->
     <search-user 
         @search-users="searchUsers"

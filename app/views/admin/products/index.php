@@ -51,13 +51,13 @@ ob_start();
     <div class="mb-3">
         <button class="btn btn-secondary" @click="increments()">{{incrementsnumber}}</button>
     </div>
-    <add-product :savelink="'<?= BASE_URL ?>api/products/store'" :categories="categories" @show-products="showProducts"></add-product>
-    <a href="/export/products" 
-        class="btn btn-primary">
-        Exporta produsele
-    </a>
 
-    
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <add-product :savelink="'<?= BASE_URL ?>api/products/store'" :categories="categories" @show-products="showProducts"></add-product>
+        <a href="/export/products" class="btn btn-success position-relative" style="top: -7px;">
+                <i class="bi bi-download"></i> Exporta produsele
+        </a>
+    </div>
 
     <div class="mb-3">
         <div class="alert alert-info" v-if="hoveredProductName">
