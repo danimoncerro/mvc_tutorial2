@@ -2,7 +2,7 @@ const AddCategory = {
     name: 'AddCategory',
     emits: ['show-categories'],
     template: `
-        <div class="mb-3">
+        <div>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
                 <i class="bi bi-plus-circle"></i> Adauga categorie
             </button>

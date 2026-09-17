@@ -13,8 +13,10 @@ ob_start();
 <div id="app" class="container">
 
     <show-category-title :total="totalcategories"></show-category-title>
-    <add-category :savelink="'<?= BASE_URL ?>api/categories/store'" @show-categories="showCategories"></add-category>
-    <a href="/export/categories" class="btn btn-primary">Exporta categoriile</a>
+    <div class="d-flex align-items-center gap-2 mb-3">
+        <add-category :savelink="'<?= BASE_URL ?>api/categories/store'" @show-categories="showCategories"></add-category>
+        <a href="/export/categories" class="btn btn-primary">Exporta categoriile</a>
+    </div>
 <!--  Componenta de cautare  -->
     <search-category @search-categories="searchCategories"></search-category>
 
