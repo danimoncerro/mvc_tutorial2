@@ -116,6 +116,8 @@ $router->get('export/categories', 'ExportController@categories');
 $router->get('export/users', 'ExportController@users');
 $router->get('export/products', 'ExportController@products');
 $router->get('export/orders', 'ExportController@orders');
+$router->get('import/categories', 'ImportController@categories');
+$router->post('import/categories', 'ImportController@importCategories');
 
 
 
