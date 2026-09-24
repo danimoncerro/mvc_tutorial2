@@ -70,45 +70,46 @@ class ImportController
         $destFile = $uploadDir.$file['name'];
 
         if (move_uploaded_file($sourceFile, $destFile)){
-            $handle = fopen($destFile, 'r');
-            fgetcsv($handle);
             
-            $productModel = new Product();
-            while (($row = fgetcsv($handle)) !== false) {
-                if (!isset($row[0])) {
-                    continue;
-                }
-                $productName = $row[0];
-                $productPrice = $row[1];
-                echo "$productName  ";
-                echo "$productPrice <br>";
-
-                $productExist = $productModel->findByName($productName);
-                
-                if ($productExist){
-                    echo ' already exists!<br>';
-                    continue;
-                }
-                $productModel ->create([
-                    'name' => $productName,
-                    'price' => $productPrice,
-                    'category_id' => 81,
-                    'discount' => 0,
-                    'price_discount' => $productPrice
-                ]
-
-                );
-            }
-
-            fclose($handle);
+            $this->doImportProducts($destFile);
+            
 
         } else {
             echo 'CSV did not upload';
         }
+    }
 
+    protected function doImportProducts($csvFile)
+    {
+        $handle = fopen($csvFile, 'r');
+        fgetcsv($handle);
+        
+        $productModel = new Product();
+        while (($row = fgetcsv($handle)) !== false) {
+            if (!isset($row[0])) {
+                continue;
+            }
+            $productName = $row[0];
+            $productPrice = $row[1];
+            echo "$productName  ";
+            echo "$productPrice <br>";
 
+            $productExist = $productModel->findByName($productName);
+            
+            if ($productExist){
+                echo ' already exists!<br>';
+                continue;
+            }
+            $productModel ->create([
+                'name' => $productName,
+                'price' => $productPrice,
+                'category_id' => 81,
+                'discount' => 0,
+                'price_discount' => $productPrice
+            ]);
+        }
 
-
+        fclose($handle);
     }
 }
 
