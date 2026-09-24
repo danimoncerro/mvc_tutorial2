@@ -27,38 +27,40 @@ class ImportController
 
         if(move_uploaded_file($sourceFile, $destFile)){
             //echo 'Csv uploaded';
-
-            $handle = fopen($destFile, 'r');
-            fgetcsv($handle);
-
-            $categoryModel = new Category();
-            while (($row = fgetcsv($handle)) !== false) {
-                if (!isset($row[0])) {
-                    continue;
-                }
-
-                $categoryName = $row[0];
-                echo "$categoryName <br>";
-
-                $categoryExist = $categoryModel->search($categoryName);
-
-                if ($categoryExist) {
-                    echo ' already exists!<br>';
-                    continue;
-                }
-                $categoryModel->create(
-                    $categoryName
-                );
-
-            }
-
-            fclose($handle);
+            $this->doImportCategories($destFile);
             
-
-
         } else {
             echo 'Csv did not upload';
         }
+    }
+
+    protected function doImportCategories($csvFile)
+    {
+        $handle = fopen($csvFile, 'r');
+        fgetcsv($handle);
+
+        $categoryModel = new Category();
+        while (($row = fgetcsv($handle)) !== false) {
+            if (!isset($row[0])) {
+                continue;
+            }
+
+            $categoryName = $row[0];
+            echo "$categoryName <br>";
+
+            $categoryExist = $categoryModel->search($categoryName);
+
+            if ($categoryExist) {
+                echo ' already exists!<br>';
+                continue;
+            }
+            $categoryModel->create(
+                $categoryName
+            );
+
+        }
+
+        fclose($handle);
     }
 
     public function importProducts(){
