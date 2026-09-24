@@ -73,7 +73,13 @@ class ImportController
                 $productPrice = $row[1];
                 echo "$productName  ";
                 echo "$productPrice <br>";
+
+                $productExist = $productModel->findByName($productName);
                 
+                if ($productExist){
+                    echo ' already exists!<br>';
+                    continue;
+                }
                 $productModel ->create([
                     'name' => $productName,
                     'price' => $productPrice,

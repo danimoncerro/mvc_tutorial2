@@ -72,6 +72,13 @@ class Product
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function findByName($name)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM products WHERE name = :name");
+        $stmt->execute(['name' => $name]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getPaginated($limit, $offset)
     {
         $sql = "SELECT products.*, categories.name AS category_name
