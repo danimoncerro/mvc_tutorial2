@@ -39,6 +39,13 @@ class ImportController
 
                 $categoryName = $row[0];
                 echo "$categoryName <br>";
+
+                $categoryExist = $categoryModel->search($categoryName);
+
+                if ($categoryExist) {
+                    echo ' already exists!<br>';
+                    continue;
+                }
                 $categoryModel->create(
                     $categoryName
                 );
