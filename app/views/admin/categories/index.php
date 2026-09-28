@@ -18,6 +18,9 @@ ob_start();
         <a href="/export/categories" class="btn btn-success position-relative" style="top: -7px;">
             <i class="bi bi-download"></i> Exporta categoriile
         </a>
+        <a href="/import/categories" class="btn btn-success position-relative" style="top: -7px;">
+            <i class="bi bi-download"></i> Import categorii
+        </a>
     </div>
 <!--  Componenta de cautare  -->
     <search-category @search-categories="searchCategories"></search-category>
