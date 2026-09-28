@@ -119,6 +119,10 @@ ob_start();
     </div>
 
     <div class="mb-3">
+        {{ messageNotification }}
+    </div>
+
+    <div class="mb-3">
         <h5>Filtrare Produse</h5>
         <div class="row g-3">
             <div class="col-md-3">
@@ -415,6 +419,7 @@ ob_start();
                 category_id: '',
                 discount: '',
             });
+            const messageNotification = ref('');
 
 
             const showProducts = (page) => {
@@ -450,6 +455,7 @@ ob_start();
                         const modal = bootstrap.Modal.getInstance(document.getElementById('importProductModal'));
                         modal.hide();
                         showProducts(1);
+                        messageNotification.value = response.data;
                     })
                     .catch(error => {
                         console.log(error)
@@ -628,7 +634,8 @@ ob_start();
                 goToPage,
                 importProducts,
                 selectedFile,
-                selectFile
+                selectFile,
+                messageNotification
 
             };
         }
