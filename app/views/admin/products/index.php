@@ -447,10 +447,14 @@ ob_start();
                 axios.post('<?= BASE_URL ?>import/products', formData)
                     .then(response => {
                         console.log(response)
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('importProductModal'));
+                        modal.hide();
+                        showProducts(1);
                     })
                     .catch(error => {
                         console.log(error)
                     });
+
 
 
             }
