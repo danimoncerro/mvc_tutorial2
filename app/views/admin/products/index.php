@@ -34,6 +34,30 @@ ob_start();
 
 <div id="app" class="container">
 
+  <!-- Modal pentru adăugarea produselor -->
+        <div class="modal fade" id="importProductModal" tabindex="-1" aria-labelledby="importProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="importProductModalLabel">Importa Produse prin vuejs</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
+                        <button type="button" class="btn btn-primary" @click="addProduct()">
+                            <i class="bi bi-check-circle"></i> Import Produse
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
 
     <!--<h1>Products 
         <span class="badge bg-secondary" v-if="products.length">{{ totalproducts }}</span>
@@ -57,9 +81,24 @@ ob_start();
         <a href="/export/products" class="btn btn-success position-relative" style="top: -7px;">
                 <i class="bi bi-download"></i> Exporta produsele
         </a>
+
+        
+
         <a href="/import/products" class="btn btn-success position-relative" style="top: -7px;">
                 <i class="bi bi-download"></i> Importa produsele
         </a>
+
+
+
+        <div class="mb-3">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importProductModal">
+                <i class="bi bi-plus-circle"></i> Importa produse prin vueJs
+            </button>
+        </div>
+
+
+
+
     </div>  
 
     <div class="mb-3">
