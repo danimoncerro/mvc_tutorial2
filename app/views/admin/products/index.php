@@ -44,10 +44,20 @@ ob_start();
                     </div>
                     <div class="modal-body">
 
+                        <input
+                            type="file"
+                            class="form-control"
+                            @change="selectFile"
+                            id="file"
+                            name="csvfile"
+                            required
+                        >
+
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
-                        <button type="button" class="btn btn-primary" @click="addProduct()">
+                        <button type="button" class="btn btn-primary" @click="importProducts()">
                             <i class="bi bi-check-circle"></i> Import Produse
                         </button>
                     </div>
@@ -397,6 +407,7 @@ ob_start();
             const dinamictext = ref('');
             const dinamictext2 = ref('');
             const incrementsnumber = ref(0);
+            const selectedFile = ref(null);
             const editingProduct = reactive({
                 id: '',
                 name: '',
@@ -425,6 +436,30 @@ ob_start();
                     console.error('API Error:', error);
                 });
             };
+
+            const importProducts = () => {
+                console.log('Import produse:');
+                console.log(selectedFile.value);
+
+                const formData = new FormData;
+                formData.append('csvfile', selectedFile.value); 
+
+                axios.post('<?= BASE_URL ?>import/products', formData)
+                    .then(response => {
+                        console.log(response)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    });
+
+
+            }
+
+            
+
+            const selectFile = (event) => {
+                selectedFile.value = event.target.files[0];
+            }
 
             const goToPage = (page) => {
                 console.log('Going to page:', page);
@@ -586,7 +621,10 @@ ob_start();
                 perPages,
                 currentPage,
                 totalPages,
-                goToPage
+                goToPage,
+                importProducts,
+                selectedFile,
+                selectFile
 
             };
         }
