@@ -309,6 +309,12 @@ Pas2 import de categorii
 pas3 upload prin vuejs
 
 
+tema 24.09.2026
+
+sa adaugam discount si pret cu discount pentru produse
+sa adaugam  buton de import pentru import produse si import categorii
+pe fiecare pagina de import sa avem un link catre listare produse sau categorii
+
 
 
 

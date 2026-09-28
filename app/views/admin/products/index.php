@@ -57,7 +57,10 @@ ob_start();
         <a href="/export/products" class="btn btn-success position-relative" style="top: -7px;">
                 <i class="bi bi-download"></i> Exporta produsele
         </a>
-    </div>
+        <a href="/import/products" class="btn btn-success position-relative" style="top: -7px;">
+                <i class="bi bi-download"></i> Importa produsele
+        </a>
+    </div>  
 
     <div class="mb-3">
         <div class="alert alert-info" v-if="hoveredProductName">

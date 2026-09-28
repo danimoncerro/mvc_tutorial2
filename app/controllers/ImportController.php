@@ -91,8 +91,12 @@ class ImportController
             }
             $productName = $row[0];
             $productPrice = $row[1];
+            $productDiscount = $row[2];
+            $productFinalPrice = $row[3];
             echo "$productName  ";
-            echo "$productPrice <br>";
+            echo "$productPrice ";
+            echo "$productDiscount ";
+            echo "$productFinalPrice <br>";
 
             $productExist = $productModel->findByName($productName);
             

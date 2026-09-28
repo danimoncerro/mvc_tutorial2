@@ -1,7 +1,9 @@
-name,price
-Mere import,10
-Banane import,12
-Capsune import,22
-Afine import,32
-Zmeura import,42
-Struguri import,35
+name,price,discount,price_discount
+Mere import,10,5,9.5
+Banane import,12,10,10.8
+Capsune import,22,15,18.7
+Afine import,32,20,25.6
+Zmeura import,42,25,31.5
+Struguri import,35,10,31.5
+Banane import,10,5,9.5
+Portocale import,8,10,7.2
