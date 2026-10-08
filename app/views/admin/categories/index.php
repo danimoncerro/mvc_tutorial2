@@ -12,6 +12,43 @@ ob_start();
 
 <div id="app" class="container">
 
+
+
+  <!-- Modal pentru adăugarea produselor -->
+        <div class="modal fade" id="importCategoryModal" tabindex="-1" aria-labelledby="importCategoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="importCategoryModalLabel">Importa categorii prin vuejs</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <input
+                            type="file"
+                            class="form-control"
+                            @change=""
+                            id="file"
+                            name="csvfile"
+                            required
+                        >
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
+                        <button type="button" class="btn btn-primary" @click="">
+                            <i class="bi bi-check-circle"></i> Import Categorii
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
     <show-category-title :total="totalcategories"></show-category-title>
     <div class="d-flex align-items-center gap-3 mb-3">
         <add-category :savelink="'<?= BASE_URL ?>api/categories/store'" @show-categories="showCategories"></add-category>
@@ -21,6 +58,13 @@ ob_start();
         <a href="/import/categories" class="btn btn-success position-relative" style="top: -7px;">
             <i class="bi bi-download"></i> Import categorii
         </a>
+
+        <div class="mb-3">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importCategoryModal">
+                <i class="bi bi-plus-circle"></i> Importa categorii prin vueJs
+            </button>
+        </div>
+
     </div>
 <!--  Componenta de cautare  -->
     <search-category @search-categories="searchCategories"></search-category>

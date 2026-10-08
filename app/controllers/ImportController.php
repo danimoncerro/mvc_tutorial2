@@ -108,7 +108,7 @@ class ImportController
                 'name' => $productName,
                 'price' => $productPrice,
                 'category_id' => 81,
-                'discount' => 0,
+                'discount' => $productDiscount,
                 'price_discount' => $productPrice
             ]);
         }

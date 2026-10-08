@@ -22,7 +22,6 @@ const EditProduct = {
                             <input type="number" class="form-control" id="productPrice" v-model="product.price" step="0.01" min="0" required>
                         </div>
                         <div class="mb-3">
-                        <div class="mb-3">
                             <label for="productDiscount" class="form-label">Discount</label>
                             <input type="number" class="form-control" id="productDiscount" v-model="product.discount" step="0.01" min="0" required>
                         </div>

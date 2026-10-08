@@ -9,6 +9,7 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/EditProduct.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/SearchProduct.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/ProductDetail.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/ImportProduct1.js"></script>
 
 <style>
 .editing-price {
@@ -34,37 +35,7 @@ ob_start();
 
 <div id="app" class="container">
 
-  <!-- Modal pentru adăugarea produselor -->
-        <div class="modal fade" id="importProductModal" tabindex="-1" aria-labelledby="importProductModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="importProductModalLabel">Importa Produse prin vuejs</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-
-                        <input
-                            type="file"
-                            class="form-control"
-                            @change="selectFile"
-                            id="file"
-                            name="csvfile"
-                            required
-                        >
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anulează</button>
-                        <button type="button" class="btn btn-primary" @click="importProducts()">
-                            <i class="bi bi-check-circle"></i> Import Produse
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+  
 
 
 
@@ -98,14 +69,7 @@ ob_start();
                 <i class="bi bi-download"></i> Importa produsele
         </a>
 
-
-
-        <div class="mb-3">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importProductModal">
-                <i class="bi bi-plus-circle"></i> Importa produse prin vueJs
-            </button>
-        </div>
-
+        <import-product1 :processlink="'<?= BASE_URL ?>import/products'" @show-products="showProducts"> </import-product1>
 
 
 
@@ -235,6 +199,7 @@ ob_start();
                         Sterge
                     </button>
                     -->
+                </td>
             </tr>
         </tbody>
     </table>
@@ -386,6 +351,7 @@ ob_start();
            'edit-product': EditProduct,
            'search-product': SearchProduct,
            'product-detail': ProductDetail,
+           'import-product1': ImportProduct1,
         },
 
         setup() {
@@ -411,7 +377,6 @@ ob_start();
             const dinamictext = ref('');
             const dinamictext2 = ref('');
             const incrementsnumber = ref(0);
-            const selectedFile = ref(null);
             const editingProduct = reactive({
                 id: '',
                 name: '',
@@ -441,35 +406,6 @@ ob_start();
                     console.error('API Error:', error);
                 });
             };
-
-            const importProducts = () => {
-                console.log('Import produse:');
-                console.log(selectedFile.value);
-
-                const formData = new FormData;
-                formData.append('csvfile', selectedFile.value); 
-
-                axios.post('<?= BASE_URL ?>import/products', formData)
-                    .then(response => {
-                        console.log(response)
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('importProductModal'));
-                        modal.hide();
-                        showProducts(1);
-                        messageNotification.value = response.data;
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    });
-
-
-
-            }
-
-            
-
-            const selectFile = (event) => {
-                selectedFile.value = event.target.files[0];
-            }
 
             const goToPage = (page) => {
                 console.log('Going to page:', page);
@@ -601,6 +537,8 @@ ob_start();
             };
 
             onMounted(() => {
+                
+
                 showProducts();
                 showCategories();
             });
@@ -632,10 +570,7 @@ ob_start();
                 currentPage,
                 totalPages,
                 goToPage,
-                importProducts,
-                selectedFile,
-                selectFile,
-                messageNotification
+                messageNotification,
 
             };
         }

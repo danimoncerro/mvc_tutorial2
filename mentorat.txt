@@ -320,6 +320,13 @@ pe fiecare pagina de import sa avem un link catre listare produse sau categorii
 tema 28.09.2026
 
 de rezolvat warning pe pagina de produse, ceva div de inchis pentru productsDiscount
+sa mutam intr-o componenta separata importul de produse (ca si la adauga produse)
+sa facem acelasi lucru si pentru categorii
+de terminat import categorii si de pus butonul intr-un modal    
+
+
+
+
 
 
 
