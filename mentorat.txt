@@ -326,6 +326,9 @@ de terminat import categorii si de pus butonul intr-un modal
 
 de terminat cu categoriile in componenta
 
+Sa facem o componenta delete category
+
+
 
 
 

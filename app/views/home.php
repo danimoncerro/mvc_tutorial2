@@ -3,13 +3,14 @@ $title = 'Home Page';
 ob_start();
 ?>
 
+<script src="<?= BASE_URL ?>frontend/js/components/HomeHeading.js"></script>
 
 <div id="app" class="container">
+    
     <div class="row mb-4">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <h1 class="mb-0">{{ title }}</h1>
-                <span class="badge bg-primary fs-6">Total produse: {{ totalproducts }}</span>
+                <home-heading :title="title" :totalproducts="totalproducts"> </home-heading>
             </div>
         </div>
     </div>
@@ -159,6 +160,11 @@ ob_start();
     const { createApp, ref, onMounted, onBeforeUnmount, watch } = Vue;
 
     const app = createApp({
+
+        components: {
+            'home-heading': HomeHeading
+        },
+
         setup() {
             const title = ref("Home page");
 

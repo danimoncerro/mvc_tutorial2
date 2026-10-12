@@ -11,6 +11,8 @@ ob_start();
 <script src="<?= BASE_URL ?>frontend/js/components/CategoryDetail.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/ImportCategory.js"></script>
 
+
+
 <div id="app" class="container">
 
 
@@ -211,6 +213,7 @@ ob_start();
             'search-category': SearchCategory,
             'category-detail': CategoryDetail,
             'import-category': ImportCategory,
+            
 
         },
         setup() {
