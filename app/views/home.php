@@ -5,6 +5,8 @@ ob_start();
 
 <script src="<?= BASE_URL ?>frontend/js/components/HomeHeading.js"></script>
 <script src="<?= BASE_URL ?>frontend/js/components/ProductCard.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/HomeCategoryFilter.js"></script>
+
 
 
 <div id="app" class="container">
@@ -91,26 +93,9 @@ ob_start();
                     <h5 class="mb-0">Categorii</h5>
                 </div>
                 <div class="list-group list-group-flush">
-                    <button
-                        type="button"
-                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                        :class="{ active: selectedCategory === 0 }"
-                        @click="setCategory(0)"
-                    >
-                        <span>Toate categoriile</span>
-                    </button>
-
-                    <button
-                        type="button"
-                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-                        v-for="category in categories"
-                        :key="category.id"
-                        :class="{ active: selectedCategory === Number(category.id) }"
-                        @click="setCategory(category.id)"
-                    >
-                        <span>{{ category.name }}</span>
-                        <span class="badge bg-secondary rounded-pill">{{ category.nr_product }}</span>
-                    </button>
+                    <home-category-filter :categories="categories" 
+                        :selected-category="selectedCategory"> </home-category-filter>
+                    
                 </div>
             </div>
         </div>
@@ -153,6 +138,7 @@ ob_start();
         components: {
             'home-heading': HomeHeading,
             'product-card': ProductCard,
+            'home-category-filter': HomeCategoryFilter,
         },
 
         setup() {
@@ -209,12 +195,6 @@ ob_start();
                 .catch(error => {
                     console.error('API Error:', error);
                 });
-            }
-
-            const setCategory = (categoryid) => {
-                        selectedCategory.value = Number(categoryid);
-                        showProducts();
-
             }
 
             const addToCart = (product) => {
@@ -320,7 +300,6 @@ ob_start();
                 title,
                 totalproducts,
                 products,
-                setCategory,
                 selectedCategory,
                 categories,
                 addToCart,
