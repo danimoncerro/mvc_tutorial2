@@ -4,6 +4,8 @@ ob_start();
 ?>
 
 <script src="<?= BASE_URL ?>frontend/js/components/HomeHeading.js"></script>
+<script src="<?= BASE_URL ?>frontend/js/components/ProductCard.js"></script>
+
 
 <div id="app" class="container">
     
@@ -115,23 +117,10 @@ ob_start();
 
         <div class="col-lg-9">
             <div class="row" v-if="products.length > 0">
-                <div class="col-md-6 col-xl-4 mb-4" v-for="product in products" :key="product.id">
+                <div class="col-md-6 col-xl-4 mb-4" 
+                    v-for="product in products" :key="product.id">
                     <div class="card h-100 shadow-sm border-0">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text mb-2">
-                                <strong>Preț:</strong> {{ product.price }} RON
-                            </p>
-                            <p class="card-text mb-2" v-if="product.category_name">
-                                <small class="text-muted">Categorie: {{ product.category_name }}</small>
-                            </p>
-                            <p class="card-text mb-1 text-danger" v-if="product.discount">
-                                <small>Discount: {{ product.discount }}%</small>
-                            </p>
-                            <p class="card-text text-danger" v-if="product.discount">
-                                <small>Preț cu discount: {{ product.price_discount }} RON</small>
-                            </p>
-                        </div>
+                        <product-card :product="product"></product-card>
                         <?php
                         if (isset($_SESSION['user']) && $_SESSION['user']['role'] == 'client'): ?>
                             <div class="card-footer bg-white border-0 pt-0">
@@ -162,7 +151,8 @@ ob_start();
     const app = createApp({
 
         components: {
-            'home-heading': HomeHeading
+            'home-heading': HomeHeading,
+            'product-card': ProductCard,
         },
 
         setup() {
