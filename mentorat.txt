@@ -328,6 +328,11 @@ de terminat cu categoriile in componenta
 
 Sa facem o componenta delete category
 
+tema 12.10.2026
+
+de reparat filtarea de produse dupa categorii pe homepage
+
+
 
 
 

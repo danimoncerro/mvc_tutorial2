@@ -94,7 +94,8 @@ ob_start();
                 </div>
                 <div class="list-group list-group-flush">
                     <home-category-filter :categories="categories" 
-                        :selected-category="selectedCategory"> </home-category-filter>
+                        :selected-category="selectedCategory" 
+                        @category-selected="onCategorySelected"></home-category-filter>
                     
                 </div>
             </div>
@@ -179,10 +180,15 @@ ob_start();
 
             }
 
+            const onCategorySelected = (categoryid) => {
+                selectedCategory.value = categoryid;
+                showProducts();
+            };
+
             const showCategories = () => {
                 axios.get('<?= BASE_URL ?>api/categories', {
                     params: {
-                        per_page: 20,
+                        per_page: 100,
                         page: 1,
                         sort: 'name',
                         order: 'asc'
@@ -307,7 +313,8 @@ ob_start();
                 max_price,
                 priceMinLimit,
                 priceMaxLimit,
-                priceValidationMessage
+                priceValidationMessage,
+                onCategorySelected
             }
         }
     })

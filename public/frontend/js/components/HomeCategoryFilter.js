@@ -1,6 +1,6 @@
 const HomeCategoryFilter = {
     name: 'HomeCategoryFilter',
-    emits: [''],
+    emits: ['category-selected'],
     template: `
         <h1>Home Category Filter</h1>
         <button
@@ -41,7 +41,9 @@ const HomeCategoryFilter = {
     setup(props, { emit }) {
 
             const setCategory = (categoryid) => {
-                selectedCategory.value = Number(categoryid);
+                console.log('ID categorie selectată:', categoryid);
+                emit('category-selected', Number(categoryid));
+                //selectedCategory.value = Number(categoryid);
 
             }
     
