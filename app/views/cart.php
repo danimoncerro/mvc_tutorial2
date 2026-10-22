@@ -3,6 +3,8 @@ $title = 'Products List';
 ob_start();
 ?>
 
+<script src="<?= BASE_URL ?>frontend/js/components/RemoveFromCart.js"></script>
+
 <div id="app" class="container">
     <h1 class="my-4">Coș de cumpărături <span class="badge bg-secondary" v-if="cart.length">{{ totalcartitems }}</span></h1>
 
@@ -39,7 +41,11 @@ ob_start();
 
                     <td>{{ (item.product_price * item.quantity).toFixed(2) }} RON</td>
                     <td>
-                        <button class="btn btn-danger btn-sm" @click="removeFromCart(item.product_id)">Șterge</button>
+                        <remove-from-cart :id_product="item.product_id"
+                                        :deletelink="'<?= BASE_URL ?>api/cart/remove'"
+                                        @arata-produse="getCart">
+                        </remove-from-cart>
+                        
                     </td>
                 </tr>
             </tbody>
@@ -92,6 +98,11 @@ ob_start();
     const { createApp, ref, computed, onMounted, reactive } = Vue;
 
     const app = createApp({
+
+        components: {
+            'remove-from-cart': RemoveFromCart
+        },
+
         setup() {
             const cart = ref([]);
             const editingQtyId = ref(null);
@@ -178,15 +189,7 @@ ob_start();
                 .catch(() => alert('Eroare la actualizarea cantității!'));
             };
 
-            const removeFromCart = (productId) => {
-                if (!productId) return;
-                axios.post('<?= BASE_URL ?>api/cart/remove', { product_id: productId })
-                    .then(res => {
-                        if (res.data.success) getCart();
-                        else alert('Eroare la ștergere: ' + (res.data.message || ''));
-                    })
-                    .catch(() => alert('Eroare la ștergerea produsului!'));
-            };
+            
 
             const createOrder = () => {
                 if (cart.value.length === 0) {
@@ -237,7 +240,6 @@ ob_start();
             return {
                 cart,
                 totalCart,
-                removeFromCart,
                 editingQtyId,
                 editingQty,
                 startEditQty,
@@ -249,6 +251,7 @@ ob_start();
                 billingAddresses,
                 selectedShippingAddress,
                 selectedBillingAddress,
+                getCart
                 
             };
         }

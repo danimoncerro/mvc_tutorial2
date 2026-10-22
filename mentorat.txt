@@ -333,7 +333,8 @@ tema 12.10.2026
 de reparat filtarea de produse dupa categorii pe homepage
 
 
-
+tema 22.10.2026
+   tema optionala: sa se afiseze totalul produse in functie de pret minim si maxim la filtrare de categorii
 
 
 
