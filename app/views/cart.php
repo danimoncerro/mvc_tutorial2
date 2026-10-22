@@ -204,6 +204,8 @@ ob_start();
                         if (res.data.success) {
                             //alert('Comanda a fost plasată cu succes! Număr comandă: ' + res.data.order_id);
                             cart.value = [];
+                            //facem redirect
+                            window.location.href='<?= BASE_URL ?>thankyou';
 
                         } else {
                             //alert('Eroare la plasarea comenzii: ' + (res.data.message || ''));
@@ -251,7 +253,7 @@ ob_start();
                 billingAddresses,
                 selectedShippingAddress,
                 selectedBillingAddress,
-                getCart
+                getCart 
                 
             };
         }

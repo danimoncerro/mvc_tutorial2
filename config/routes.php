@@ -33,6 +33,7 @@ $router->post('orders/delete', 'OrderController@delete');
 $router->get('auth/login', 'AuthController@login');
 $router->post('auth/authenticate', 'AuthController@authenticate');
 $router->get('auth/logout', 'AuthController@logout');
+$router->get('thankyou', 'HomeController@thankyou');
 
 // Demo educational page + endpoints for learning API basics
 $router->get('demo-api', 'DemoApiController@index');
