@@ -5,7 +5,7 @@ const HomeCategoryFilter = {
         <h1>Home Category Filter</h1>
         <button
             type="button"
-            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center bg-success text-white"
             :class="{ active: selectedCategory === 0 }"
             @click="setCategory(0)"
         >
