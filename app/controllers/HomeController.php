@@ -13,6 +13,7 @@ class HomeController
 
     public function thankyou()
     {
+        $orderId1 = $_GET['orderId'];
         require_once APP_ROOT . '/app/views/thankyou.php';
     }
 }
