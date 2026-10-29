@@ -24,12 +24,23 @@ class ApiCategoryController
 
         $sort = $_GET['sort'] ?? 'id';
         $order = $_GET['order'] ?? 'asc';
+
+        $minPrice = $_GET['min_price'] ?? 0;
+        $maxPrice = $_GET['max_price'] ?? 99999; 
+
        
 
         $categoryModel = new Category();
         $totalCategories = $categoryModel->countAll();
         $totalPages = ceil($totalCategories / $perPage);
-        $categories = $categoryModel->getAllSortedPaginated($sort, $order, $perPage, $offset);
+        $categories = $categoryModel->getAllSortedPaginated(
+            $sort, 
+            $order, 
+            $perPage, 
+            $offset,
+            $minPrice,
+            $maxPrice
+        );
 
         
 

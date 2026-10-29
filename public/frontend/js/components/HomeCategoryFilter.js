@@ -39,6 +39,11 @@ const HomeCategoryFilter = {
 
         selectedCategory: {
             type: Number
+        },
+
+        totalproducts: {
+            type: Number,
+            required: true
         }
     
     

@@ -74,7 +74,14 @@ class Category
         return $stmt->fetchColumn();
     }
 
-    public function getAllSortedPaginated($sort = 'id', $order = 'asc', $limit = 5, $offset = 0)
+    public function getAllSortedPaginated(
+        $sort = 'id', 
+        $order = 'asc', 
+        $limit = 5, 
+        $offset = 0,
+        $minPrice = 0,
+        $maxPrice = 99999
+        )
     {
        
        // $sql = "SELECT * FROM categories ORDER BY $sort $order LIMIT :offset, :limit ";
@@ -84,6 +91,8 @@ class Category
             from categories c 
             left join products p 
             on p.category_id = c.id 
+            where p.price > :min_price
+            and p.price <= :max_price
             group by c.id
             ORDER BY $sort $order 
             LIMIT :offset, :limit;";
@@ -93,6 +102,8 @@ class Category
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->bindValue(':min_price', (int)$minPrice, PDO::PARAM_INT);
+        $stmt->bindValue(':max_price', (int)$maxPrice, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

@@ -95,6 +95,7 @@ ob_start();
                 <div class="list-group list-group-flush">
                     <home-category-filter :categories="categories" 
                         :selected-category="selectedCategory" 
+                        :totalproducts="totalproducts"
                         @category-selected="onCategorySelected"></home-category-filter>
                     
                 </div>
@@ -151,8 +152,8 @@ ob_start();
             const selectedCategory = ref(0);
             const priceMinLimit = ref(0);
             const priceMaxLimit = ref(1000);
-            const min_price = ref(5);
-            const max_price = ref(10);
+            const min_price = ref(1);
+            const max_price = ref(99999);
             const priceValidationMessage = ref('');
             let priceDebounceTimer = null;
             let isAdjustingPrice = false;
@@ -191,8 +192,9 @@ ob_start();
                         per_page: 100,
                         page: 1,
                         sort: 'name',
-                        order: 'asc'
-
+                        order: 'asc',
+                        min_price: min_price.value,
+                        max_price: max_price.value
                     }
                 })
                 .then(response => {
@@ -225,6 +227,7 @@ ob_start();
 
                 priceDebounceTimer = setTimeout(() => {
                     showProducts();
+                    showCategories();
                 }, 350);
             }
 
@@ -288,6 +291,7 @@ ob_start();
                 applyPriceValidation('max');
                 isAdjustingPrice = false;
                 scheduleProductsRefresh();
+                
             })
 
             onMounted(() => {
