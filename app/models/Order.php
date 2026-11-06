@@ -100,6 +100,17 @@ class Order
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return (int)$result['total'];  // ← RETURNEAZĂ NUMĂR
     } 
+
+    public function sumAll()
+    {
+
+        $sql = "SELECT SUM(total_order) as total FROM orders WHERE 1=1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)$result['total'];
+
+    }
     
     public function myOrders(
         $user_id, 

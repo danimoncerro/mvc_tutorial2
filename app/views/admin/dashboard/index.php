@@ -6,7 +6,8 @@ ob_start();
 <div id="app">
 
     <h1> {{ title }} </h1>
-    <h2> Total comenzi: {{totalOrders}}
+    <h2> Total comenzi: {{totalOrders}} </h2>
+    <h2> Valoare totala comenzi: {{valueOrders}} lei </h2>
 
 </div>
 
@@ -17,12 +18,14 @@ ob_start();
         setup() {
             const title = ref('Dashboard')
             const totalOrders = ref('')
+            const valueOrders = ref('')
 
             const showOrders = () => {
                          
                 axios.get('<?= BASE_URL ?>api/order/dashboard')
                     .then(response => {
                         totalOrders.value = response.data.total_order
+                        valueOrders.value = response.data.value_order
                     })
             }
 
@@ -33,6 +36,7 @@ ob_start();
             return{
                 title,
                 totalOrders,
+                valueOrders
             }
         }              
 

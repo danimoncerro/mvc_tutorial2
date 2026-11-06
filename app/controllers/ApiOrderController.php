@@ -321,9 +321,12 @@ class ApiOrderController
     {
         $orderModel = new Order();
         $totalOrder = $orderModel->countAll();
+        $valueOrder = $orderModel->sumAll();
+
 
         echo json_encode([
-            'total_order' => $totalOrder
+            'total_order' => $totalOrder,
+            'value_order' => $valueOrder
         ]);
 
     }
