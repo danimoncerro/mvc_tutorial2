@@ -34,6 +34,8 @@ $router->get('auth/login', 'AuthController@login');
 $router->post('auth/authenticate', 'AuthController@authenticate');
 $router->get('auth/logout', 'AuthController@logout');
 $router->get('thankyou', 'HomeController@thankyou');
+$router->get('dashboard', 'management/DashboardController@index');
+
 
 // Demo educational page + endpoints for learning API basics
 $router->get('demo-api', 'DemoApiController@index');
@@ -45,6 +47,7 @@ $router->post('mail/send', 'MailController@send');
 $router->get('vuecategories', 'CategoryController@vueindex');
 $router->post('api/orderitems/delete', 'OrderController@deleteOrderItem');
 $router->post('api/orderitems/update', 'ApiOrdercontroller@updateOrderItem');
+$router->get('api/order/dashboard', 'ApiOrdercontroller@dashboard');
 $router->get('api/orders/updatetotal', 'OrderController@updateTotal');
 $router->post('api/orders/delete', 'ApiOrderController@deleteOrder');
 $router->get('/produse', 'management/ProduseController@index');

@@ -45,7 +45,8 @@
         <?php if (isset($_SESSION['user'])): ?>           
 
             <?php if ($_SESSION['user']['role'] == 'admin'): ?>
-              <a class="nav-link" href="<?= BASE_URL ?>products">Products</a> 
+              <a class="nav-link" href="<?= BASE_URL ?>dashboard">Dashboard</a> 
+              <a class="nav-link ms-3" href="<?= BASE_URL ?>products">Products</a> 
               <a class="nav-link ms-3" href="<?= BASE_URL ?>categories">Categories</a> 
               <a class="nav-link ms-3" href="<?= BASE_URL ?>users">Users</a>
               <a class="nav-link ms-3" href="<?= BASE_URL ?>orders">All orders</a>

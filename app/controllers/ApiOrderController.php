@@ -316,4 +316,15 @@ class ApiOrderController
         header('Content-Type: application/json');
         echo json_encode(['status' => 'success', 'message' => 'Comanda s-a șters cu succes.']);
     }
+
+    public function dashboard()
+    {
+        $orderModel = new Order();
+        $totalOrder = $orderModel->countAll();
+
+        echo json_encode([
+            'total_order' => $totalOrder
+        ]);
+
+    }
 }

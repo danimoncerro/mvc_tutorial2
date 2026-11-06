@@ -340,6 +340,13 @@ tema 22.10.2026
    - trimitem email de confirmare la plasarea comenzii
    - mai exersam crearea de componente pana merge mai natural
 
+Exerctiu:
+
+Sa creem un deashboard pentru administrator in care sa se afiseze urmatoarele:
+
+- total comenzi si valoare comenzi;
+- o filtrare prin care sa se afiseze comenzile din urmatoarele 24 de ore, 7 zile, 30 de zile, 1 an si toate comenzile
+
 
 
 
