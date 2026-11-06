@@ -6,8 +6,14 @@ ob_start();
 <div id="app">
 
     <h1> {{ title }} </h1>
-    <h2> Total comenzi: {{totalOrders}} </h2>
-    <h2> Valoare totala comenzi: {{valueOrders}} lei </h2>
+
+    <div v-if="loading">
+        <h1> Se incarca datele ... </h1>
+    </div>
+    <div v-else>
+        <h2> Total comenzi: {{totalOrders}} </h2>
+        <h2> Valoare totala comenzi: {{valueOrders}} lei </h2>
+    </div>
 
 </div>
 
@@ -17,6 +23,7 @@ ob_start();
     const app = createApp({
         setup() {
             const title = ref('Dashboard')
+            const loading = ref(true)
             const totalOrders = ref('')
             const valueOrders = ref('')
 
@@ -26,6 +33,8 @@ ob_start();
                     .then(response => {
                         totalOrders.value = response.data.total_order
                         valueOrders.value = response.data.value_order
+
+                        loading.value = false
                     })
             }
 
@@ -36,7 +45,8 @@ ob_start();
             return{
                 title,
                 totalOrders,
-                valueOrders
+                valueOrders,
+                loading
             }
         }              
 

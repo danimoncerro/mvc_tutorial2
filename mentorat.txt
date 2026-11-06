@@ -348,6 +348,8 @@ Sa creem un deashboard pentru administrator in care sa se afiseze urmatoarele:
 - o filtrare prin care sa se afiseze comenzile din urmatoarele 24 de ore, 7 zile, 30 de zile, 1 an si toate comenzile
 
 
+Tema:
+  De adaugat pe toate paginile de la administrator un loading in zona unde se incarca tabelele cu date. (products, categories, users, All orders)
 
 
 
